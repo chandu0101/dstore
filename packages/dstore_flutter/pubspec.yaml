@@ -1,0 +1,23 @@
+name: dstore_flutter
+version: 0.0.1
+description: >-
+  dstore.
+homepage: https://github.com/chandu0101/dstore
+environment:
+  sdk: ">=2.13.0-0 <3.0.0"
+dependencies:
+  flutter: 
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter  
+  meta:
+  collection:   
+  path_to_regexp: 
+  dstore:
+    path: ../dstore
+    
+  
+
+dev_dependencies:
+  pedantic: 
+    

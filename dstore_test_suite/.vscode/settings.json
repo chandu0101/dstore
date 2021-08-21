@@ -1,0 +1,7 @@
+{
+    "files.exclude": {
+      "**/*.dstore.dart": true,
+      "**/*.g.dart": true
+     }
+
+}

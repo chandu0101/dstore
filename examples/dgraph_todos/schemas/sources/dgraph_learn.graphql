@@ -1,0 +1,10 @@
+type Task implements Node  {
+    text: String! 
+completed: Boolean! 
+    
+   }
+  
+     type Node   {
+    id: ID! 
+    
+   }

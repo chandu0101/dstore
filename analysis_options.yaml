@@ -1,0 +1,26 @@
+# Defines a default set of lint rules enforced for
+# projects at Google. For details and rationale,
+# see https://github.com/dart-lang/pedantic#enabled-lints.
+include: package:pedantic/analysis_options.yaml
+
+# For lint rules and documentation, see http://dart-lang.github.io/linter/lints.
+# Uncomment to specify additional rules.
+# linter:
+#   rules:
+    
+
+analyzer:
+  language:
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    prefer_single_quotes: ignore
+    unnecessary_this: ignore
+  strong-mode:
+    # never implicitly cast types down, on by default with null safety
+    implicit-casts: false
+    implicit-dynamic: false
+  exclude:
+    # - "**/*.dstore.dart"
+    - "**/*.g.dart"
+    - "**/*.gr.dart"

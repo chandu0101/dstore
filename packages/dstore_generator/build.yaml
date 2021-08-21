@@ -1,0 +1,41 @@
+
+builders:
+  dstore_generator|api:
+    import: "package:dstore_generator/builder.dart"
+    builder_factories: ["dstoreApiGen"]
+    build_extensions: {".dart": [".dstore.dart"]}
+    auto_apply: dependents
+    build_to: source
+    runs_before: ["dstore_generator|ps"]
+  dstore_generator|ps:
+    import: "package:dstore_generator/builder.dart"
+    builder_factories: ["dstorePSGen"]
+    build_extensions: {".dart": [".dstore.dart"]}
+    auto_apply: dependents
+    build_to: source
+    runs_before: ["dstore_generator"]
+  dstore_generator:
+    import: "package:dstore_generator/builder.dart"
+    builder_factories: ["dstoreGen"]
+    build_extensions: {".dart": [".dstore.dart"]}
+    auto_apply: dependents
+    build_to: source
+    runs_before: []  
+
+# targets:
+#   $default:
+#     builders:
+#       dstore_generator:
+#         generate_for:
+#           - test/**
+#       dstore_generator|ps:
+#         generate_for:
+#           - test/**
+#       dstore_generator|gql:
+#         generate_for:
+#           - test/**
+#       json_serializable:
+#         generate_for:
+#           - test/**
+#     sources: 
+#     - "test/**" 

@@ -1,0 +1,63 @@
+name: dstore_test_suite
+description: A starting point for Dart libraries or applications.
+version: 1.0.0
+# homepage: https://www.example.com
+
+environment:
+  sdk: '>=2.13.0 <3.0.0'
+
+publish_to: none
+
+dependencies:
+ flutter:
+   sdk: flutter 
+ dstore_flutter:
+   git:
+     url: https://github.com/chandu0101/dstore
+     path: packages/dstore_flutter 
+ dstore_middleware_dio:
+   git: 
+     url: https://github.com/chandu0101/dstore
+     path: packages/middleware_dio
+
+ dstore_middleware_websocket:
+   git: 
+     url: https://github.com/chandu0101/dstore
+     path: packages/middleware_websocket
+ dstore:
+   git: 
+     url: https://github.com/chandu0101/dstore
+     path: packages/dstore
+ dstore_test:
+   git: 
+     url: https://github.com/chandu0101/dstore
+     path: packages/dstore_test
+ time:
+ cloud_firestore: 
+ dstore_middleware_http:
+   git: 
+     url: https://github.com/chandu0101/dstore
+     path: packages/middleware_http
+     
+
+dev_dependencies:
+  test: ^1.14.4
+  build_runner: ^2.0.4
+  flutter_test:
+    sdk: flutter
+  json_serializable: 
+    path: ../../json_serializable.dart/json_serializable
+  dstore_generator:
+    git: 
+     url: https://github.com/chandu0101/dstore
+     path: packages/dstore_generator
+  grinder:
+  
+
+dependency_overrides: 
+  json_annotation:
+    path: ../../json_serializable.dart/json_annotation/    
+  meta: ^1.4.0 
+  dstore_generator:
+    path: ../packages//dstore_generator 
+     

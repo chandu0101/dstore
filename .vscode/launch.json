@@ -1,0 +1,73 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "dstore",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "commerce",
+            "cwd": "examples/commerce",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "dstore",
+            "cwd": "packages/dstore",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "dstore_annotation",
+            "cwd": "packages/dstore_annotation",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "dstore_flutter",
+            "cwd": "packages/dstore_flutter",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "dstore_generator",
+            "cwd": "packages/dstore_generator",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "firebase",
+            "cwd": "packages/firebase",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "middleware_dio",
+            "cwd": "packages/middleware_dio",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "middleware_websocket",
+            "cwd": "packages/middleware_websocket",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "network_status_default",
+            "cwd": "packages/network_status_default",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "storage_sharedprefs",
+            "cwd": "packages/storage_sharedprefs",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}

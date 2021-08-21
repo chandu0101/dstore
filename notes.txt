@@ -1,0 +1,57 @@
+
+InconsistentAnalysisException: Requested result might be inconsistent with previously returned results
+
+https://github.com/dart-lang/build/issues/2689
+
+Navigation : 
+
+https://github.com/flutter/flutter/issues/72212 ( web browser history)
+
+https://github.com/polyflection/flit_router
+
+https://ulusoyca.medium.com/flutter-navigator-2-0-for-authentication-and-bootstrapping-part-1-introduction-d7b6dfdd0849
+
+https://lucasdelsol01.medium.com/flutter-navigator-2-0-for-mobile-dev-bloc-state-management-integration-3a180b4d25b3
+
+https://github.com/flutter/flutter/issues/74437
+
+UI : 
+
+
+https://ulusoyca.medium.com/switching-between-client-specific-themes-for-b2b-flutter-apps-part-i-design-c9c501700c0e
+
+https://www.instaflutter.com/flutter-tutorials/flutter-charts/
+
+Logging: 
+
+https://fredgrott.medium.com/logging-the-expert-way-5beb5c967e44
+
+
+OpenAPI Samples:
+
+https://raw.githubusercontent.com/OpenBankingUK/read-write-api-specs/master/dist/openapi/account-info-openapi.yaml
+
+
+
+Testing : 
+
+https://applitools.com/event/let-the-robots-test-your-flutter-app/
+
+
+DGraph : 
+
+https://dgraph.io/docs/cloud/cloud-api/lambda/
+
+Firebase : 
+
+https://dev.to/rbt/firestore-data-validation-3k85
+
+
+
+Persitent Queries : 
+
+https://dgraph.io/docs/graphql/queries/persistent-queries/#:~:text=Dgraph%20supports%20Persistent%20Queries.,uses%20the%20associated%20query%20accordingly.
+
+https://www.apollographql.com/docs/apollo-server/performance/apq/
+
+curl -g 'https://proud-dew.ap-south-1.aws.cloud.dgraph.io/graphql/?extensions={"persistedQuery":{"sha256Hash":"b952c19b894e1aa89dc05b7d53e15ab34ee0b3a3f11cdf3486acef4f0fe85c52"}}'

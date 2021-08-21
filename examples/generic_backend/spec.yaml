@@ -1,0 +1,62 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Genric Dart backend
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8080
+paths:
+  /:
+    get:
+      summary: Hello MEssage
+      operationId: helloPing
+      tags:
+        - pets
+      responses:
+        '200':
+          description: Hello world message
+          content:
+            text/html:    
+              schema:
+                $ref: "#/components/schemas/StringRef"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                type: string
+  /json:
+    get:
+      summary: Hello MEssage
+      operationId: helloPing
+      tags:
+        - pets
+      responses:
+        '200':
+          description: Hello world message
+          content:
+            text/html:    
+              schema:
+                $ref: "#/components/schemas/StringRef"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                type: string             
+components:
+  schemas:
+    StringRef:
+      type: string 
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

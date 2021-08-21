@@ -1,0 +1,22 @@
+name: dstore_dgraph_lambda
+version: 0.0.1
+description: >-
+  dstore.
+homepage: https://github.com/chandu0101/dstore
+environment:
+  sdk: ">=2.12.0-0 <3.0.0"
+dependencies:
+  meta: 1.3.0
+  collection: 1.15.0
+  json_annotation:
+  js:  
+  dstore_annotation:
+    path: ../dstore_annotation
+  
+
+dev_dependencies:
+  pedantic: 1.10.0
+  test:
+  time:   
+  build_runner: 
+  grinder: 0.9.0-nullsafety.0

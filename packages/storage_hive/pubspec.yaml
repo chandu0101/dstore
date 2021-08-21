@@ -1,0 +1,17 @@
+name: dstore_storage_hive
+version: 0.0.1
+description: >-
+  dstore.
+homepage: https://github.com/chandu0101/dstore
+environment:
+  sdk: ">=2.13.0 <3.0.0"
+dependencies:
+  dstore:
+    path: ../dstore
+  hive: ^2.0.4
+
+dev_dependencies:
+  test:
+  grinder:   
+  
+    

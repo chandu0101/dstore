@@ -1,0 +1,17 @@
+name: dstore_storage_sharedprefs
+version: 0.0.1
+description: >-
+  dstore.
+homepage: https://github.com/chandu0101/dstore
+environment:
+  sdk: ">=2.13.0 <3.0.0"
+dependencies:
+  dstore:
+    path: ../dstore
+  shared_preferences: ^2.0.5   
+
+dev_dependencies:
+  test:
+  grinder:   
+  
+    

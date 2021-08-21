@@ -1,0 +1,20 @@
+name: dstore_middleware_websocket
+version: 0.0.1
+description: >-
+  dstore.
+homepage: https://github.com/chandu0101/dstore
+environment:
+  sdk: ">=2.13.0-0 <3.0.0"
+dependencies:
+  dstore:
+    git:
+      url: https://github.com/chandu0101/dstore
+      path: packages/dstore
+  web_socket_channel_fork:
+    git: 
+      url: https://github.com/chandu0101/web_socket_channel
+dev_dependencies:
+  pedantic:
+  
+      
+
