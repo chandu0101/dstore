@@ -7,6 +7,7 @@ void _handleNavAction<S extends AppStateI<S>>(
   final navState = store.getPStateModelFromAction(action) as NavCommonI;
   final history = navState.dontTouchMe.hisotry;
   final navPayload = action.nav!;
+  print("NavMiddle $navPayload ${navPayload.isProtected}");
   if (navPayload.isProtected) {
     final authMeta = history.authMeta;
     if (authMeta == null) {
@@ -20,12 +21,17 @@ void _handleNavAction<S extends AppStateI<S>>(
       return;
     }
   }
-  if(history.authOriginAction != null) {
+  print("history authOrigin ${history.authOriginAction}");
+
+  if (history.authOriginAction != null) {
+    if (history.authMeta!.action.name == action.name) {
+      return next(action);
+    }
     final a = history.authOriginAction!;
     history.authOriginAction = null;
     store.dispatch(a);
     return;
-  } 
+  }
   final navOptions = navPayload.navOptions as NavOptions?;
 
   print("navPayload $navPayload");

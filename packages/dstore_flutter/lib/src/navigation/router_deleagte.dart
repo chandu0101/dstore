@@ -89,6 +89,9 @@ class DRouterDelegate<S extends AppStateI<S>> extends RouterDelegate<String>
                 state.fallBackNestedStackNonInitializationAction;
             history.historyMode = state.dontTouchMe.historyMode;
             history.globalNavKey = navigatorKey;
+            print("navauth");
+            history.authMeta = state.authMeta(navState);
+            print("authmeta ${history.authMeta}");
           },
           onInitialBuild: (context, state) {
             _preparedState = true;
