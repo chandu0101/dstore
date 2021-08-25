@@ -217,13 +217,13 @@ dynamic SimpleHistory_SyncReducer(dynamic _DStoreState, Action _DstoreAction) {
   switch (name) {
     case "increment":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_count = _DStoreState.count;
         _DStore_count += 1;
         var newState = _DStoreState.copyWith(count: _DStore_count);
         newState.dontTouchMePSHistory = _DStoreState.dontTouchMePSHistory;
         final keys =
-            _DstoreActionPayload["internalKeysModified_never"] as List<String>;
+            _DstoreActionPayload!["internalKeysModified_never"] as List<String>;
         final map = newState.toMap();
         map.removeWhere((key, dynamic value) => !keys.contains(key));
         newState.dontTouchMePSHistory.internalAdd(map);
@@ -236,13 +236,13 @@ dynamic SimpleHistory_SyncReducer(dynamic _DStoreState, Action _DstoreAction) {
 
     case "decrement":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_count = _DStoreState.count;
         _DStore_count -= 1;
         var newState = _DStoreState.copyWith(count: _DStore_count);
         newState.dontTouchMePSHistory = _DStoreState.dontTouchMePSHistory;
         final keys =
-            _DstoreActionPayload["internalKeysModified_never"] as List<String>;
+            _DstoreActionPayload!["internalKeysModified_never"] as List<String>;
         final map = newState.toMap();
         map.removeWhere((key, dynamic value) => !keys.contains(key));
         newState.dontTouchMePSHistory.internalAdd(map);

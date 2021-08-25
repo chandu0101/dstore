@@ -6,20 +6,22 @@ part of 'local.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Input1 _$Input1FromJson(Map<String, dynamic> json) => Input1(
-      name: json['name'] as String?,
-      inputs: (json['inputs'] as List<dynamic>?)
-          ?.map((e) =>
-              e == null ? null : Input1.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      count: json['count'] as int?,
-      percent: (json['percent'] as num?)?.toDouble(),
-      counts: (json['counts'] as List<dynamic>?)?.map((e) => e as int).toList(),
-      enums: (json['enums'] as List<dynamic>?)
-          ?.map((e) => _$enumDecode(_$Enum1EnumMap, e))
-          .toList(),
-      enum_$d: _$enumDecodeNullable(_$Enum1EnumMap, json['enum']),
-    );
+Input1 _$Input1FromJson(Map<String, dynamic> json) {
+  return Input1(
+    name: json['name'] as String?,
+    inputs: (json['inputs'] as List<dynamic>?)
+        ?.map((e) =>
+            e == null ? null : Input1.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    count: json['count'] as int?,
+    percent: (json['percent'] as num?)?.toDouble(),
+    counts: (json['counts'] as List<dynamic>?)?.map((e) => e as int).toList(),
+    enums: (json['enums'] as List<dynamic>?)
+        ?.map((e) => _$enumDecode(_$Enum1EnumMap, e))
+        .toList(),
+    enum_$d: _$enumDecodeNullable(_$Enum1EnumMap, json['enum']),
+  );
+}
 
 Map<String, dynamic> _$Input1ToJson(Input1 instance) => <String, dynamic>{
       'name': instance.name,

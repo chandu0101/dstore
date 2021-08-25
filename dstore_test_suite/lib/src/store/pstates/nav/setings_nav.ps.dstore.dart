@@ -209,7 +209,7 @@ dynamic SettingsNav_SyncReducer(dynamic _DStoreState, Action _DstoreAction) {
 
     case "initialSetup":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_listp = _DStoreState.listp;
         var _DStore_selectedSetting = _DStoreState.selectedSetting;
         _DStore_listp = true;

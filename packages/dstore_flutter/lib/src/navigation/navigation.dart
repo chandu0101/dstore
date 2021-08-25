@@ -97,7 +97,7 @@ abstract class NavStateI<M> extends PStateModel<M> with NavCommonI {
   @override
   M copyWithMap(Map<String, dynamic> map) => throw UnimplementedError();
   // If you dont have any protected routes/urls just put unimplemented error block;
-  AuthMeta authMeta(NavCommonI navState);
+  AuthMeta? authMeta(NavCommonI navState);
 }
 
 class NestedNavStateMeta {

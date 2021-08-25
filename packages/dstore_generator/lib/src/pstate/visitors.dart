@@ -281,7 +281,7 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
 
 String _convertMethodParamsToString(List<Field> params) {
   if (params.isEmpty) {
-    return "final ${PAYLOAD_VARIBALE} = ${ACTION_VARIABLE}.payload!;";
+    return "final ${PAYLOAD_VARIBALE} = ${ACTION_VARIABLE}.payload;";
   }
   final p = params
       .map((p) =>
@@ -689,7 +689,7 @@ Tuple2<String, Set<String>> processMethodStatements(
     var newState = ${STATE_VARIABLE}.copyWith(${keys.map((k) => "${k} : ${DSTORE_PREFIX}${k}").join(",")}$spl);
     ${historyEnabled ? """ 
      newState.dontTouchMePSHistory = ${STATE_VARIABLE}.dontTouchMePSHistory;
-     final keys = ${PAYLOAD_VARIBALE}["${PSHISTORY_KEYS_MODIFIED_KEY}"] as List<String>;
+     final keys = ${PAYLOAD_VARIBALE}!["${PSHISTORY_KEYS_MODIFIED_KEY}"] as List<String>;
      final map = newState.toMap();
      map.removeWhere((key, dynamic value) => !keys.contains(key));
      newState.dontTouchMePSHistory.internalAdd(map);

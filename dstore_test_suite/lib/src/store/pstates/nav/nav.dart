@@ -60,7 +60,7 @@ class $_SimpleNavPS extends NavStateI<dynamic> {
   }
 
   @override
-  AuthMeta authMeta(NavCommonI navState) {
-    throw UnimplementedError();
+  AuthMeta? authMeta(NavCommonI navState) {
+    return null;
   }
 }

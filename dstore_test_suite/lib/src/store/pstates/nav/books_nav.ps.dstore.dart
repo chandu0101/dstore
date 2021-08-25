@@ -241,7 +241,7 @@ dynamic BooksNav_SyncReducer(dynamic _DStoreState, Action _DstoreAction) {
 
     case "initialSetup":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_selectedBook = _DStoreState.selectedBook;
         _DStore_selectedBook = null;
         var newState = _DStoreState.copyWith(

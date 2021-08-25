@@ -10,13 +10,7 @@ part of 'app_selectors.dart';
 // Selector
 class AppSelectors {
   static final simpleSelector = Selector<AppState, SimpleSelectorPS>(
-      fn: $_AppSelectors.simpleSelector,
-      deps: {
-        "simpleSelectorPS": []
-      },
-      sfDeps: {
-        "simpleSelectorPS": ["streamField"]
-      });
+      fn: $_AppSelectors.simpleSelector, deps: {"simpleSelectorPS": []});
   static final simpleFlutterSelector =
       Selector<AppState, SimpleFlutterSelectors>(
           fn: $_AppSelectors.simpleFlutterSelector,

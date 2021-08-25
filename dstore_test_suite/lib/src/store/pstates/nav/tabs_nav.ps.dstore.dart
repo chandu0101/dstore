@@ -165,7 +165,7 @@ dynamic TabsNestedStack_SyncReducer(
   switch (name) {
     case "tab2":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_page = _DStoreState.page;
         _DStore_page = MaterialPage<dynamic>(
             child: NestedRouter(selector: AppSelectors.tabsNested_nested));
@@ -180,7 +180,7 @@ dynamic TabsNestedStack_SyncReducer(
 
     case "tab3":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_page = _DStoreState.page;
         _DStore_page = MaterialPage<dynamic>(child: Tab3());
         var newState =
@@ -194,7 +194,7 @@ dynamic TabsNestedStack_SyncReducer(
 
     case "initialSetup":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_page = _DStoreState.page;
         _DStore_page = MaterialPage<dynamic>(child: Tab1());
         var newState =
@@ -462,7 +462,7 @@ dynamic TabsNestedStack_Nested_SyncReducer(
   switch (name) {
     case "initialSetup":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_tItem = _DStoreState.tItem;
         _DStore_tItem = null;
         var newState =

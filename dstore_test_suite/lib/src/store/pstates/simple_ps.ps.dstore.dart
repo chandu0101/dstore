@@ -513,7 +513,7 @@ dynamic Simple_SyncReducer(dynamic _DStoreState, Action _DstoreAction) {
   switch (name) {
     case "incrment":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_count = _DStoreState.count;
         _DStore_count += 1;
         return _DStoreState.copyWith(count: _DStore_count);
@@ -609,7 +609,7 @@ dynamic Simple_SyncReducer(dynamic _DStoreState, Action _DstoreAction) {
 
     case "shouldHandleGeneralStatement":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_general = _DStoreState.general;
         print("sleeping ");
         print("eating");

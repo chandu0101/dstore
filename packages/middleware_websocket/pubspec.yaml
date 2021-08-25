@@ -7,9 +7,7 @@ environment:
   sdk: ">=2.13.0-0 <3.0.0"
 dependencies:
   dstore:
-    git:
-      url: https://github.com/chandu0101/dstore
-      path: packages/dstore
+    path: ../dstore
   web_socket_channel_fork:
     git: 
       url: https://github.com/chandu0101/web_socket_channel

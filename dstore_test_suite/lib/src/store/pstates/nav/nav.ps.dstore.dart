@@ -176,7 +176,7 @@ dynamic SimpleNavPS_SyncReducer(dynamic _DStoreState, Action _DstoreAction) {
   switch (name) {
     case "home":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_page = _DStoreState.page;
         _DStore_page =
             MaterialPage<dynamic>(key: ValueKey("home"), child: HomeScreen());
@@ -191,7 +191,7 @@ dynamic SimpleNavPS_SyncReducer(dynamic _DStoreState, Action _DstoreAction) {
 
     case "books":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_page = _DStoreState.page;
         print("in books pa2ge");
         _DStore_page = MaterialPage<dynamic>(
@@ -209,7 +209,7 @@ dynamic SimpleNavPS_SyncReducer(dynamic _DStoreState, Action _DstoreAction) {
 
     case "settings":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_page = _DStoreState.page;
         print("in settings page");
         _DStore_page = MaterialPage<dynamic>(
@@ -226,7 +226,7 @@ dynamic SimpleNavPS_SyncReducer(dynamic _DStoreState, Action _DstoreAction) {
 
     case "tabs":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_page = _DStoreState.page;
         print("in tabs page");
         _DStore_page = MaterialPage<dynamic>(
@@ -243,7 +243,7 @@ dynamic SimpleNavPS_SyncReducer(dynamic _DStoreState, Action _DstoreAction) {
 
     case "unknown":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_page = _DStoreState.page;
         _DStore_page = MaterialPage<dynamic>(
             key: ValueKey("unknown"), child: UnknownScreen());

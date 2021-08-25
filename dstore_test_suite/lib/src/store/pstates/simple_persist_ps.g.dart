@@ -6,10 +6,11 @@ part of 'simple_persist_ps.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SimplePersist _$SimplePersistFromJson(Map<String, dynamic> json) =>
-    SimplePersist(
-      x: json['x'] as int,
-    );
+SimplePersist _$SimplePersistFromJson(Map<String, dynamic> json) {
+  return SimplePersist(
+    x: json['x'] as int,
+  );
+}
 
 Map<String, dynamic> _$SimplePersistToJson(SimplePersist instance) =>
     <String, dynamic>{

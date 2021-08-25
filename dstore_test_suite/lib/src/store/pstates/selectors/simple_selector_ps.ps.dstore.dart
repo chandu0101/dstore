@@ -247,7 +247,7 @@ dynamic SimpleSelectorPS_SyncReducer(
   switch (name) {
     case "increment":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_count = _DStoreState.count;
         _DStore_count += 1;
         return _DStoreState.copyWith(count: _DStore_count);
@@ -255,7 +255,7 @@ dynamic SimpleSelectorPS_SyncReducer(
 
     case "decrement":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_count = _DStoreState.count;
         _DStore_count -= 1;
         return _DStoreState.copyWith(count: _DStore_count);

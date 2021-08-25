@@ -206,7 +206,7 @@ Future<dynamic> SimpleAsync_AsyncReducer(
   switch (name) {
     case "delayedSet":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_x = _DStoreState.x;
         await _DStoreState.delay(500);
         _DStore_x = 5;
@@ -215,7 +215,7 @@ Future<dynamic> SimpleAsync_AsyncReducer(
 
     case "shouldCatchErrors":
       {
-        final _DstoreActionPayload = _DstoreAction.payload!;
+        final _DstoreActionPayload = _DstoreAction.payload;
         var _DStore_x = _DStoreState.x;
         await _DStoreState.delay(600);
         throw asyncException;

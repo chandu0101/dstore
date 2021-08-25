@@ -23,7 +23,7 @@ void main() {
       final result = <int>[];
       final unsubscribe =
           store.subscribeSelector(AppSelectors.simpleSelector, () {
-        print("print listener called");
+        print("prOint listener called");
         result.add(store.state.simpleSelectorPS.count);
       });
 
