@@ -8,7 +8,7 @@ environment:
 dependencies:
   analyzer: 2.1.0
   build: ^2.1.0
-  meta: 1.3.0 
+  meta: 1.7.0
   source_gen: ^1.0.0
   gql: ^0.13.0 
   crypto: 

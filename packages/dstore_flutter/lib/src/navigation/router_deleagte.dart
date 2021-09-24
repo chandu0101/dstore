@@ -12,19 +12,19 @@ import 'package:collection/collection.dart';
 class DRouterDelegate<S extends AppStateI<S>> extends RouterDelegate<String>
     with ChangeNotifier {
   final Selector<S, NavStateI> selector;
-  final Widget Function(Widget child) shell;
-  final GlobalKey<NavigatorState> navigatorKey;
+  // final Widget Function(Widget child) shell;
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   late final History history;
   NavStateI? _navState;
   NavStateI get navState => _navState!;
+  final Widget Function(Widget child) shell;
   VoidCallback? unsubscribeHistoryListener;
   late Dispatch _dispatch;
   late Store _store;
   bool _preparedState = false;
   late Widget w;
   bool skipBuild = false;
-  DRouterDelegate({required this.selector, this.shell = IdentityFn})
-      : navigatorKey = GlobalKey<NavigatorState>() {
+  DRouterDelegate({required this.selector, this.shell = IdentityFn}) {
     history = createHistory();
     unsubscribeHistoryListener = history.listen(handleUriChange);
   }
@@ -70,12 +70,8 @@ class DRouterDelegate<S extends AppStateI<S>> extends RouterDelegate<String>
     _store = context.store;
     context.store.navHistory = history;
     print("Rebuilding main navigator");
-    if (skipBuild) {
-      print("Skipping build");
-      skipBuild = false;
-      return w;
-    }
-    w = NavigationProvider(
+
+    return NavigationProvider(
         dotTouchmeHistory: history,
         child: shell(SelectorBuilder<S, NavStateI>(
           selector: selector,
@@ -157,11 +153,10 @@ class DRouterDelegate<S extends AppStateI<S>> extends RouterDelegate<String>
                 },
               );
             } else {
-              return SizedBox.shrink();
+              return Scaffold(body: SizedBox.shrink());
             }
           },
         )));
-    return w;
   }
 
   void prepareStateFromNestedStacks(

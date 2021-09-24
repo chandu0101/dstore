@@ -26,8 +26,8 @@ abstract class History {
   Action? originAction;
   Action? authOriginAction;
   String? currentActiveNestedNav;
-  late HistoryMode historyMode;
-  
+  HistoryMode? historyMode;
+
   GlobalKey<NavigatorState>? currentNavKey;
   BeforeLeaveFn? beforeLeave;
   late final GlobalKey<NavigatorState> globalNavKey;
@@ -46,7 +46,7 @@ abstract class NestedNavHistory {
   late History history;
   late String rootUrl;
   Action? originAction;
-  late HistoryMode historyMode;
+  HistoryMode? historyMode;
   String? parentStackTypeName;
   GlobalKey<NavigatorState>? parentNavKey;
   final nestedNavMeta = <String, Action>{};
@@ -57,6 +57,9 @@ abstract class NestedNavHistory {
 }
 
 History createHistory() => HistoryImpl();
+
+const HistoryModeReloadIssue =
+    "Issue with hot reload of flutter, please press hot restart";
 
 NestedNavHistory createNestedNavHistory(History history) =>
     NestedNavHistoryImpl(history: history);

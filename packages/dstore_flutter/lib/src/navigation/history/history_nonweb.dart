@@ -19,12 +19,16 @@ class HistoryImpl extends History {
 
   @override
   void push(String url, {bool nested = false}) {
-    if (historyMode == HistoryMode.tabs) {
-      _source = _source.where((e) => e != url).toList();
+    if (historyMode == null) {
+      throw Exception(HistoryModeReloadIssue);
+    } else {
+      if (historyMode == HistoryMode.tabs) {
+        _source = _source.where((e) => e != url).toList();
+      }
+      _source.add(url);
+      this.url = url;
+      informUrlListeners();
     }
-    _source.add(url);
-    this.url = url;
-    informUrlListeners();
   }
 
   @override

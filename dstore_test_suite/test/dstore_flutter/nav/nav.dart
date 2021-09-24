@@ -11,14 +11,17 @@ import 'package:flutter_test/flutter_test.dart';
 void mian() {
   group("Nav Testers", () {
     testWidgets("should render nav with  ", (tester) async {
-      await tester.pumpWidget(StoreProvider(
+      await tester.pumpWidget(
+        StoreProvider(
           store: store,
           child: MaterialApp.router(
             routeInformationParser: DStoreRouteInformationParser(),
             routerDelegate: DRouterDelegate(
-                selector: AppSelectors.simpleNavPS,
-                shell: (child) => AppShellNav2(child: child)),
-          )));
+              selector: AppSelectors.simpleNavPS,
+            ),
+          ),
+        ),
+      );
 
       // expect(store.flutterNavHistory.globalNavKey, isNotNull);
       // store.dispatch(SimpleNavPSActions.books());

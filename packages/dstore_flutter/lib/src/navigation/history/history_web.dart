@@ -124,12 +124,16 @@ class NestedNavHistoryImpl extends NestedNavHistory {
   NestedNavHistoryImpl({required this.history});
   @override
   void push(String url) {
-    if (historyMode == HistoryMode.tabs) {
-      source = source.where((e) => e != url).toList();
+    if (historyMode == null) {
+      throw Exception(HistoryModeReloadIssue);
+    } else {
+      if (historyMode == HistoryMode.tabs) {
+        source = source.where((e) => e != url).toList();
+      }
+      source.add(url);
+      history.url = url;
+      history.push(url, nested: true);
     }
-    source.add(url);
-    history.url = url;
-    history.push(url, nested: true);
   }
 
   @override
