@@ -66,7 +66,12 @@ class FormWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              DRadioField(name: SimpleFormKey.r, value: REnum.one),
+              Row(
+                children: [
+                  Text("One"),
+                  DRadioField(name: SimpleFormKey.r, value: REnum.one),
+                ],
+              ),
               DRadioField(name: SimpleFormKey.r, value: REnum.two),
               DRadioField(name: SimpleFormKey.r, value: REnum.three)
             ],
