@@ -95,6 +95,8 @@ extension StringExt on String {
   String? replaceAndReturn(String match) {
     if (this.startsWith(match)) {
       return this.replaceFirst(match, "");
+    } else {
+      return null;
     }
   }
 

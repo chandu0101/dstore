@@ -41,7 +41,7 @@ String getDGraphFieldAnnotations({required Element element}) {
   return annotations.join(" ");
 }
 
-String getDGraphObjectAnnotations({required ClassElement element}) {
+String getDGraphObjectAnnotations({required InterfaceElement element}) {
   final annotations = <String>[];
   final remoteD = getRemoteDirective(element);
   if (remoteD != null) {
@@ -70,7 +70,7 @@ String getDGraphObjectAnnotations({required ClassElement element}) {
   return annotations.join(" ");
 }
 
-String getDGraphInterfaceAnnotations({required ClassElement element}) {
+String getDGraphInterfaceAnnotations({required InterfaceElement element}) {
   final annotations = <String>[];
   final remoteD = getRemoteDirective(element);
   if (remoteD != null) {
@@ -99,7 +99,7 @@ String getDGraphInterfaceAnnotations({required ClassElement element}) {
   return annotations.join(" ");
 }
 
-String getDGraphInputAnnotations({required ClassElement element}) {
+String getDGraphInputAnnotations({required InterfaceElement element}) {
   final annotations = <String>[];
   final remoteD = getRemoteDirective(element);
   if (remoteD != null) {
@@ -108,7 +108,7 @@ String getDGraphInputAnnotations({required ClassElement element}) {
   return annotations.join(" ");
 }
 
-String getDGraphEnumAnnotations({required ClassElement element}) {
+String getDGraphEnumAnnotations({required InterfaceElement element}) {
   final annotations = <String>[];
   final remoteD = getRemoteDirective(element);
   if (remoteD != null) {
@@ -117,7 +117,7 @@ String getDGraphEnumAnnotations({required ClassElement element}) {
   return annotations.join(" ");
 }
 
-String getDGraphUnionAnnotations({required ClassElement element}) {
+String getDGraphUnionAnnotations({required InterfaceElement element}) {
   final annotations = <String>[];
   final remoteD = getRemoteDirective(element);
   if (remoteD != null) {

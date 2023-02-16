@@ -23,7 +23,7 @@ abstract class EnvGenerator {
         final file = File(dotEnvFilePath);
         if (file.existsSync()) {
           final lines = file.readAsLinesSync();
-          fileVars = Parser().parse(lines);
+          // fileVars = Parser().parse(lines);
         }
         final envVars = {
           ...fileVars,

@@ -13,7 +13,7 @@ class FireStoreOpsVisitor extends SimpleAstVisitor<void> {
   @override
   void visitFieldDeclaration(FieldDeclaration node) {
     final f = node.fields.variables.first;
-    final name = f.name.name;
+    final name = f.name.lexeme; // TODO stringValue
     final value = f.initializer;
     if (value == null) {
       throw ArgumentError.value("You should initialize variable $name");

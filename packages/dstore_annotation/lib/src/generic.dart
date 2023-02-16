@@ -6,6 +6,16 @@ class AppStateAnnotation {
   const AppStateAnnotation();
 }
 
+/**
+ *  creates immutable class from plain class
+ *  Example: 
+ * @DImmutable()
+ *  class $_Sample {
+ *   int x;
+ *   int y;
+ * }
+ * 
+ */
 class DImmutable {
   final bool isJsonSerializable;
   final CollectionEquality? collectionEquality;

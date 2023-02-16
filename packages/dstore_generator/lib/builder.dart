@@ -34,7 +34,7 @@ class RGen extends GeneratorForAnnotation<RegularMethod> {
 /// Builds generators for `build_runner` to run
 Builder dstorePSGen(BuilderOptions options) {
   print("dstorePSGen ************************* options ${options.config}");
-  EnvGenerator.generate();
+  // EnvGenerator.generate();
   PStateGeneratorBuildOptions.fromOptions(options.config);
   return PartBuilder(
     [PStateGenerator()],
@@ -44,7 +44,7 @@ Builder dstorePSGen(BuilderOptions options) {
 
 Builder dstoreApiGen(BuilderOptions options) {
   print(" dstoreApiGen ************************* options ${options.config}");
-  EnvGenerator.generate();
+  // EnvGenerator.generate();
   return PartBuilder(
     [GraphqlSchemaGenerator(), GraphqlOpsGenerator(), OpenApiGenerator()],
     '.api.dstore.dart',
@@ -53,7 +53,7 @@ Builder dstoreApiGen(BuilderOptions options) {
 
 Builder dstoreGen(BuilderOptions options) {
   print("dstoreGen Options $options");
-  EnvGenerator.generate();
+  // EnvGenerator.generate();
   return PartBuilder(
       [
         FormModelGenerator(),

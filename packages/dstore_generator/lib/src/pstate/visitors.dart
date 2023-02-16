@@ -51,7 +51,7 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
 
   @override
   dynamic visitMethodDeclaration(MethodDeclaration node) {
-    final name = node.name.name;
+    final name = node.name.lexeme; // TODO
     if (isNav) {
       logger.shout("Annot ${node.metadata.firstOrNull?.elementAnnotation}");
     }
@@ -83,10 +83,10 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
     if (node.body.isAsynchronous && (rt != "Future<void>" && rt != "void")) {
       isAsync = true;
       throw InvalidSignatureError(
-          "You should annotate method  '${node.name.name}' return type with Future<void>  ");
+          "You should annotate method  '${node.name.lexeme}' return type with Future<void>  ");
     } else if (!node.body.isAsynchronous && rt != "void") {
       throw InvalidSignatureError(
-          "You should annotate method  '${node.name.name}' return type with void  ");
+          "You should annotate method  '${node.name.lexeme}' return type with void  ");
     }
 
     final params = AstUtils.convertParamsToFields(node.parameters);
@@ -209,8 +209,8 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
     node.fields.variables.forEach((v) {
       final name = v.name.toString();
       final valueE = v.initializer;
-      final fe =
-          element.fields.singleWhere((element) => element.name == v.name.name);
+      final fe = element.fields
+          .singleWhere((element) => element.name == v.name.lexeme);
       if (v.isLate) {
         // check for psdeps
 
@@ -273,7 +273,7 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
 
   bool _isPStateModel(VariableDeclaration v) {
     final fe =
-        element.fields.singleWhere((element) => element.name == v.name.name);
+        element.fields.singleWhere((element) => element.name == v.name.lexeme);
     print("fe $fe");
     return fe.type.element?.annotationFromType(PState) != null;
   }

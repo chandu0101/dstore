@@ -24,13 +24,13 @@ abstract class AstUtils {
         final session = library.session;
         AstNode node;
         if (resolve) {
-          final le = await session.getResolvedLibraryByElement2(library)
+          final le = await session.getResolvedLibraryByElement(library)
               as ResolvedLibraryResult;
 
           node = le.getElementDeclaration(element)!.node;
         } else {
-          final pr = session.getParsedLibraryByElement2(library)
-              as ParsedLibraryResult;
+          final pr =
+              session.getParsedLibraryByElement(library) as ParsedLibraryResult;
           node = pr.getElementDeclaration(element)!.node;
         }
         return node;
@@ -63,7 +63,7 @@ abstract class AstUtils {
       return [];
     }
     return parameters.parameters.map((param) {
-      final name = param.identifier.toString();
+      final name = param.name?.lexeme ?? "FIXME"; // TODO
       var isOptional = param.isOptional;
       late String type;
       String? value;
@@ -224,23 +224,24 @@ abstract class AnnotationUtils {
     if (toJsonField != null) {
       toJson = toJsonField.literalValue as Function;
     }
-
-    dynamic unknownEnumValue;
-    final unknownEnumValueField = reader.peek("unknownEnumValue");
-    if (unknownEnumValueField != null) {
-      unknownEnumValue = unknownEnumValueField.literalValue;
-    }
+    //TODO
+    // Enum? unknownEnumValue;
+    // final unknownEnumValueField = reader.peek("unknownEnumValue");
+    // if (unknownEnumValueField != null) {
+    //   unknownEnumValue = unknownEnumValueField.literalValue;
+    // }
 
     return JsonKey(
-        defaultValue: defaultValue,
-        disallowNullValue: disallowNullValue,
-        fromJson: fromJson,
-        ignore: ignore,
-        includeIfNull: includeIfNull,
-        name: name,
-        required: required,
-        toJson: toJson,
-        unknownEnumValue: unknownEnumValue);
+      defaultValue: defaultValue,
+      disallowNullValue: disallowNullValue,
+      fromJson: fromJson,
+      ignore: ignore,
+      includeIfNull: includeIfNull,
+      name: name,
+      required: required,
+      toJson: toJson,
+      // unknownEnumValue: unknownEnumValue TODO
+    );
   }
 }
 
@@ -284,26 +285,25 @@ extension ElementAnnotationExt on ElementAnnotation {
 extension JsonKeyExt on JsonKey {
   JsonKey copyWithMap(Map<String, dynamic> map) {
     return JsonKey(
-        defaultValue: map.containsKey("defaultValue")
-            ? map["defaultValue"]
-            : defaultValue,
-        disallowNullValue: map.containsKey("disallowNullValue")
-            ? map["disallowNullValue"] as bool?
-            : disallowNullValue,
-        fromJson: map.containsKey("fromJson")
-            ? map["fromJson"] as Function?
-            : fromJson,
-        ignore: map.containsKey("ignore") ? map["ignore"] as bool? : ignore,
-        includeIfNull: map.containsKey("includeIfNull")
-            ? map["includeIfNull"] as bool?
-            : includeIfNull,
-        name: map.containsKey("name") ? map["name"] as String? : name,
-        required:
-            map.containsKey("required") ? map["required"] as bool? : required,
-        toJson: map.containsKey("toJson") ? map["toJson"] as Function? : toJson,
-        unknownEnumValue: map.containsKey("unknownEnumValue")
-            ? map["unknownEnumValue"]
-            : unknownEnumValue);
+      defaultValue:
+          map.containsKey("defaultValue") ? map["defaultValue"] : defaultValue,
+      disallowNullValue: map.containsKey("disallowNullValue")
+          ? map["disallowNullValue"] as bool?
+          : disallowNullValue,
+      fromJson:
+          map.containsKey("fromJson") ? map["fromJson"] as Function? : fromJson,
+      ignore: map.containsKey("ignore") ? map["ignore"] as bool? : ignore,
+      includeIfNull: map.containsKey("includeIfNull")
+          ? map["includeIfNull"] as bool?
+          : includeIfNull,
+      name: map.containsKey("name") ? map["name"] as String? : name,
+      required:
+          map.containsKey("required") ? map["required"] as bool? : required,
+      toJson: map.containsKey("toJson") ? map["toJson"] as Function? : toJson,
+      // unknownEnumValue: map.containsKey("unknownEnumValue")
+      //     ? map["unknownEnumValue"]
+      //     : unknownEnumValue TODO
+    );
   }
 
   String toSource() =>

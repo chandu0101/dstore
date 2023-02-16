@@ -28,7 +28,7 @@ HttpFieldInfo? _getHttpFieldInfo(FieldElement element,
       return null;
     }
     ht = element.type as InterfaceType;
-    anot = element.type.aliasElement?.annotationFromType(HttpRequest);
+    anot = element.type.element?.annotationFromType(HttpRequest);
   } else {
     // empty mixin classes
     final hto = AstUtils.isSubTypeof(element.type, "HttpField");
@@ -40,7 +40,7 @@ HttpFieldInfo? _getHttpFieldInfo(FieldElement element,
   }
 
   print(
-      "Getting http for field ${element.type} ${element.type.runtimeType} Alias ${element.type.aliasElement}");
+      "Getting http for field ${element.type} ${element.type.runtimeType} Alias ${element.type.element}");
   // final ht = AstUtils.isSubTypeof(type, "HttpField");
 
   if (ht.typeArguments.length != 3) {
@@ -111,7 +111,7 @@ HttpFieldInfo? _getHttpFieldInfo(FieldElement element,
     final reqE = ConstantReader(reqExtAnnot.computeConstantValue());
     transformer = reqE.functionNameForField("transformer", validateFn: (ex) {
       final params = ex.parameters;
-      final at = element.type.aliasElement?.name;
+      final at = element.type.element?.name;
       final error =
           "transformer function should contain two paramaeter one ${at} other one is $responseType? and return type is $at";
       if (params.length != 2) {

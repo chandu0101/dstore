@@ -67,7 +67,7 @@ Future<void> saveSecurityRulesToFile(
 }
 
 String convertSecurityRuleToString(
-    {required SecurityRule? rule, ClassElement? element}) {
+    {required SecurityRule? rule, InterfaceElement? element}) {
   final collectionName = element?.collectionAnnotation.name;
   final functions = rule?.functions ?? "";
   final match = rule?.match != null
@@ -112,7 +112,7 @@ String convertSecurityRuleToString(
 }
 
 Tuple2<String, List<FieldElement>> getDefaultSecurityFunctions({
-  required ClassElement element,
+  required InterfaceElement element,
   DefautSecurityOrValidateFunctions? df,
 }) {
   final subCollFields = <FieldElement>[];
@@ -199,7 +199,7 @@ String getModelsFromCollections({required ClassElement element}) {
       .join("\n");
 }
 
-String convertCollectionModelToDartModel({required ClassElement element}) {
+String convertCollectionModelToDartModel({required InterfaceElement element}) {
   final className = element.name;
   final regularFields = <Field>[];
   final updateFields = <Field>[];
@@ -382,7 +382,7 @@ SecurityRule convertDartObjectToSecurity(DartObject obj) {
 }
 
 String convertCollectionModelToDartDSLQuery(
-    {required ClassElement element, required String name}) {
+    {required InterfaceElement element, required String name}) {
   final genericQueryFields = <String>[];
   final queryClassName = "${name}Query";
 

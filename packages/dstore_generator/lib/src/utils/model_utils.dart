@@ -137,7 +137,7 @@ abstract class ModelUtils {
   static String createHashcodeFromFieldsList(List<Field> fields) {
     return """
     @override 
-    int get hashCode => ${fields.map((f) => "${f.name}.hashCode").join(" ^ ")};
+    int get hashCode => Object.hash(${fields.map((f) => "${f.name}").join(",")});
   """;
   }
 
@@ -347,6 +347,7 @@ abstract class ModelUtils {
       """;
   }
 
+  ///  creates immutable class with fields
   static String createDefaultDartModelFromFeilds(
       {required List<Field> fields,
       required String className,

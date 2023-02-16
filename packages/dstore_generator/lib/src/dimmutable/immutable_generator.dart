@@ -7,6 +7,7 @@ import 'package:dstore_generator/src/dimmutable/function_generator_helper.dart';
 import 'package:dstore_generator/src/utils/utils.dart';
 import 'package:source_gen/source_gen.dart';
 
+/// generator
 class DImmutableGenerator extends GeneratorForAnnotation<DImmutable> {
   @override
   Future<String> generateForAnnotatedElement(

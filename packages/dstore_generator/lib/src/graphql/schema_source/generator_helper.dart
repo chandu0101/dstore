@@ -390,7 +390,7 @@ Tuple2<String, String> convertDartInterfaceTypeToInterface(
   return Tuple2(s, jsTypes);
 }
 
-String _getArgs(ClassElement element) {
+String _getArgs(InterfaceElement element) {
   final className = element.name;
   return element.methods
       .where((m) => m.annotationFromType(lambda) != null)
@@ -403,7 +403,7 @@ String _getArgs(ClassElement element) {
 }
 
 String getFieldsFromClassElement(
-    {required ClassElement element, required GraphqlDatabase database}) {
+    {required InterfaceElement element, required GraphqlDatabase database}) {
   final fields = element.fields.map((e) {
     final type = getGraphqlType(e.type);
     final name = e.name;
@@ -452,7 +452,7 @@ String getAnnotationsForField(
 }
 
 String getAnnotationForObject(
-    {required ClassElement element, required GraphqlDatabase database}) {
+    {required InterfaceElement element, required GraphqlDatabase database}) {
   if (database == GraphqlDatabase.dgraph) {
     return getDGraphObjectAnnotations(element: element);
   }
@@ -460,7 +460,7 @@ String getAnnotationForObject(
 }
 
 String getAnnotationForInterface(
-    {required ClassElement element, required GraphqlDatabase database}) {
+    {required InterfaceElement element, required GraphqlDatabase database}) {
   if (database == GraphqlDatabase.dgraph) {
     return getDGraphInterfaceAnnotations(element: element);
   }
@@ -468,7 +468,7 @@ String getAnnotationForInterface(
 }
 
 String getAnnotationForUnion(
-    {required ClassElement element, required GraphqlDatabase database}) {
+    {required InterfaceElement element, required GraphqlDatabase database}) {
   if (database == GraphqlDatabase.dgraph) {
     return getDGraphUnionAnnotations(element: element);
   }
@@ -476,7 +476,7 @@ String getAnnotationForUnion(
 }
 
 String getAnnotationForInput(
-    {required ClassElement element, required GraphqlDatabase database}) {
+    {required InterfaceElement element, required GraphqlDatabase database}) {
   if (database == GraphqlDatabase.dgraph) {
     return getDGraphInputAnnotations(element: element);
   }
@@ -484,7 +484,7 @@ String getAnnotationForInput(
 }
 
 String getAnnotationForEnum(
-    {required ClassElement element, required GraphqlDatabase database}) {
+    {required InterfaceElement element, required GraphqlDatabase database}) {
   if (database == GraphqlDatabase.dgraph) {
     return getDGraphEnumAnnotations(element: element);
   }

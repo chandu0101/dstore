@@ -26,7 +26,7 @@ class FormModelVisitor extends SimpleAstVisitor<dynamic> {
     }
     final type = typeA.toSource();
     fd.fields.variables.forEach((v) {
-      final name = v.name.name;
+      final name = v.name.lexeme;
       final initalValueE = v.initializer;
 
       if (!v.isLate && !type.endsWith("?") && initalValueE == null) {

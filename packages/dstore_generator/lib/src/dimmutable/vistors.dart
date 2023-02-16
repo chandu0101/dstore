@@ -14,7 +14,8 @@ class DImmutableClassVisitor extends SimpleAstVisitor<dynamic> {
     final type = node.fields.type?.toSource() ?? "dynamic";
 
     node.fields.variables.forEach((v) {
-      final name = v.name.name;
+      final name = v.name.lexeme;
+      // final n = v.name.stringValue;
       final value = v.initializer?.toSource();
       fields.add(Field(
           name: name,
@@ -50,7 +51,8 @@ class DImmutableFunctionVisitor extends SimpleAstVisitor<dynamic> {
     print("visitFunctionExpression $node");
     node.parameters?.parameters.forEach((p) {
       print("Param ${p} ${p.runtimeType}");
-      final name = p.identifier!.name;
+
+      final name = p.name!.lexeme; // TODO identifier
       var type = "dynamic";
       String? value;
 

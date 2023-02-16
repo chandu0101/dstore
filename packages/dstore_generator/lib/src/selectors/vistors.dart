@@ -30,7 +30,8 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
     }
     final rType = node.returnType.toString();
     final sType = field.type;
-    final bvs = SelectorBodyVisitor(field.param!.identifier!, buildStep);
+    final bvs =
+        SelectorBodyVisitor(field.name, buildStep); // TODO check field name
     node.body.visitChildren(bvs);
 
     print("%%%%% deps : ${bvs.depsList}");
@@ -250,7 +251,7 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
 }
 
 class SelectorBodyVisitor extends RecursiveAstVisitor<dynamic> {
-  final Identifier identifier;
+  final String identifier;
   final BuildStep buildStep;
 
   final List<List<MapEntry<String, DartType>>> depsList = [];

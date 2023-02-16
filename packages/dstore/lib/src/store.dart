@@ -368,7 +368,8 @@ class Store<S extends AppStateI<S>> {
       _setStoreDepsForPState(newState, this);
       _state = _state.copyWithMap(newGlobalStateMap);
       if (newGlobalStateMap.containsKey("redditPS")) {
-        final v = newGlobalStateMap["redditPS"];
+        final dynamic v =
+            newGlobalStateMap["redditPS"]; //TODO check dynamic type
         print("redditPs2 $v ${v.runtimeType}");
         if (v is PStateStoreDepsMixin) {
           print("store : ${v.dontTouchMeStore}");

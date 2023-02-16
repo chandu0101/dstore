@@ -26,7 +26,7 @@ class DSLFieldsVisitor extends SimpleAstVisitor<Object> {
   @override
   dynamic visitFieldDeclaration(FieldDeclaration node) {
     final field = node.fields.variables.first;
-    final name = field.name.name;
+    final name = field.name.lexeme;
     if (field.initializer == null) {
       throw ArgumentError.value(
           "You should provide inititalizer for  field $name");
