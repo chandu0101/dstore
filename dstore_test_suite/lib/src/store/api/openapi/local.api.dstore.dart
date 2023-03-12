@@ -46,7 +46,7 @@ class helloJsonResponse {
   }
 
   @override
-  int get hashCode => name.hashCode ^ count.hashCode;
+  int get hashCode => Object.hash(name, count);
 
   @override
   String toString() =>
@@ -320,7 +320,7 @@ class PaginationResponse {
   }
 
   @override
-  int get hashCode => list.hashCode ^ nextPage.hashCode;
+  int get hashCode => Object.hash(list, nextPage);
 
   @override
   String toString() =>
@@ -581,7 +581,7 @@ class FormUploadRequestBody {
   }
 
   @override
-  int get hashCode => file.hashCode ^ name.hashCode;
+  int get hashCode => Object.hash(file, name);
 
   @override
   String toString() =>

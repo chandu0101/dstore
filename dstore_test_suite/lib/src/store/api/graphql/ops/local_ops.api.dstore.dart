@@ -251,12 +251,7 @@ class LocalGraphqlOps_usersData_users {
   }
 
   @override
-  int get hashCode =>
-      name.hashCode ^
-      tags.hashCode ^
-      hello.hashCode ^
-      helloa.hashCode ^
-      address.hashCode;
+  int get hashCode => Object.hash(name, tags, hello, helloa, address);
 
   @override
   String toString() =>
@@ -449,7 +444,7 @@ class LocalGraphqlOps_usersData_users_hello_Hello1 {
   }
 
   @override
-  int get hashCode => name.hashCode ^ one.hashCode ^ d$___typeName.hashCode;
+  int get hashCode => Object.hash(name, one, d$___typeName);
 
   @override
   String toString() =>
@@ -555,7 +550,7 @@ class LocalGraphqlOps_usersData_users_hello_Hello2 {
   }
 
   @override
-  int get hashCode => name.hashCode ^ two.hashCode ^ d$___typeName.hashCode;
+  int get hashCode => Object.hash(name, two, d$___typeName);
 
   @override
   String toString() =>
@@ -723,7 +718,7 @@ class LocalGraphqlOps_usersData_users_helloa_Hello1 {
   }
 
   @override
-  int get hashCode => name.hashCode ^ one.hashCode ^ d$___typeName.hashCode;
+  int get hashCode => Object.hash(name, one, d$___typeName);
 
   @override
   String toString() =>
@@ -829,7 +824,7 @@ class LocalGraphqlOps_usersData_users_helloa_Hello2 {
   }
 
   @override
-  int get hashCode => name.hashCode ^ two.hashCode ^ d$___typeName.hashCode;
+  int get hashCode => Object.hash(name, two, d$___typeName);
 
   @override
   String toString() =>
@@ -933,7 +928,7 @@ class LocalGraphqlOps_usersData_users_address {
   }
 
   @override
-  int get hashCode => street.hashCode ^ zip.hashCode ^ country.hashCode;
+  int get hashCode => Object.hash(street, zip, country);
 
   @override
   String toString() =>
@@ -1042,7 +1037,7 @@ class LocalGraphqlOps_usersData_users_address_country {
   }
 
   @override
-  int get hashCode => code.hashCode ^ name.hashCode;
+  int get hashCode => Object.hash(code, name);
 
   @override
   String toString() =>

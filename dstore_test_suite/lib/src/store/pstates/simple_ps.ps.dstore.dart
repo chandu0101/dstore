@@ -87,15 +87,8 @@ class Simple extends PStateModel<Simple> {
   }
 
   @override
-  int get hashCode =>
-      count.hashCode ^
-      name.hashCode ^
-      personType.hashCode ^
-      coolGeek.hashCode ^
-      areYouSafeOnThisPlant.hashCode ^
-      riversToVisit.hashCode ^
-      listeningonLoop.hashCode ^
-      general.hashCode;
+  int get hashCode => Object.hash(count, name, personType, coolGeek,
+      areYouSafeOnThisPlant, riversToVisit, listeningonLoop, general);
 
   @override
   String toString() =>

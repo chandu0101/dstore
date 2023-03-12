@@ -46,7 +46,7 @@ helloJsonTransform<int> pingTransform(
 }
 
 Pagination paginationTransformer(Pagination input, PaginationResponse? pr) {
-  print("paginationTransformer called $input $pr");
+  print("paginationTransformer called2 $input $pr");
   if (pr == null) {
     return input;
   }

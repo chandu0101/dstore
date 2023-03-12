@@ -1,5 +1,5 @@
 import 'package:dstore/dstore.dart';
-part 'simple_stream_ps.ps.dstore.dart';
+// part 'simple_stream_ps.ps.dstore.dart';
 
 @PState()
 class $_SimpleStreamPS {

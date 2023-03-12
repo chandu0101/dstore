@@ -22,8 +22,8 @@ class SimpleNavPS extends NavStateI<SimpleNavPS>
   }
 
   @override
-  AuthMeta authMeta(NavCommonI navState) {
-    throw UnimplementedError();
+  AuthMeta? authMeta(NavCommonI navState) {
+    return null;
   }
 
   @override
@@ -87,11 +87,7 @@ class SimpleNavPS extends NavStateI<SimpleNavPS>
   }
 
   @override
-  int get hashCode =>
-      page.hashCode ^
-      beforeLeave.hashCode ^
-      meta.hashCode ^
-      navOptions.hashCode;
+  int get hashCode => Object.hash(page, beforeLeave, meta, navOptions);
 
   @override
   String toString() =>

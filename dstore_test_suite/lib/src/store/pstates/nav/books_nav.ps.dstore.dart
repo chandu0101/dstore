@@ -93,14 +93,8 @@ class BooksNav extends NestedNavStateI<BooksNav>
   }
 
   @override
-  int get hashCode =>
-      page.hashCode ^
-      beforeLeave.hashCode ^
-      meta.hashCode ^
-      navOptions.hashCode ^
-      listP.hashCode ^
-      selectedBook.hashCode ^
-      author.hashCode;
+  int get hashCode => Object.hash(
+      page, beforeLeave, meta, navOptions, listP, selectedBook, author);
 
   @override
   String toString() =>

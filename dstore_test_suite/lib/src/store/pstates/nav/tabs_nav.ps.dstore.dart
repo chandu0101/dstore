@@ -73,11 +73,7 @@ class TabsNestedStack extends NestedNavStateI<TabsNestedStack>
   }
 
   @override
-  int get hashCode =>
-      page.hashCode ^
-      beforeLeave.hashCode ^
-      meta.hashCode ^
-      navOptions.hashCode;
+  int get hashCode => Object.hash(page, beforeLeave, meta, navOptions);
 
   @override
   String toString() =>
@@ -360,12 +356,7 @@ class TabsNestedStack_Nested extends NestedNavStateI<TabsNestedStack_Nested>
   }
 
   @override
-  int get hashCode =>
-      page.hashCode ^
-      beforeLeave.hashCode ^
-      meta.hashCode ^
-      navOptions.hashCode ^
-      tItem.hashCode;
+  int get hashCode => Object.hash(page, beforeLeave, meta, navOptions, tItem);
 
   @override
   String toString() =>

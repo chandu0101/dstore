@@ -7,8 +7,11 @@ part of 'local.dart';
 // **************************************************************************
 
 enum Screen { lg, sm }
+
 enum Enum1 { HIGH, LOW }
+
 enum CacheControlScope { PUBLIC, PRIVATE }
+
 enum __TypeKind {
   SCALAR,
   OBJECT,
@@ -19,6 +22,7 @@ enum __TypeKind {
   LIST,
   NON_NULL
 }
+
 enum __DirectiveLocation {
   QUERY,
   MUTATION,
@@ -90,13 +94,7 @@ class Input1 {
 
   @override
   int get hashCode =>
-      name.hashCode ^
-      inputs.hashCode ^
-      count.hashCode ^
-      percent.hashCode ^
-      counts.hashCode ^
-      enums.hashCode ^
-      enum_$d.hashCode;
+      Object.hash(name, inputs, count, percent, counts, enums, enum_$d);
 
   @override
   String toString() =>

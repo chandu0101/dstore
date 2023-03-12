@@ -44,7 +44,7 @@ class SimpleHistory extends PStateModel<SimpleHistory>
   }
 
   @override
-  int get hashCode => canUndo.hashCode ^ canRedo.hashCode ^ count.hashCode;
+  int get hashCode => Object.hash(canUndo, canRedo, count);
 
   @override
   String toString() =>

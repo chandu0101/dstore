@@ -7,13 +7,16 @@ class AppStateAnnotation {
 }
 
 /**
- *  creates immutable class from plain class
+ *  creates immutable class from plain class or function
  *  Example: 
  * @DImmutable()
  *  class $_Sample {
  *   int x;
  *   int y;
  * }
+ *  
+ * @Dimmutable()
+ * function $_SampleF({required int x,int? y}){}
  * 
  */
 class DImmutable {

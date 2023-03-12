@@ -15,11 +15,10 @@ class AppState implements AppStateI<AppState> {
   late final SimplePersist2 simplePersist2;
   late final SimplePersist3 simplePersist3;
   late final SimplePersitanceMigrator simplePersitanceMigrator;
-  late final SimpleHttp simpleHttp;
-  late final SimpleWebsocket simpleWebsocket;
-  late final SimpleStreamPS streamPS;
+  late final dynamic simpleHttp;
+  late final dynamic simpleWebsocket;
   late final SimpleFlutterSelectors simpleFlutterSelector;
-  late final SimpleSelectorPS simpleSelectorPS;
+  late final dynamic simpleSelectorPS;
   late final SimpleFormPS simpleFormPS;
   late final SimpleNavPS simpleNavPS;
   late final BooksNav booksNav;
@@ -48,19 +47,16 @@ class AppState implements AppStateI<AppState> {
         ? map['simplePersitanceMigrator'] as SimplePersitanceMigrator
         : this.simplePersitanceMigrator
     ..simpleHttp = map.containsKey('simpleHttp')
-        ? map['simpleHttp'] as SimpleHttp
+        ? map['simpleHttp'] as dynamic
         : this.simpleHttp
     ..simpleWebsocket = map.containsKey('simpleWebsocket')
-        ? map['simpleWebsocket'] as SimpleWebsocket
+        ? map['simpleWebsocket'] as dynamic
         : this.simpleWebsocket
-    ..streamPS = map.containsKey('streamPS')
-        ? map['streamPS'] as SimpleStreamPS
-        : this.streamPS
     ..simpleFlutterSelector = map.containsKey('simpleFlutterSelector')
         ? map['simpleFlutterSelector'] as SimpleFlutterSelectors
         : this.simpleFlutterSelector
     ..simpleSelectorPS = map.containsKey('simpleSelectorPS')
-        ? map['simpleSelectorPS'] as SimpleSelectorPS
+        ? map['simpleSelectorPS'] as dynamic
         : this.simpleSelectorPS
     ..simpleFormPS = map.containsKey('simpleFormPS')
         ? map['simpleFormPS'] as SimpleFormPS
@@ -91,7 +87,6 @@ class AppState implements AppStateI<AppState> {
         "simplePersitanceMigrator": this.simplePersitanceMigrator,
         "simpleHttp": this.simpleHttp,
         "simpleWebsocket": this.simpleWebsocket,
-        "streamPS": this.streamPS,
         "simpleFlutterSelector": this.simpleFlutterSelector,
         "simpleSelectorPS": this.simpleSelectorPS,
         "simpleFormPS": this.simpleFormPS,
@@ -118,11 +113,10 @@ Store<AppState> createStore(
         "simplePersist2": SimplePersist2Meta,
         "simplePersist3": SimplePersist3Meta,
         "simplePersitanceMigrator": SimplePersitanceMigratorMeta,
-        "simpleHttp": SimpleHttpMeta,
-        "simpleWebsocket": SimpleWebsocketMeta,
-        "streamPS": SimpleStreamPSMeta,
+        "simpleHttp": dynamicMeta,
+        "simpleWebsocket": dynamicMeta,
         "simpleFlutterSelector": SimpleFlutterSelectorsMeta,
-        "simpleSelectorPS": SimpleSelectorPSMeta,
+        "simpleSelectorPS": dynamicMeta,
         "simpleFormPS": SimpleFormPSMeta,
         "simpleNavPS": SimpleNavPSMeta,
         "booksNav": BooksNavMeta,

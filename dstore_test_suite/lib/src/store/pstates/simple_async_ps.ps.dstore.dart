@@ -54,8 +54,7 @@ class SimpleAsync extends PStateModel<SimpleAsync> {
   }
 
   @override
-  int get hashCode =>
-      x.hashCode ^ delayedSet.hashCode ^ shouldCatchErrors.hashCode;
+  int get hashCode => Object.hash(x, delayedSet, shouldCatchErrors);
 
   @override
   String toString() =>

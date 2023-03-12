@@ -86,12 +86,7 @@ class SettingsNav extends NestedNavStateI<SettingsNav>
 
   @override
   int get hashCode =>
-      page.hashCode ^
-      beforeLeave.hashCode ^
-      meta.hashCode ^
-      navOptions.hashCode ^
-      selectedSetting.hashCode ^
-      listp.hashCode;
+      Object.hash(page, beforeLeave, meta, navOptions, selectedSetting, listp);
 
   @override
   String toString() =>

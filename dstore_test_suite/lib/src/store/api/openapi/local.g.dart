@@ -6,12 +6,11 @@ part of 'local.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-helloJsonResponse _$helloJsonResponseFromJson(Map<String, dynamic> json) {
-  return helloJsonResponse(
-    name: json['name'] as String,
-    count: json['count'] as int,
-  );
-}
+helloJsonResponse _$helloJsonResponseFromJson(Map<String, dynamic> json) =>
+    helloJsonResponse(
+      name: json['name'] as String,
+      count: json['count'] as int,
+    );
 
 Map<String, dynamic> _$helloJsonResponseToJson(helloJsonResponse instance) =>
     <String, dynamic>{
@@ -19,11 +18,11 @@ Map<String, dynamic> _$helloJsonResponseToJson(helloJsonResponse instance) =>
       'count': instance.count,
     };
 
-PaginationPathParams _$PaginationPathParamsFromJson(Map<String, dynamic> json) {
-  return PaginationPathParams(
-    page: json['page'] as int,
-  );
-}
+PaginationPathParams _$PaginationPathParamsFromJson(
+        Map<String, dynamic> json) =>
+    PaginationPathParams(
+      page: json['page'] as int,
+    );
 
 Map<String, dynamic> _$PaginationPathParamsToJson(
         PaginationPathParams instance) =>
@@ -32,11 +31,10 @@ Map<String, dynamic> _$PaginationPathParamsToJson(
     };
 
 PaginationQueryParams _$PaginationQueryParamsFromJson(
-    Map<String, dynamic> json) {
-  return PaginationQueryParams(
-    qp: json['qp'] as String,
-  );
-}
+        Map<String, dynamic> json) =>
+    PaginationQueryParams(
+      qp: json['qp'] as String,
+    );
 
 Map<String, dynamic> _$PaginationQueryParamsToJson(
         PaginationQueryParams instance) =>
@@ -44,12 +42,11 @@ Map<String, dynamic> _$PaginationQueryParamsToJson(
       'qp': instance.qp,
     };
 
-PaginationResponse _$PaginationResponseFromJson(Map<String, dynamic> json) {
-  return PaginationResponse(
-    list: (json['list'] as List<dynamic>).map((e) => e as String).toList(),
-    nextPage: json['nextPage'] as int?,
-  );
-}
+PaginationResponse _$PaginationResponseFromJson(Map<String, dynamic> json) =>
+    PaginationResponse(
+      list: (json['list'] as List<dynamic>).map((e) => e as String).toList(),
+      nextPage: json['nextPage'] as int?,
+    );
 
 Map<String, dynamic> _$PaginationResponseToJson(PaginationResponse instance) =>
     <String, dynamic>{
@@ -57,11 +54,10 @@ Map<String, dynamic> _$PaginationResponseToJson(PaginationResponse instance) =>
       'nextPage': instance.nextPage,
     };
 
-JsonPostRequestBody _$JsonPostRequestBodyFromJson(Map<String, dynamic> json) {
-  return JsonPostRequestBody(
-    name: json['name'] as String?,
-  );
-}
+JsonPostRequestBody _$JsonPostRequestBodyFromJson(Map<String, dynamic> json) =>
+    JsonPostRequestBody(
+      name: json['name'] as String?,
+    );
 
 Map<String, dynamic> _$JsonPostRequestBodyToJson(
         JsonPostRequestBody instance) =>
@@ -69,11 +65,10 @@ Map<String, dynamic> _$JsonPostRequestBodyToJson(
       'name': instance.name,
     };
 
-JsonPostResponse _$JsonPostResponseFromJson(Map<String, dynamic> json) {
-  return JsonPostResponse(
-    name: json['name'] as String?,
-  );
-}
+JsonPostResponse _$JsonPostResponseFromJson(Map<String, dynamic> json) =>
+    JsonPostResponse(
+      name: json['name'] as String?,
+    );
 
 Map<String, dynamic> _$JsonPostResponseToJson(JsonPostResponse instance) =>
     <String, dynamic>{
@@ -81,12 +76,11 @@ Map<String, dynamic> _$JsonPostResponseToJson(JsonPostResponse instance) =>
     };
 
 FormUploadRequestBody _$FormUploadRequestBodyFromJson(
-    Map<String, dynamic> json) {
-  return FormUploadRequestBody(
-    file: (json['file'] as List<dynamic>?)?.map((e) => e as int).toList(),
-    name: json['name'] as String?,
-  );
-}
+        Map<String, dynamic> json) =>
+    FormUploadRequestBody(
+      file: (json['file'] as List<dynamic>?)?.map((e) => e as int).toList(),
+      name: json['name'] as String?,
+    );
 
 Map<String, dynamic> _$FormUploadRequestBodyToJson(
         FormUploadRequestBody instance) =>
@@ -95,11 +89,10 @@ Map<String, dynamic> _$FormUploadRequestBodyToJson(
       'name': instance.name,
     };
 
-FormUploadResponse _$FormUploadResponseFromJson(Map<String, dynamic> json) {
-  return FormUploadResponse(
-    name: json['name'] as String?,
-  );
-}
+FormUploadResponse _$FormUploadResponseFromJson(Map<String, dynamic> json) =>
+    FormUploadResponse(
+      name: json['name'] as String?,
+    );
 
 Map<String, dynamic> _$FormUploadResponseToJson(FormUploadResponse instance) =>
     <String, dynamic>{
@@ -107,11 +100,10 @@ Map<String, dynamic> _$FormUploadResponseToJson(FormUploadResponse instance) =>
     };
 
 UploadProgressResponse _$UploadProgressResponseFromJson(
-    Map<String, dynamic> json) {
-  return UploadProgressResponse(
-    name: json['name'] as String?,
-  );
-}
+        Map<String, dynamic> json) =>
+    UploadProgressResponse(
+      name: json['name'] as String?,
+    );
 
 Map<String, dynamic> _$UploadProgressResponseToJson(
         UploadProgressResponse instance) =>

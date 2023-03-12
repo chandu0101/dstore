@@ -71,7 +71,7 @@ class User {
   }
 
   @override
-  int get hashCode => name.hashCode ^ count.hashCode ^ address.hashCode;
+  int get hashCode => Object.hash(name, count, address);
 
   @override
   String toString() =>

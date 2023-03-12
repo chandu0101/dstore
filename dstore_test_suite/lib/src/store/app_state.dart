@@ -19,7 +19,6 @@ import 'package:dstore_test_suite/src/store/pstates/simple_persitance_migratorps
 import 'package:dstore_test_suite/src/store/pstates/simple_ps.dart';
 import 'package:dstore_test_suite/src/store/pstates/stream/simple_stream_ps.dart';
 import 'package:dstore_test_suite/src/store/pstates/websocket/websocket_ps.dart';
-
 part "app_state.dstore.dart";
 
 @AppStateAnnotation()
@@ -33,7 +32,7 @@ void $_AppState(
     SimplePersitanceMigrator simplePersitanceMigrator,
     SimpleHttp simpleHttp,
     SimpleWebsocket simpleWebsocket,
-    SimpleStreamPS streamPS,
+    // SimpleStreamPS streamPS,
     SimpleFlutterSelectors simpleFlutterSelector,
     SimpleSelectorPS simpleSelectorPS,
     SimpleFormPS simpleFormPS,

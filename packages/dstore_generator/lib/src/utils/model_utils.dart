@@ -135,6 +135,12 @@ abstract class ModelUtils {
   }
 
   static String createHashcodeFromFieldsList(List<Field> fields) {
+    if (fields.length == 1) {
+      return """
+   @override 
+    int get hashCode => ${fields.first.name}.hashCode;
+""";
+    }
     return """
     @override 
     int get hashCode => Object.hash(${fields.map((f) => "${f.name}").join(",")});

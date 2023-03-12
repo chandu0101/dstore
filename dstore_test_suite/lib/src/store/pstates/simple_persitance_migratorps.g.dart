@@ -7,11 +7,10 @@ part of 'simple_persitance_migratorps.dart';
 // **************************************************************************
 
 SimplePersitanceMigrator _$SimplePersitanceMigratorFromJson(
-    Map<String, dynamic> json) {
-  return SimplePersitanceMigrator(
-    name: json['name'] as String,
-  );
-}
+        Map<String, dynamic> json) =>
+    SimplePersitanceMigrator(
+      name: json['name'] as String? ?? "default",
+    );
 
 Map<String, dynamic> _$SimplePersitanceMigratorToJson(
         SimplePersitanceMigrator instance) =>

@@ -70,12 +70,7 @@ class SimpleForm implements FormFieldObject<SimpleForm> {
 
   @override
   int get hashCode =>
-      name.hashCode ^
-      radio1.hashCode ^
-      check1.hashCode ^
-      slider1.hashCode ^
-      rangeSlider1.hashCode ^
-      date1.hashCode;
+      Object.hash(name, radio1, check1, slider1, rangeSlider1, date1);
 
   @override
   String toString() =>
