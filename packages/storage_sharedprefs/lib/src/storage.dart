@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import "package:dstore/dstore.dart";
-import 'package:shared_preferences_web/shared_preferences_web.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum StorageSharedPrefsValueType { json, bytearray }
 
 class StorageSharedPrefs implements PersitantStorage {
   final StorageSharedPrefsValueType valueType;
-  late final StorageSharedPrefs _prefs;
+  late final SharedPreferences _prefs;
   static const _prefix = "_DSTORE_STORAGE_";
 
   static const _version_key = "_DSTORE_APP_VERSION_";

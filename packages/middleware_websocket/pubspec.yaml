@@ -4,7 +4,7 @@ description: >-
   dstore.
 homepage: https://github.com/chandu0101/dstore
 environment:
-  sdk: ">=2.13.0-0 <3.0.0"
+  sdk: ">=2.19.0-0 <3.0.0"
 dependencies:
   dstore:
     path: ../dstore
