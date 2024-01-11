@@ -11,6 +11,6 @@ Features :
 *  Grpahql schema generation for dgraph
 *  Easy to use flutter widgets, and supports forms(text,radio,checkbox,date picker,slider, range slider )
 *  Undo Redo of state.
-*  Cross plarform navigation (with blocking url, login protection, nested stacks ,etc).
+*  Cross plarform navigation (with blocking url, login protection, nested stacks ,etc)
 
 implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/bloc_concurrency
