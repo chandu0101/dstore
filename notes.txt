@@ -55,3 +55,10 @@ https://dgraph.io/docs/graphql/queries/persistent-queries/#:~:text=Dgraph%20supp
 https://www.apollographql.com/docs/apollo-server/performance/apq/
 
 curl -g 'https://proud-dew.ap-south-1.aws.cloud.dgraph.io/graphql/?extensions={"persistedQuery":{"sha256Hash":"b952c19b894e1aa89dc05b7d53e15ab34ee0b3a3f11cdf3486acef4f0fe85c52"}}'
+
+
+
+
+# Misc Tips 
+
+https://twitter.com/biz84/status/1787840083954950434

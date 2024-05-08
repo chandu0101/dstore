@@ -14,3 +14,19 @@ Features :
 *  Cross plarform navigation (with blocking url, login protection, nested stacks ,etc)
 
 implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/bloc_concurrency
+
+
+pagination: 
+
+https://dinkomarinac.dev/riverpod-pagination-the-ultimate-guide-for-flutter-developers
+
+
+# Databases
+
+SupaBase
+
+NeonDB
+
+Postgres
+
+MongoDB

@@ -18,8 +18,6 @@ dependencies:
   yaml:    
   ansicolor: 2.0.0-nullsafety.0
   tuple: ^2.0.0
-  open_api_schema:
-    path: /Users/chandrasekharkode/Desktop/kode/programming/dart_projects/open_api_schema
   path_to_regexp: 
   dstore_annotation:
     path: /Users/chandrasekharkode/Desktop/kode/programming/dart_projects/dstore/packages/dstore_annotation

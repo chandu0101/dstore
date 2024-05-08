@@ -1,4 +1,3 @@
-// @dart=2.9
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:dstore_annotation/dstore_annotation.dart';
@@ -46,7 +45,10 @@ Builder dstoreApiGen(BuilderOptions options) {
   print(" dstoreApiGen ************************* options ${options.config}");
   // EnvGenerator.generate();
   return PartBuilder(
-    [GraphqlSchemaGenerator(), GraphqlOpsGenerator(), OpenApiGenerator()],
+    [
+      GraphqlSchemaGenerator(),
+      GraphqlOpsGenerator(),
+    ], //OpenApiGenerator()
     '.api.dstore.dart',
   );
 }
