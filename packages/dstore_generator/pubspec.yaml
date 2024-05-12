@@ -4,20 +4,20 @@ description: >-
   dstore.
 homepage: https://github.com/chandu0101/dstore
 environment:
-  sdk: ">=2.19.0 <3.0.0"
+  sdk: ">=3.3.4 <4.0.0"
 dependencies:
-  analyzer: 5.5.0
-  build: ^2.3.1
-  meta: 1.7.0
-  source_gen: ^1.2.7
-  gql: ^0.13.0 
+  analyzer: 
+  build: 
+  meta: 
+  source_gen: 
+  gql: 
   crypto: 
-  dio: ^4.0.0
+  dio: 
   collection:
   timing:
   yaml:    
-  ansicolor: 2.0.0-nullsafety.0
-  tuple: ^2.0.0
+  ansicolor: 
+  tuple: 
   path_to_regexp: 
   dstore_annotation:
     path: /Users/chandrasekharkode/Desktop/kode/programming/dart_projects/dstore/packages/dstore_annotation
@@ -27,10 +27,10 @@ dependencies:
       
 
 dev_dependencies:
-  pedantic: 1.10.0
-  build_runner: ^2.0.4
+  pedantic: 
+  build_runner: 
   grinder: 
-  json_serializable: ^6.6.1
+  json_serializable: 
   test: 
   
     
