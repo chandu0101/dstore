@@ -3,6 +3,14 @@ import 'package:dstore_annotation/dstore_annotation.dart';
 typedef PStatePersitMigratorFn = Map<String, dynamic> Function(
     String oldVersion, Map<String, dynamic> data, dynamic defaultState);
 
+/// Annotation to define part of state in whole app state
+///  Fields
+///  [persist] : whether class(annotated with PState) should be persisted or not ,defualt false
+///  [enableHistory] to enableHistory of state for undo redo
+///  [historyLimit] used in conjuction with [enableHistory] ,when enableHistory true historyLimit is used as max number of intermediate states
+///  [nav] when its true Pstate PState generates code for navigation of app
+///  [collectionEquality] used to determine equals(==) method of model class , permitted values enum CollectionEquality { equals, deep_equals, deep_equals_unordered }
+///
 class PState {
   final bool? persist;
   final bool enableHistory;
@@ -38,8 +46,12 @@ class PSNonConstClassField {
   const PSNonConstClassField();
 }
 
+/// when a class annotated with [PState] and [persist] is true, then if you want few fields dont want to
+/// persist mark them with @excludeThisKeyWhilePersist
 class ExcludeThisKeyWhilePersit {
   const ExcludeThisKeyWhilePersit();
 }
 
+/// when a class annotated with [PState] and [persist] is true, then if you want few fields dont want to
+/// persist mark them with @excludeThisKeyWhilePersist
 const excludeThisKeyWhilePersist = ExcludeThisKeyWhilePersit();

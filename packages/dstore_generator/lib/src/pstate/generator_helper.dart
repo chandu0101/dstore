@@ -13,6 +13,7 @@ import 'package:dstore_generator/src/utils/utils.dart';
 import 'package:source_gen/source_gen.dart';
 import "dart:convert";
 
+/// generates pstate class for classes annotated with @PState
 Future<String> generatePStateForClassElement(
     ClassElement element, BuildStep buildStep) async {
   final pstate = element.getPState();
@@ -598,7 +599,7 @@ String createReducerFunctionSync(
        ${m.body}
      }
   """).join("\n");
-  return """ 
+  return """
    dynamic ${modelName}_SyncReducer(dynamic ${STATE_VARIABLE},Action ${ACTION_VARIABLE}) {
       ${STATE_VARIABLE} = ${STATE_VARIABLE} as ${modelName};
       final name = ${ACTION_VARIABLE}.name;
@@ -624,7 +625,7 @@ String createReducerFunctionAsync(
        ${m.body}
      }
   """).join("\n");
-  return """ 
+  return """
    Future<dynamic> ${modelName}_AsyncReducer(dynamic ${STATE_VARIABLE},Action ${ACTION_VARIABLE}) async {
       ${STATE_VARIABLE} = ${STATE_VARIABLE} as ${modelName};
       final name = ${ACTION_VARIABLE}.name;
