@@ -25,6 +25,9 @@ https://dinkomarinac.dev/riverpod-pagination-the-ultimate-guide-for-flutter-deve
 - [ ] Devtools
 - [ ] GRPC module
 
+# Feature Parity with riverpod
+- [ ]https://github.com/rrousselGit/riverpod
+
 # Databases
 
 Firebase rules typesafe
