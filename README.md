@@ -41,6 +41,8 @@ Postgres
 
 MongoDB
 
+https://surrealdb.com/
+
 # persistent dbs
 https://github.com/simolus3/drift/
 
