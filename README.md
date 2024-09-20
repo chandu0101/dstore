@@ -43,3 +43,7 @@ MongoDB
 
 # persistent dbs
 https://github.com/simolus3/drift/
+Sqlite
+shared_pref
+hive
+https://github.com/isar/isar
