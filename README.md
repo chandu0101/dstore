@@ -27,6 +27,8 @@ https://dinkomarinac.dev/riverpod-pagination-the-ultimate-guide-for-flutter-deve
 
 # Databases
 
+Firebase rules typesafe
+
 SupaBase
 
 NeonDB
