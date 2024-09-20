@@ -55,3 +55,7 @@ https://github.com/isar/isar
 https://github.com/tursodatabase/libsql/blob/main/docs/HRANA_3_SPEC.md
 
 https://github.com/celest-dev/hrana.dart
+
+#  Perf
+
+https://github.com/mraleph/dart_simdjson
