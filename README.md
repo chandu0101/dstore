@@ -23,7 +23,8 @@ https://dinkomarinac.dev/riverpod-pagination-the-ultimate-guide-for-flutter-deve
 # Get Feature Parity with Tstore
 - [ ] Thread Pools and workers
 - [ ] Devtools
-- [ ] GRPC module
+- [ ] GRPC module(check bacup branch)
+- [ ] Flatbuffers
 
 # Feature Parity with riverpod
 - [ ]https://github.com/rrousselGit/riverpod
