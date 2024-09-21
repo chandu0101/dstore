@@ -14,7 +14,8 @@ Features :
 *  Cross plarform navigation (with blocking url, login protection, nested stacks ,etc)
 
 
-- [ ] [Jaspr](https://github.com/schultek/jaspr) glue  
+- [ ] [Jaspr](https://github.com/schultek/jaspr) glue
+- [ ] check hot reload , mostly shortcircuit of Selector 
 
 implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/bloc_concurrency
 
