@@ -13,6 +13,9 @@ Features :
 *  Undo Redo of state.
 *  Cross plarform navigation (with blocking url, login protection, nested stacks ,etc)
 
+
+- [ ] [Jaspr](https://github.com/schultek/jaspr) glue  
+
 implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/bloc_concurrency
 
 
