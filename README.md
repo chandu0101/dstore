@@ -15,7 +15,8 @@ Features :
 
 
 - [ ] [Jaspr](https://github.com/schultek/jaspr) glue
-- [ ] check hot reload , mostly shortcircuit of Selector 
+- [ ] check hot reload , mostly shortcircuit of Selector
+- [ ] [fluttercon USA offline first recording](https://flutterconusa.dev/agenda/)
 
 implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/bloc_concurrency
 
