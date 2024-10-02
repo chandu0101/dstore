@@ -12,6 +12,7 @@ Features :
 *  Easy to use flutter widgets, and supports forms(text,radio,checkbox,date picker,slider, range slider )
 *  Undo Redo of state.
 *  Cross plarform navigation (with blocking url, login protection, nested stacks ,etc)
+*  https://docs.flutter.dev/tools/devtools/extensions
 
 
 - [ ] [Jaspr](https://github.com/schultek/jaspr) glue
