@@ -13,6 +13,7 @@ Features :
 *  Undo Redo of state.
 *  Cross plarform navigation (with blocking url, login protection, nested stacks ,etc)
 *  https://docs.flutter.dev/tools/devtools/extensions
+*   Multi Threading (thread pools, web workers) check typesafe-store implementation
 
 
 - [ ] [Jaspr](https://github.com/schultek/jaspr) glue
