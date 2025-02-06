@@ -17,6 +17,7 @@ Features :
 
 
 - [ ] [Jaspr](https://github.com/schultek/jaspr) glue
+- [ ] https://onlyflutter.com/how-to-store-data-in-secure-storage-in-flutter/#h-flutter-secure-storage-plugin
 - [ ] check hot reload , mostly shortcircuit of Selector
 - [ ] [fluttercon USA offline first recording](https://flutterconusa.dev/agenda/)
 
