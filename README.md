@@ -14,6 +14,7 @@ Features :
 *  Cross plarform navigation (with blocking url, login protection, nested stacks ,etc)
 *  https://docs.flutter.dev/tools/devtools/extensions
 - [ ]   Multi Threading (thread pools, web workers) check typesafe-store implementation
+- [ ]   implement hash code for more than 20 variables
 
 
 - [ ] [Jaspr](https://github.com/schultek/jaspr) glue
