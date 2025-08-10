@@ -17,6 +17,7 @@ Features :
 - [ ]   implement hash code for more than 20 variables
 - [ ]   analaysis_option.yaml should exclude .dstrore.dart files
 - [ ]   pagination debounce throttling
+- [ ]   offline actions check tstore
 
 
 - [ ] [Jaspr](https://github.com/schultek/jaspr) glue
