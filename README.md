@@ -18,6 +18,7 @@ Features :
 - [ ]   analaysis_option.yaml should exclude .dstrore.dart files
 - [ ]   pagination debounce throttling
 - [ ]   offline actions check tstore
+- [ ]   https://github.com/mukhbit0/flutter_route_shifter , route transitions
 
 
 - [ ] [Jaspr](https://github.com/schultek/jaspr) glue
