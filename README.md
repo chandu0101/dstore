@@ -25,6 +25,7 @@ Features :
 - [ ] https://onlyflutter.com/how-to-store-data-in-secure-storage-in-flutter/#h-flutter-secure-storage-plugin
 - [ ] check hot reload , mostly shortcircuit of Selector
 - [ ] [fluttercon USA offline first recording](https://flutterconusa.dev/agenda/)
+- [ ] https://pub.dev/packages/routemaster check if any features to implement
 
 implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/bloc_concurrency
 
