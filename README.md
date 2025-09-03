@@ -19,6 +19,7 @@ Features :
 - [ ]   pagination debounce throttling
 - [ ]   offline actions check tstore
 - [ ]   https://github.com/mukhbit0/flutter_route_shifter , route transitions
+- [ ]   form field validations email etc and decimal form field keyboards etc
 
 
 - [ ] [Jaspr](https://github.com/schultek/jaspr) glue
