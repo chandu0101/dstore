@@ -20,6 +20,7 @@ Features :
 - [ ]   offline actions check tstore
 - [ ]   https://github.com/mukhbit0/flutter_route_shifter , route transitions
 - [ ]   form field validations email etc and decimal form field keyboards etc
+- [ ]   dstore exaples should be displayed in web demo
 
 
 - [ ] [Jaspr](https://github.com/schultek/jaspr) glue
