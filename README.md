@@ -13,7 +13,7 @@ Features :
 *  Undo Redo of state.
 *  Cross plarform navigation (with blocking url, login protection, nested stacks ,etc)
 *  https://docs.flutter.dev/tools/devtools/extensions
-- [ ]   Multi Threading (thread pools, web workers) check typesafe-store implementation
+- [ ]   Multi Threading (thread pools, web workers) isolate.run check typesafe-store implementation
 - [ ]   implement hash code for more than 20 variables
 - [ ]   analaysis_option.yaml should exclude .dstrore.dart files
 - [ ]   pagination debounce throttling
