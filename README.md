@@ -45,6 +45,7 @@ https://dinkomarinac.dev/riverpod-pagination-the-ultimate-guide-for-flutter-deve
 
 # Feature Parity with riverpod
 - [ ]https://github.com/rrousselGit/riverpod
+- [ ] https://github.com/nank1ro/solid
 
 # Databases
 
