@@ -17,6 +17,7 @@ Features :
 - [ ]   implement hash code for more than 20 variables
 - [ ]   analaysis_option.yaml should exclude .dstrore.dart files
 - [ ]   pagination debounce throttling
+- [ ]   environment variables
 - [ ]   offline actions check tstore
 - [ ]   https://github.com/mukhbit0/flutter_route_shifter , route transitions
 - [ ]   form field validations email etc and decimal form field keyboards etc
