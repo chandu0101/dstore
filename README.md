@@ -95,3 +95,7 @@ https://github.com/celest-dev/hrana.dart
 #  Perf
 
 https://github.com/mraleph/dart_simdjson
+
+# analyzer plugin
+
+check new analyzer plugin for code gen(jaspr data classes)
