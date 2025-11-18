@@ -38,7 +38,7 @@ Features :
 - [ ]   form field validations email etc and decimal form field keyboards etc
 - [ ]   dstore exaples should be displayed in web demo
 - [ ]   logging middleware
-- [ ]   sessions cookies check react router
+- [ ]   sessions cookies prefetching next link check react router tanstock router
 
 
 - [ ] [Jaspr](https://github.com/schultek/jaspr) glue
