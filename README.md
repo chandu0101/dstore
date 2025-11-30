@@ -49,6 +49,7 @@ Features :
 - [ ] check hot reload , mostly shortcircuit of Selector
 - [ ] [fluttercon USA offline first recording](https://flutterconusa.dev/agenda/)
 - [ ] https://pub.dev/packages/routemaster check if any features to implement
+- [ ] rate limiter check expressjs rate
 
 implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/bloc_concurrency
 
