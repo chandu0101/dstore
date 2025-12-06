@@ -42,6 +42,7 @@ Features :
 - [ ]   dstore exaples should be displayed in web demo
 - [ ]   logging middleware
 - [ ]   sessions cookies prefetching next link check react router tanstock router
+- [ ]   devtools partity with tstore
 
 
 - [ ] [Jaspr](https://github.com/schultek/jaspr) glue
