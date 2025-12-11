@@ -51,6 +51,7 @@ Features :
 - [ ] [fluttercon USA offline first recording](https://flutterconusa.dev/agenda/)
 - [ ] https://pub.dev/packages/routemaster check if any features to implement
 - [ ] rate limiter check expressjs rate
+- [ ] offline caching https://777genius.medium.com/building-offline-first-flutter-apps-a-complete-sync-solution-with-drift-d287da021ab0
 
 implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/bloc_concurrency
 
