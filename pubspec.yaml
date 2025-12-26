@@ -4,11 +4,25 @@ description: >-
   dstore.
 homepage: https://github.com/chandu0101/dstore
 environment:
-  sdk: ">=3.0.0 <4.0.0"
-publish_to: none  
-dependencies:
+  sdk: ">=3.6.0 <4.0.0"
+publish_to: none
+resolution: workspace
+workpace:
+  - packages/dgraph
+  - packages/dstore
+  - packages/dstore_flutter
+  - packages/dstore_generator
+  - packages/dstore_testing
+  - packages/dstore_utils
+  - packages/dstore_flutter
+  - packages/dstore_test
+  - packages/firebase
+  - packages/middleware_dio
+  - packages/middleware_http
+  - packages/middleware_webscoket
+  - packages/network_status_default
+  - packages/storage_hive
+  - packages/storage_shared_preferences
 
 dev_dependencies:
-  pedantic:   
-  
-    
+  pedantic:

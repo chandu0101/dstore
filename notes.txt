@@ -67,3 +67,12 @@ https://twitter.com/biz84/status/1787840083954950434
 # Firestore 
 
 https://github.com/Taosif7/firegraph-dart
+
+
+# Bench Marks
+
+https://github.com/CarLeonDev/state_managements#memory-size
+
+https://2devs-team.github.io/reactter/
+
+# Make Pstate Selectors start with _
