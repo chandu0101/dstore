@@ -43,6 +43,7 @@ Features :
 - [ ]   logging middleware
 - [ ]   sessions cookies prefetching next link check react router tanstock router
 - [ ]   devtools partity with tstore
+- [ ]   https://pub.dev/packages/http_toolkit middleware
 
 
 - [ ] [Jaspr](https://github.com/schultek/jaspr) glue
