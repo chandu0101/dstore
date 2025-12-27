@@ -56,6 +56,10 @@ Features :
 
 implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/bloc_concurrency
 
+# docs site
+
+https://use.docs.page/
+or use jaspr
 
 pagination: 
 
