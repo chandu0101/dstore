@@ -4,15 +4,16 @@ description: >-
   dstore.
 homepage: https://github.com/chandu0101/dstore
 environment:
-  sdk: ">=3.6.0 <4.0.0"
+  sdk: ">=3.10.0 <4.0.0"
 publish_to: none
 workspace:
+  - packages/dstore
+  - packages/dstore_annotation
+  - packages/dgraph_lambda
+  - packages/dgraph
+  - packages/middleware_dio
+  - packages/middleware_http
+  - packages/middleware_websocket
 
 dev_dependencies:
   pedantic:
-  melos: ^7.3.0
-
-melos:
-  name: dstore_mono1
-  packages:
-    - packages/*
