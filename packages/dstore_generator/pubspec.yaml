@@ -4,35 +4,33 @@ description: >-
   dstore.
 homepage: https://github.com/chandu0101/dstore
 environment:
-  sdk: ">=3.3.4 <4.0.0"
+  sdk: ">=3.10.0 <4.0.0"
+resolution: workspace
 dependencies:
-  analyzer: 
-  build: 
-  meta: 
-  source_gen: 
-  gql: 
-  crypto: 
-  dio: 
+  analyzer:
+  build:
+  meta:
+  source_gen:
+  gql:
+  crypto:
+  dio:
   collection:
   timing:
-  yaml:    
-  ansicolor: 
-  tuple: 
-  path_to_regexp: 
+  yaml:
+  ansicolor:
+  tuple:
+  path_to_regexp:
   dstore_annotation:
     path: /Users/chandrasekharkode/Desktop/kode/programming/dart_projects/dstore/packages/dstore_annotation
   dstore_dgraph:
     path: /Users/chandrasekharkode/Desktop/kode/programming/dart_projects/dstore/packages/dgraph
   dotenv:
-      
 
 dev_dependencies:
-  pedantic: 
-  build_runner: 
-  grinder: 
-  json_serializable: 
-  test: 
-  
-    
-# dependency_overrides: 
+  pedantic:
+  build_runner:
+  grinder:
+  json_serializable:
+  test:
+# dependency_overrides:
 #   test: 1.17.11

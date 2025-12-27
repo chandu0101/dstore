@@ -4,15 +4,13 @@ description: >-
   dstore.
 homepage: https://github.com/chandu0101/dstore
 environment:
-  sdk: ">=2.19.0-0 <3.0.0"
+  sdk: ">=3.10.0 <4.0.0"
+resolution: workspace
 dependencies:
   dstore:
     path: ../dstore
   web_socket_channel_fork:
-    git: 
+    git:
       url: https://github.com/chandu0101/web_socket_channel
 dev_dependencies:
   pedantic:
-  
-      
-

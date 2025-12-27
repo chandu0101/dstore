@@ -4,22 +4,22 @@ description: >-
   dstore.
 homepage: https://github.com/chandu0101/dstore
 environment:
-  sdk: ">=2.13.0-0 <3.0.0"
+  sdk: ">=3.10.0 <4.0.0"
+resolution: workspace
 dependencies:
-  meta: 
+  meta:
   collection: ^1.15.0
   dstore_annotation:
     path: ../dstore_annotation
-  
 
 dev_dependencies:
   pedantic: 1.10.0
   test:
-  time:   
-  build_runner: 
+  time:
+  build_runner:
   grinder: 0.9.0-nullsafety.0
-  json_serializable: 
-  async: 
+  json_serializable:
+  async:
   dstore_generator:
-   path: ../dstore_generator
-  fast_immutable_collections:  
+    path: ../dstore_generator
+  fast_immutable_collections:

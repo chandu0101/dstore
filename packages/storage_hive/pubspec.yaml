@@ -4,7 +4,8 @@ description: >-
   dstore.
 homepage: https://github.com/chandu0101/dstore
 environment:
-  sdk: ">=2.13.0 <3.0.0"
+  sdk: ">=3.10.0 <4.0.0"
+resolution: workspace
 dependencies:
   dstore:
     path: ../dstore
@@ -12,6 +13,4 @@ dependencies:
 
 dev_dependencies:
   test:
-  grinder:   
-  
-    
+  grinder:

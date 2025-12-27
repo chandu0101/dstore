@@ -21,3 +21,6 @@ doc/api/
 *.js.map
 #Mac
 .DS_Store
+
+# IDE
+.idea/

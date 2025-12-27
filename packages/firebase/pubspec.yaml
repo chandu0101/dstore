@@ -4,7 +4,8 @@ description: A starting point for Dart libraries or applications.
 # homepage: https://www.example.com
 
 environment:
-  sdk: '>=2.19.0 <3.0.0'
+  sdk: ">=3.10.0 <4.0.0"
+resolution: workspace
 
 dependencies:
   flutter:
@@ -15,7 +16,7 @@ dependencies:
   cloud_firestore:
 
   meta:
-  json_annotation:       
+  json_annotation:
 
 dev_dependencies:
   test: ^1.14.4
@@ -25,4 +26,4 @@ dev_dependencies:
     path: ../dstore_generator/
 
 dependency_overrides:
-  meta: 
+  meta:

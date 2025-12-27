@@ -4,28 +4,24 @@ description: >-
   dstore.
 homepage: https://github.com/chandu0101/dstore
 environment:
-  sdk: ">=2.13.0 <3.0.0"
+  sdk: ">=3.10.0 <4.0.0"
+resolution: workspace
 dependencies:
-  
   flutter:
-    sdk: flutter 
+    sdk: flutter
   flutter_test:
-    sdk: flutter  
+    sdk: flutter
   dstore:
     path: ../dstore
   async:
-  test: 
-      
-
-      
+  test:
 
 dev_dependencies:
   pedantic: 1.10.0
   build_runner: ^1.12.2
   grinder: 0.9.0-nullsafety.0
   json_serializable: ^4.1.0
-  test: 
-  
-    
+  test:
+
 dependency_overrides:
-  meta: 
+  meta:
