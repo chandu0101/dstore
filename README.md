@@ -57,6 +57,7 @@ Features :
 - [ ] rate limiting client side ?
 - [ ] track fields mutation(this.field) out side supported code blocks (for loop etc)
 - [ ] code documentation using gemini or claude code
+- [ ] ## comment code using llms gemini or claude code docs website also using  LLMs
 
 implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/bloc_concurrency
 
