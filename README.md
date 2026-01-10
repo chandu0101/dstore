@@ -55,6 +55,7 @@ Features :
 - [ ] rate limiter check expressjs rate
 - [ ] offline caching https://777genius.medium.com/building-offline-first-flutter-apps-a-complete-sync-solution-with-drift-d287da021ab0
 - [ ] rate limiting client side ?
+- [ ] track fields mutation(this.field) out side supported code blocks (for loop etc)
 
 implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/bloc_concurrency
 
