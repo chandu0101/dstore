@@ -41,6 +41,7 @@ Features :
 - [ ]   form field validations email etc and decimal form field keyboards etc
 - [ ]   dstore exaples should be displayed in web demo
 - [ ]   logging middleware
+- [ ]   remove dgraph
 - [ ]   sessions cookies prefetching next link check react router tanstock router
 - [ ]   devtools partity with tstore
 - [ ]   https://pub.dev/packages/http_toolkit middleware
