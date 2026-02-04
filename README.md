@@ -45,7 +45,7 @@ Features :
 - [ ] track fields mutation(this.field) out side supported code blocks (for loop etc)
 - [ ] code documentation using gemini or claude code
 - [ ] ## comment code using llms gemini or claude code docs website also using  LLMs
-
+- [ ] https://github.com/Milad-Akarie/auto_route_library/issues/2225
 implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/bloc_concurrency
 
 # docs site
