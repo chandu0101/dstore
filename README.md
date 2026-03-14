@@ -50,6 +50,8 @@ implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/
 
 - [ ] https://lazebny.io/flutter-forms/
 
+- [ ] code generation deep dive https://codewithandrea.com/articles/dart-flutter-code-generation/
+
 # docs site
 
 https://use.docs.page/
