@@ -48,6 +48,8 @@ Features :
 - [ ] https://github.com/Milad-Akarie/auto_route_library/issues/2225
 implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/bloc_concurrency
 
+- [ ] https://lazebny.io/flutter-forms/
+
 # docs site
 
 https://use.docs.page/
