@@ -1,4 +1,4 @@
-
+þ
 
 # AI first mcp servers
 
@@ -69,6 +69,10 @@ https://dinkomarinac.dev/riverpod-pagination-the-ultimate-guide-for-flutter-deve
 - [ ] Devtools
 - [ ] GRPC module(check bacup branch)
 - [ ] Flatbuffers
+
+# read other solutions
+
+https://github.com/navaneethkrishnaindeed/pipe_x
 
 # Feature Parity with riverpod
 - [ ]https://github.com/rrousselGit/riverpod
