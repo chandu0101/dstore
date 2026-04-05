@@ -64,6 +64,10 @@ pagination:
 
 https://dinkomarinac.dev/riverpod-pagination-the-ultimate-guide-for-flutter-developers
 
+# navigation
+
+https://www.reddit.com/r/FlutterDev/s/8xkNx37R7e
+
 # Get Feature Parity with Tstore
 - [ ] Thread Pools and workers https://github.com/d-markey/squadron
 - [ ] Devtools
