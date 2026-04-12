@@ -137,3 +137,4 @@ What ever tag(CEO,VP,Lead,Sr.Dev,Architect,Jr.Dev,..) you have before your name,
 
 If you find someone doing wrong technically,try fixing it by sending a PR/guide constructively or just ignore and do your work.
 
+update
