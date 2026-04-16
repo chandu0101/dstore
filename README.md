@@ -34,7 +34,7 @@ Features :
 - [ ]   https://777genius.medium.com/offline-first-flutter-a-practical-guide-to-data-synchronization-5c37ee657755 (offline apps)
 
 
-- [ ] [Jaspr](https://github.com/schultek/jaspr) glue
+- [ ] [Jaspr](https://github.com/schultek/jaspr) glue https://pub.dev/packages/jaspr_riverpod
 - [ ] https://onlyflutter.com/how-to-store-data-in-secure-storage-in-flutter/#h-flutter-secure-storage-plugin
 - [ ] check hot reload , mostly shortcircuit of Selector
 - [ ] [fluttercon USA offline first recording](https://flutterconusa.dev/agenda/)
