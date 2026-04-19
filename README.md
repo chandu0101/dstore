@@ -80,6 +80,10 @@ https://github.com/navaneethkrishnaindeed/pipe_x
 
 https://www.reddit.com/r/FlutterDev/s/e5RpFStfZq
 
+# generator example
+
+https://flutterinit.com/
+
 # Feature Parity with riverpod
 - [ ]https://github.com/rrousselGit/riverpod
 - [ ] https://github.com/nank1ro/solid
