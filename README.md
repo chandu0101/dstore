@@ -92,6 +92,8 @@ https://flutterinit.com/
 
 Firebase rules typesafe
 
+https://firebase.google.com/docs/sql-connect/quickstart/flutter
+
 SupaBase
 
 NeonDB
