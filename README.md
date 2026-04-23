@@ -126,6 +126,8 @@ https://github.com/mraleph/dart_simdjson
 # analyzer plugin
 
 check new analyzer plugin for code gen(jaspr data classes)
+https://pub.dev/packages/build_runner_hook
+
 
 
 # Code of Conduct
