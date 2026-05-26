@@ -18,6 +18,7 @@ Features :
 *  Cross plarform navigation (with blocking url, login protection, nested stacks ,etc)
 *  https://docs.flutter.dev/tools/devtools/extensions
 - [ ]   Multi Threading (thread pools, web workers) isolate.run check typesafe-store implementation
+- [ ] track this. mutations in all blocks
 - [ ]   implement hash code for more than 20 variables
 - [ ]   analaysis_option.yaml should exclude .dstrore.dart files
 - [ ]   pagination debounce throttling
