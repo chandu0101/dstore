@@ -32,6 +32,7 @@ Features :
 - [ ]   sessions cookies prefetching next link check react router tanstock router
 - [ ]   devtools partity with tstore
 - [ ]   https://pub.dev/packages/http_toolkit middleware
+- [ ]   encrypt data on device
 - [ ]   https://777genius.medium.com/offline-first-flutter-a-practical-guide-to-data-synchronization-5c37ee657755 (offline apps)
 
 
