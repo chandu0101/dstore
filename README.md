@@ -82,6 +82,8 @@ https://github.com/navaneethkrishnaindeed/pipe_x
 
 https://www.reddit.com/r/FlutterDev/s/e5RpFStfZq
 
+https://github.com/meragix/qora
+
 # generator example
 
 https://flutterinit.com/
