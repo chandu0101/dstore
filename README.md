@@ -1,4 +1,3 @@
-þ
 
 # AI first mcp servers
 
