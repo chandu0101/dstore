@@ -70,6 +70,8 @@ https://dinkomarinac.dev/riverpod-pagination-the-ultimate-guide-for-flutter-deve
 
 https://www.reddit.com/r/FlutterDev/s/8xkNx37R7e
 
+https://itnext.io/flutter-routes-as-values-089476ad4d5b
+
 # Get Feature Parity with Tstore
 - [ ] Thread Pools and workers https://github.com/d-markey/squadron
 - [ ] Devtools
