@@ -65,6 +65,10 @@ pagination:
 
 https://dinkomarinac.dev/riverpod-pagination-the-ultimate-guide-for-flutter-developers
 
+# research
+
+https://levelup.gitconnected.com/flutter-lifecycle-callbacks-what-i-learned-after-7-years-of-state-management-78b55d4cd761
+
 # navigation
 
 https://www.reddit.com/r/FlutterDev/s/8xkNx37R7e
