@@ -75,6 +75,9 @@ https://www.reddit.com/r/FlutterDev/s/8xkNx37R7e
 
 https://itnext.io/flutter-routes-as-values-089476ad4d5b
 
+https://medium.com/@dipalithakare96/deep-linking-in-flutter-2d6aeda0de85
+
+
 # Get Feature Parity with Tstore
 - [ ] Thread Pools and workers https://github.com/d-markey/squadron
 - [ ] Devtools
