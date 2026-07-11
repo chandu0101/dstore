@@ -54,6 +54,11 @@ implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/
 - [ ] code generation deep dive https://codewithandrea.com/articles/dart-flutter-code-generation/
 - [ ] https://github.com/kettanaito/async-history-stack
 
+# memory leaks
+
+https://medium.com/easy-flutter/how-to-avoid-memory-leaks-in-flutter-apps-with-real-examples-e829a12c148d
+
+
 # docs site
 
 https://use.docs.page/
