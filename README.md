@@ -58,6 +58,9 @@ implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/
 
 https://medium.com/easy-flutter/how-to-avoid-memory-leaks-in-flutter-apps-with-real-examples-e829a12c148d
 
+# logging middleware
+
+https://github.com/azabcodes/high_q_dio_logger
 
 # docs site
 
