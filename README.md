@@ -148,6 +148,7 @@ https://github.com/mraleph/dart_simdjson
 check new analyzer plugin for code gen(jaspr data classes)
 https://pub.dev/packages/build_runner_hook
 
+# tailwind in flutter
 
 
 # Code of Conduct
