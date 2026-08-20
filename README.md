@@ -158,6 +158,10 @@ https://pub.dev/packages/build_runner_hook
 
 # tailwind in flutter
 
+# monorepos
+
+https://www.youtube.com/watch?v=zknylQ-7Nlg
+
 
 # Code of Conduct
 If you want live happily in sri org, you need to adapt to two simple things diversity and equality.
