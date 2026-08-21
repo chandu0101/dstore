@@ -62,6 +62,8 @@ https://medium.com/easy-flutter/how-to-avoid-memory-leaks-in-flutter-apps-with-r
 
 [Keep it Simple, State Architecture for Flutter Apps DartConf 2018](https://www.youtube.com/watch?v=UWw_SdORXik)
 
+https://dev.to/gde/what-i-get-to-forget-about-riverpod-now-that-i-have-blocsignal-1be5
+
 # logging middleware
 
 https://github.com/azabcodes/high_q_dio_logger
