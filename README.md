@@ -122,6 +122,10 @@ Firebase rules typesafe
 
 https://firebase.google.com/docs/sql-connect/quickstart/flutter
 
+# Render objects
+
+https://www.youtube.com/watch?v=lx6hLeEKPjc
+
 SupaBase
 
 NeonDB
