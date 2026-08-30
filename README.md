@@ -170,6 +170,10 @@ https://pub.dev/packages/build_runner_hook
 
 https://www.youtube.com/watch?v=zknylQ-7Nlg
 
+# perf
+
+tuples or records of class fields in gen mode
+
 
 # Code of Conduct
 If you want live happily in sri org, you need to adapt to two simple things diversity and equality.
