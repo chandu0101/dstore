@@ -24,6 +24,7 @@ Features :
 - [ ]   environment variables
 - [ ]   offline actions check tstore
 - [ ]   https://github.com/mukhbit0/flutter_route_shifter , route transitions
+- [ ]   https://pub.dev/packages/kaisel router features
 - [ ]   form field validations email etc and decimal form field keyboards etc
 - [ ]   dstore exaples should be displayed in web demo
 - [ ]   logging middleware
