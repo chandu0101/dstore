@@ -125,6 +125,10 @@ Firebase rules typesafe
 
 https://firebase.google.com/docs/sql-connect/quickstart/flutter
 
+# state management analysis
+
+https://filiph.net/text/flutter-state-management-performance-2026.html
+
 # UI Render objects
 
 https://www.youtube.com/watch?v=lx6hLeEKPjc
