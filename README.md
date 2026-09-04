@@ -99,6 +99,11 @@ https://medium.com/@dipalithakare96/deep-linking-in-flutter-2d6aeda0de85
 - [ ] GRPC module(check bacup branch)
 - [ ] Flatbuffers
 
+# infinite scroll
+
+https://x.com/RandalSchwartz/status/2095567425437921333
+
+
 # read other solutions
 
 https://github.com/navaneethkrishnaindeed/pipe_x
