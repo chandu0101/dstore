@@ -134,6 +134,8 @@ https://firebase.google.com/docs/sql-connect/quickstart/flutter
 
 https://filiph.net/text/flutter-state-management-performance-2026.html
 
+https://dev.to/gde/beyond-clean-architecture-the-iceberg-pattern-for-real-time-flutter-apps-with-blocsignal-3l84
+
 # UI Render objects
 
 https://www.youtube.com/watch?v=lx6hLeEKPjc
