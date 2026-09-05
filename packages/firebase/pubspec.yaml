@@ -4,14 +4,13 @@ description: A starting point for Dart libraries or applications.
 # homepage: https://www.example.com
 
 environment:
-  sdk: ">=3.10.0 <4.0.0"
+  sdk: ">=3.13.0 <4.0.0"
 resolution: workspace
 
 dependencies:
   flutter:
     sdk: flutter
   dstore_flutter:
-    path: ../dstore_flutter
   firebase_auth:
   cloud_firestore:
 
@@ -21,9 +20,8 @@ dependencies:
 dev_dependencies:
   test: ^1.14.4
   grinder:
-  build_runner: 1.12.2
+  build_runner:
   dstore_generator:
-    path: ../dstore_generator/
 
 dependency_overrides:
   meta:

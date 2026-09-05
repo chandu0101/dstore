@@ -15,7 +15,6 @@ dependencies:
   collection:
   path_to_regexp:
   dstore:
-    path: ../dstore
 
 dev_dependencies:
   pedantic:

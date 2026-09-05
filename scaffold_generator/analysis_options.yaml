@@ -24,3 +24,8 @@ analyzer:
     # - "**/*.dstore.dart"
     - "**/*.g.dart"
     - "**/*.gr.dart"
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - macos/**

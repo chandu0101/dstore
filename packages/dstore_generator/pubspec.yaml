@@ -21,9 +21,7 @@ dependencies:
   tuple:
   path_to_regexp:
   dstore_annotation:
-    path: /Users/chandrasekharkode/Desktop/kode/programming/dart_projects/dstore/packages/dstore_annotation
   dstore_dgraph:
-    path: /Users/chandrasekharkode/Desktop/kode/programming/dart_projects/dstore/packages/dgraph
   dotenv:
 
 dev_dependencies:
