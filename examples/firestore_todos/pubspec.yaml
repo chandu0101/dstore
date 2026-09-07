@@ -33,7 +33,7 @@ dependencies:
   dstore_flutter:
   dstore_firebase:
   json_annotation:
-  middleware_dio:
+  dstore_middleware_dio:
   meta:
   dstore_dgraph:
   firebase_core:
