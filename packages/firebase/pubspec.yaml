@@ -23,5 +23,5 @@ dev_dependencies:
   build_runner:
   dstore_generator:
 
-dependency_overrides:
-  meta:
+# dependency_overrides:
+# meta:

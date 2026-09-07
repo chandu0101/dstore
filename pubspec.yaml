@@ -9,6 +9,7 @@ publish_to: none
 workspace:
   - packages/*
   - dstore_test_suite
+  - examples/*
   # - scaffold_generator
 
 dev_dependencies:
