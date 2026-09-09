@@ -112,6 +112,8 @@ https://www.reddit.com/r/FlutterDev/s/e5RpFStfZq
 
 https://github.com/meragix/qora
 
+https://x.com/RandalSchwartz/status/2097526240764957138
+
 # generator example
 
 https://flutterinit.com/
