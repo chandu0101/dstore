@@ -188,6 +188,10 @@ https://www.youtube.com/watch?v=zknylQ-7Nlg
 
 tuples or records of class fields in gen mode
 
+# ios builder from windows
+
+https://github.com/MobAI-App/ios-builder
+
 
 # Code of Conduct
 If you want live happily in sri org, you need to adapt to two simple things diversity and equality.
