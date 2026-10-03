@@ -175,6 +175,10 @@ https://github.com/celest-dev/hrana.dart
 
 https://github.com/mraleph/dart_simdjson
 
+https://x.com/RandalSchwartz/status/2106069662132036015
+
+pstate dart records
+
 # analyzer plugin
 
 check new analyzer plugin for code gen(jaspr data classes)
