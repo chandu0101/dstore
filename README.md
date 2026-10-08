@@ -71,6 +71,10 @@ https://dev.to/gde/what-i-get-to-forget-about-riverpod-now-that-i-have-blocsigna
 
 https://github.com/azabcodes/high_q_dio_logger
 
+# dart macros
+
+https://x.com/CFDevelop/status/2107961591170028017
+
 # docs site
 
 https://use.docs.page/
