@@ -75,7 +75,7 @@ https://github.com/azabcodes/high_q_dio_logger
 
 https://pub.dev/packages/nitro_http
 
-rhttp
+https://pub.dev/packages/rhttp
 
 # dart macros
 
