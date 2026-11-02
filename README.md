@@ -87,6 +87,10 @@ https://pub.dev/packages/rhttp
 
 https://x.com/CFDevelop/status/2107961591170028017
 
+# security
+
+https://www.reddit.com/r/FlutterDev/s/TqZUhxXJoQ
+
 # docs site
 
 https://use.docs.page/
