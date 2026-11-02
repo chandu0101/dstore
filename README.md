@@ -61,6 +61,12 @@ implement bloc concurrent https://github.com/felangel/bloc/tree/master/packages/
 
 https://medium.com/easy-flutter/how-to-avoid-memory-leaks-in-flutter-apps-with-real-examples-e829a12c148d
 
+
+# dev tools
+
+https://x.com/FlutterconWorld/status/2117096862834479463?a=l5PYYogNsHQM-e_-gr8&s=19
+
+
 # watch videos on state management
 
 [Keep it Simple, State Architecture for Flutter Apps DartConf 2018](https://www.youtube.com/watch?v=UWw_SdORXik)
