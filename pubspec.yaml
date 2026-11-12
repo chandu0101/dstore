@@ -1,4 +1,4 @@
-name: dstore_mono1
+name: dstore_mono
 version: 0.0.1
 description: >-
   dstore.
@@ -10,7 +10,7 @@ workspace:
   - packages/*
   - dstore_test_suite
   - examples/*
-  # - scaffold_generator
+  - scaffold_generator
 
 dev_dependencies:
   melos: ^8.6.0
