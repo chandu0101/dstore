@@ -3,7 +3,8 @@ import 'package:test/test.dart';
 
 void main() {
   test('calculate', () {
-    expect(calculate(), 42);
+    assert(calculate() == 42);
+    expect(calculate(), 41);
   });
 
   print("Ajanabhi.dev");

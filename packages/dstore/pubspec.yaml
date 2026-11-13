@@ -12,13 +12,13 @@ dependencies:
   dstore_annotation:
 
 dev_dependencies:
-  pedantic: 1.10.0
+  pedantic:
   test:
   time:
   build_runner:
-  grinder: 0.9.0-nullsafety.0
+  grinder:
   json_serializable:
   async:
   dstore_generator:
-    path: ../dstore_generator
+    # path: ../dstore_generator
   fast_immutable_collections:

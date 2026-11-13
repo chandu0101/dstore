@@ -18,7 +18,7 @@ dependencies:
   json_annotation:
 
 dev_dependencies:
-  test: ^1.14.4
+  test:
   grinder:
   build_runner:
   dstore_generator:

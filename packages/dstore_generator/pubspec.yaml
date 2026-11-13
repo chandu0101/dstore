@@ -21,7 +21,6 @@ dependencies:
   tuple:
   path_to_regexp:
   dstore_annotation:
-  dstore_dgraph:
   dotenv:
 
 dev_dependencies:

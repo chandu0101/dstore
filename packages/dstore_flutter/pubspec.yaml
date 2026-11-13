@@ -4,7 +4,7 @@ description: >-
   dstore.
 homepage: https://github.com/chandu0101/dstore
 environment:
-  sdk: ">=3.10.0 <4.0.0"
+  sdk: ">=3.13.0 <4.0.0"
 resolution: workspace
 dependencies:
   flutter:

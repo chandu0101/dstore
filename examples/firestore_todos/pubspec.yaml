@@ -35,7 +35,6 @@ dependencies:
   json_annotation:
   dstore_middleware_dio:
   meta:
-  dstore_dgraph:
   firebase_core:
   cloud_firestore:
 

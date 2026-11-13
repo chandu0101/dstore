@@ -23,7 +23,6 @@ dependencies:
   dstore_middleware_http:
 
 dev_dependencies:
-  test: ^1.17.11
   build_runner:
   flutter_test:
     sdk: flutter
@@ -31,8 +30,6 @@ dev_dependencies:
   dstore_generator:
   grinder:
 
-dependency_overrides:
-  meta:
-  test:
-  test_api: 0.4.3
-  matcher: 0.12.10
+# dependency_overrides:
+#   meta:
+#   test:
