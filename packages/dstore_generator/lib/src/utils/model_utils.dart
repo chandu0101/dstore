@@ -4,20 +4,24 @@ import 'package:dstore_generator/src/utils/utils.dart';
 import 'package:tuple/tuple.dart';
 
 abstract class ModelUtils {
-  static String getFinalFieldsFromFieldsList(List<Field> fields,
-      {bool addLateModifier = false,
-      bool addOverrideAnnotation = false,
-      List<String>? nonConstClassesWithDefaultValues}) {
-    return fields.map((f) {
-      var type = f.isOptional && !f.type.endsWith("?") && f.value == null
-          ? "${f.type}?"
-          : "${f.type}";
-      return """
+  static String getFinalFieldsFromFieldsList(
+    List<Field> fields, {
+    bool addLateModifier = false,
+    bool addOverrideAnnotation = false,
+    List<String>? nonConstClassesWithDefaultValues,
+  }) {
+    return fields
+        .map((f) {
+          var type = f.isOptional && !f.type.endsWith("?") && f.value == null
+              ? "${f.type}?"
+              : "${f.type}";
+          return """
      ${addOverrideAnnotation ? "@override" : ""}
      ${f.annotations.join("\n")}
      ${addLateModifier ? "late" : ""} final $type ${f.name};
     """;
-    }).join("\n ");
+        })
+        .join("\n ");
   }
 
   static bool canhaveConsConstructor(String type) {
@@ -32,8 +36,10 @@ abstract class ModelUtils {
     return result;
   }
 
-  static String getFinalFieldType(Field f,
-      {List<String>? nonConstClassesWithDefaultValues}) {
+  static String getFinalFieldType(
+    Field f, {
+    List<String>? nonConstClassesWithDefaultValues,
+  }) {
     var type = f.isOptional && !f.type.endsWith("?") && f.value == null
         ? "${f.type}?"
         : "${f.type}";
@@ -41,7 +47,8 @@ abstract class ModelUtils {
   }
 
   static Tuple2<String, Tuple2<String, String>?> getDefaultValueForField(
-      Field f) {
+    Field f,
+  ) {
     final value = f.value;
     final name = f.name;
     if (value != null && value != "null") {
@@ -60,16 +67,20 @@ abstract class ModelUtils {
   }
 
   static List<Field> convertParameterElementsToFields(
-      List<ParameterElement> pe) {
+    List<TypeParameterElement> pe,
+  ) {
     return pe.map((p) {
-      final name = p.name;
-      final type = p.type.toString();
+      final name = p.name!;
+      // final type = p.type.toString(); // TODO check if this is correct
+      final type = p.bound?.toString() ?? "dynamic";
       return Field(name: name, type: type, isOptional: type.endsWith("?"));
     }).toList();
   }
 
-  static List<Field> processFields(List<Field> fields,
-      {bool addJsonKey = false}) {
+  static List<Field> processFields(
+    List<Field> fields, {
+    bool addJsonKey = false,
+  }) {
     return fields.map((f) {
       var name = f.name;
       var annotations = [...f.annotations];
@@ -96,10 +107,11 @@ abstract class ModelUtils {
         }
       }
       return f.copyWith(
-          type: _getFinalTypeOfField(f),
-          name: name,
-          annotations: annotations,
-          isOptional: f.type.endsWith("?") ? true : f.isOptional);
+        type: _getFinalTypeOfField(f),
+        name: name,
+        annotations: annotations,
+        isOptional: f.type.endsWith("?") ? true : f.isOptional,
+      );
     }).toList();
   }
 
@@ -107,21 +119,27 @@ abstract class ModelUtils {
     return (!f.type.endsWith("?") && f.isOptional) ? "${f.type}?" : f.type;
   }
 
-  static String createConstructorFromFieldsList(String name, List<Field> fields,
-      {bool assignDefaults = true, bool addConst = true}) {
+  static String createConstructorFromFieldsList(
+    String name,
+    List<Field> fields, {
+    bool assignDefaults = true,
+    bool addConst = true,
+  }) {
     final nonConstantDefaults = <String>[];
-    var cf = fields.map((f) {
-      final tuple = getDefaultValueForField(f);
-      final defaultValue = tuple.item1;
-      final nonConstTuple = tuple.item2;
-      var param =
-          "${(!f.isOptional && f.value == null) ? "required" : ""} this.${f.name}";
-      if (nonConstTuple != null) {
-        param = nonConstTuple.item1;
-        nonConstantDefaults.add(nonConstTuple.item2);
-      }
-      return "$param ${assignDefaults ? defaultValue : ""}";
-    }).join(", ");
+    var cf = fields
+        .map((f) {
+          final tuple = getDefaultValueForField(f);
+          final defaultValue = tuple.item1;
+          final nonConstTuple = tuple.item2;
+          var param =
+              "${(!f.isOptional && f.value == null) ? "required" : ""} this.${f.name}";
+          if (nonConstTuple != null) {
+            param = nonConstTuple.item1;
+            nonConstantDefaults.add(nonConstTuple.item2);
+          }
+          return "$param ${assignDefaults ? defaultValue : ""}";
+        })
+        .join(", ");
     if (cf.isNotEmpty) {
       cf = "{$cf}";
     }
@@ -149,7 +167,7 @@ abstract class ModelUtils {
 
   static List<Field> convertFieldElementsToFields(List<FieldElement> fields) {
     return fields.map((f) {
-      final name = f.name;
+      final name = f.name!;
       final type = f.type.toString();
       final isOptional = type.endsWith("?");
       return Field(name: name, type: type, isOptional: isOptional);
@@ -158,35 +176,42 @@ abstract class ModelUtils {
 
   static List<Field> convertMethodElementsToFields(List<MethodElement> fields) {
     return fields.map((f) {
-      final name = f.name;
+      final name = f.name!;
       final type = f.returnType.toString();
       final isOptional = type.endsWith("?");
       return Field(name: name, type: type, isOptional: isOptional);
     }).toList();
   }
 
-  static String createCopyWithClasses(
-      {required String name,
-      required List<Field> fields,
-      required String typeParamsWithBounds,
-      required String typeParams,
-      List<String>? nonConstClassesWithDefaultValues}) {
+  static String createCopyWithClasses({
+    required String name,
+    required List<Field> fields,
+    required String typeParamsWithBounds,
+    required String typeParams,
+    List<String>? nonConstClassesWithDefaultValues,
+  }) {
     final callParams = fields
-        .map((f) =>
-            "${getFinalFieldType(f, nonConstClassesWithDefaultValues: nonConstClassesWithDefaultValues)} ${f.name}")
+        .map(
+          (f) =>
+              "${getFinalFieldType(f, nonConstClassesWithDefaultValues: nonConstClassesWithDefaultValues)} ${f.name}",
+        )
         .join(", ");
-    final callImplParams =
-        fields.map((f) => "Object? ${f.name} = dimmutable").join(", ");
+    final callImplParams = fields
+        .map((f) => "Object? ${f.name} = dimmutable")
+        .join(", ");
     final copyWithParams = fields
-        .map((f) =>
-            "${f.name} : ${f.name} == dimmutable ? _value.${f.name} : ${f.name} as ${getFinalFieldType(f, nonConstClassesWithDefaultValues: nonConstClassesWithDefaultValues)}")
+        .map(
+          (f) =>
+              "${f.name} : ${f.name} == dimmutable ? _value.${f.name} : ${f.name} as ${getFinalFieldType(f, nonConstClassesWithDefaultValues: nonConstClassesWithDefaultValues)}",
+        )
         .join(", ");
     final aName = "\$${name}CopyWith";
     final aImplName = "_${aName}Impl";
     final aName2 = "_$aName";
     final aImplName2 = "_${aName2}Impl";
-    final typwd =
-        typeParamsWithBounds.isEmpty ? "" : "${typeParamsWithBounds},";
+    final typwd = typeParamsWithBounds.isEmpty
+        ? ""
+        : "${typeParamsWithBounds},";
     final tpp = typeParams.isEmpty ? "" : "${typeParams},";
     final tppA = typeParams.isEmpty ? "" : "<${typeParams}>";
 
@@ -226,10 +251,12 @@ abstract class ModelUtils {
   """;
   }
 
-  static String getCopyWithField(String name,
-      {bool override = false,
-      String typeParams = "",
-      bool addJsonKey = false}) {
+  static String getCopyWithField(
+    String name, {
+    bool override = false,
+    String typeParams = "",
+    bool addJsonKey = false,
+  }) {
     final tpp = typeParams.isEmpty ? "" : "${typeParams},";
     final tppA = typeParams.isEmpty ? "" : "<${typeParams}>";
     return """
@@ -239,42 +266,58 @@ abstract class ModelUtils {
   """;
   }
 
-  static String createCopyWithFromFieldsList(String name, List<Field> fields,
-      {bool emptyConstructor = false}) {
+  static String createCopyWithFromFieldsList(
+    String name,
+    List<Field> fields, {
+    bool emptyConstructor = false,
+  }) {
     final params = fields
-        .map((f) =>
-            "${(f.type.endsWith("?") || f.isOptional) ? "Nullable<${f.type.replaceFirst("?", "")}>?" : "${f.type}?"} ${f.name}")
+        .map(
+          (f) =>
+              "${(f.type.endsWith("?") || f.isOptional) ? "Nullable<${f.type.replaceFirst("?", "")}>?" : "${f.type}?"} ${f.name}",
+        )
         .join(", ");
     var cons = "";
     if (emptyConstructor) {
       final cfields = fields
-          .map((f) =>
-              "..${f.name} = ${(f.type.endsWith("?") || f.isOptional) ? "${f.name} != null ? ${f.name}.value : this.${f.name}" : "${f.name} ?? this.${f.name}"} }")
+          .map(
+            (f) =>
+                "..${f.name} = ${(f.type.endsWith("?") || f.isOptional) ? "${f.name} != null ? ${f.name}.value : this.${f.name}" : "${f.name} ?? this.${f.name}"} }",
+          )
           .join("");
       cons = "${name}()$cfields;";
     } else {
       final cfields = fields
-          .map((f) =>
-              "${f.name} : ${(f.type.endsWith("?") || f.isOptional) ? "${f.name} != null ? ${f.name}.value : this.${f.name}" : "${f.name} ?? this.${f.name}"}")
+          .map(
+            (f) =>
+                "${f.name} : ${(f.type.endsWith("?") || f.isOptional) ? "${f.name} != null ? ${f.name}.value : this.${f.name}" : "${f.name} ?? this.${f.name}"}",
+          )
           .join(", ");
       cons = "${name}($cfields);";
     }
     return """$name copyWith({$params}) => $cons""";
   }
 
-  static String createCopyWithMapFromFieldsList(String name, List<Field> fields,
-      {bool emptyConstructor = false}) {
+  static String createCopyWithMapFromFieldsList(
+    String name,
+    List<Field> fields, {
+    bool emptyConstructor = false,
+  }) {
     var cons = "";
     if (emptyConstructor) {
       final cfields = fields
-          .map((f) =>
-              "..${f.name} = map.containsKey(\"${f.name}\") ? map[\"${f.name}\"] as ${f.type}  : this.${f.name}")
+          .map(
+            (f) =>
+                "..${f.name} = map.containsKey(\"${f.name}\") ? map[\"${f.name}\"] as ${f.type}  : this.${f.name}",
+          )
           .join("");
       cons = "${name}()$cfields;";
     } else {
       final cfields = fields
-          .map((f) =>
-              "${f.name} : map.containsKey(\"${f.name}\") ? map[\"${f.name}\"] as ${f.type} : this.${f.name}")
+          .map(
+            (f) =>
+                "${f.name} : map.containsKey(\"${f.name}\") ? map[\"${f.name}\"] as ${f.type} : this.${f.name}",
+          )
           .join(", ");
       cons = "${name}($cfields);";
     }
@@ -305,11 +348,18 @@ abstract class ModelUtils {
     return "factory ${name}.fromJson(Map<String,dynamic> json) => _\$${name}FromJson(json);";
   }
 
-  static String createEqualsFromFieldsList(String name, List<Field> fields,
-      {CollectionEquality? collectionEquality}) {
+  static String createEqualsFromFieldsList(
+    String name,
+    List<Field> fields, {
+    CollectionEquality? collectionEquality,
+  }) {
     String getCollectionEquality(
-        CollectionEquality colE, String name, String type) {
-      final isCollectionType = type.startsWith("List") ||
+      CollectionEquality colE,
+      String name,
+      String type,
+    ) {
+      final isCollectionType =
+          type.startsWith("List") ||
           type.startsWith("Iterable") ||
           type.startsWith("Map") ||
           type.startsWith("Set");
@@ -336,14 +386,16 @@ abstract class ModelUtils {
       return "o.${name} == $name";
     }
 
-    final ops = fields.map((f) {
-      final type = f.type;
-      final name = f.name;
-      if (collectionEquality != null) {
-        return getCollectionEquality(collectionEquality, name, type);
-      }
-      return "o.${name} == $name";
-    }).join(" && ");
+    final ops = fields
+        .map((f) {
+          final type = f.type;
+          final name = f.name;
+          if (collectionEquality != null) {
+            return getCollectionEquality(collectionEquality, name, type);
+          }
+          return "o.${name} == $name";
+        })
+        .join(" && ");
     return """
       @override
       bool operator ==(Object o) {
@@ -354,24 +406,25 @@ abstract class ModelUtils {
   }
 
   ///  creates immutable class with fields
-  static String createDefaultDartModelFromFeilds(
-      {required List<Field> fields,
-      required String className,
-      String annotations = "",
-      String methods = "",
-      String typeParams = "",
-      String typeParamsWithBounds = "",
-      bool isJsonSerializable = false,
-      bool addStaticSerializeDeserialize = false,
-      bool addOverrideAnnotation = false,
-      String extendClass = "",
-      String mixins = "",
-      bool toMap = false,
-      String? staticSerializeInputName,
-      String? staticSeriaizeResponseName,
-      bool copyWithMap = false,
-      CollectionEquality? collectionEquality,
-      bool addStatusToStaticSerializer = false}) {
+  static String createDefaultDartModelFromFeilds({
+    required List<Field> fields,
+    required String className,
+    String annotations = "",
+    String methods = "",
+    String typeParams = "",
+    String typeParamsWithBounds = "",
+    bool isJsonSerializable = false,
+    bool addStaticSerializeDeserialize = false,
+    bool addOverrideAnnotation = false,
+    String extendClass = "",
+    String mixins = "",
+    bool toMap = false,
+    String? staticSerializeInputName,
+    String? staticSeriaizeResponseName,
+    bool copyWithMap = false,
+    CollectionEquality? collectionEquality,
+    bool addStatusToStaticSerializer = false,
+  }) {
     if (annotations.isEmpty && isJsonSerializable) {
       annotations = "@JsonSerializable()";
     }
@@ -381,7 +434,8 @@ abstract class ModelUtils {
         @override
         Map<String,dynamic> toMap() => throw UnimplementedError();
         """;
-    final defaultCopyWihMap = """
+    final defaultCopyWihMap =
+        """
         @override
         $className copyWithMap(Map<String,dynamic> map) => throw UnimplementedError();
     """;
@@ -409,9 +463,17 @@ abstract class ModelUtils {
 
       ${hasFields ? ModelUtils.createHashcodeFromFieldsList(fields) : ""}
 
-      ${toMap ? ModelUtils.createToMapFromFieldsList(fields) : copyWithMap ? defualtToMap : ""}
+      ${toMap
+        ? ModelUtils.createToMapFromFieldsList(fields)
+        : copyWithMap
+        ? defualtToMap
+        : ""}
 
-      ${copyWithMap ? ModelUtils.createCopyWithMapFromFieldsList(className, fields) : toMap ? defaultCopyWihMap : ""}
+      ${copyWithMap
+        ? ModelUtils.createCopyWithMapFromFieldsList(className, fields)
+        : toMap
+        ? defaultCopyWihMap
+        : ""}
 
      ${createToStringFromFieldsList(className, fields)}
     }
@@ -420,8 +482,10 @@ abstract class ModelUtils {
     """;
   }
 
-  static String createFromJsonStatic(String name,
-      {bool addStatusToStaticSerializer = false}) {
+  static String createFromJsonStatic(
+    String name, {
+    bool addStatusToStaticSerializer = false,
+  }) {
     final params = <String>[];
     if (addStatusToStaticSerializer) {
       params.add("int status");
@@ -430,10 +494,12 @@ abstract class ModelUtils {
     return "static $name fromJsonStatic(${params.join(", ")}) => _\$${name}FromJson(value as Map<String,dynamic>);";
   }
 
-  static String createToJsonStatic(String name,
-      {bool addStatusToStaticSerializer = false,
-      String? respsonseType,
-      String? inputType}) {
+  static String createToJsonStatic(
+    String name, {
+    bool addStatusToStaticSerializer = false,
+    String? respsonseType,
+    String? inputType,
+  }) {
     final params = <String>[];
     if (addStatusToStaticSerializer) {
       params.add("int status");
@@ -445,12 +511,13 @@ abstract class ModelUtils {
     return "static $r toJsonStatic(${params.join(", ")}) => $inr.toJson();";
   }
 
-  static String createDefaultDartUpdateModelFromFeilds(
-      {required List<Field> fields,
-      required String className,
-      String annotations = "",
-      bool isJsonSerializable = false,
-      bool addOverrideAnnotation = false}) {
+  static String createDefaultDartUpdateModelFromFeilds({
+    required List<Field> fields,
+    required String className,
+    String annotations = "",
+    bool isJsonSerializable = false,
+    bool addOverrideAnnotation = false,
+  }) {
     if (annotations.isEmpty && isJsonSerializable) {
       annotations = "@JsonSerializable(createFactory: false)";
     }
@@ -468,17 +535,20 @@ abstract class ModelUtils {
   }
 
   static String convertFieldsToJSFields(List<Field> fields) {
-    return fields.where((f) => f.name == f.name.addDName).map((f) {
-      final type = f.type.startsWith("List<")
-          ? "List<dynamic>${f.isOptional ? "?" : ""}"
-          : f.type;
-      final getter = "external ${type} get ${f.name};";
-      final setter = "external  set ${f.name}(${type} value);";
-      return """
+    return fields
+        .where((f) => f.name == f.name.addDName)
+        .map((f) {
+          final type = f.type.startsWith("List<")
+              ? "List<dynamic>${f.isOptional ? "?" : ""}"
+              : f.type;
+          final getter = "external ${type} get ${f.name};";
+          final setter = "external  set ${f.name}(${type} value);";
+          return """
         $getter
         $setter
       """;
-    }).join("\n");
+        })
+        .join("\n");
   }
 
   static String getExtensionJSFields(List<Field> fields) {
@@ -493,7 +563,8 @@ abstract class ModelUtils {
       var setter = "";
       if (isAlaised && isList) {
         final op = type.endsWith("?") ? "?" : "";
-        getter = """ 
+        getter =
+            """ 
          $type get $dNmae {
           final lits = getProperty(this,'$name') as List<dynamic>$op;
           return list$op.map(l => l as $type).toList();
@@ -502,13 +573,15 @@ abstract class ModelUtils {
         setter =
             " set $dNmae($type value) => setProperty(this,'$name',value); ";
       } else if (isAlaised) {
-        getter = """ 
+        getter =
+            """ 
          $type get $dNmae => getProperty(this,'$name');
         """;
         setter =
             " set $dNmae($type value) => setProperty(this,'$name',value); ";
       } else if (isList) {
-        getter = """ 
+        getter =
+            """ 
          $type get $dNmae {
           final lits = getProperty(this,'$name') as List<dynamic>;
           return list.map(l => l as $type).toList();
@@ -567,17 +640,22 @@ abstract class ModelUtils {
     var extensionCtor = "";
     if (ctor.isEmpty) {
       // aliased feilds lets add extension constructor for aliased
-      final ctorFields =
-          fields.where((f) => f.name == f.name.addDName).toList();
+      final ctorFields = fields
+          .where((f) => f.name == f.name.addDName)
+          .toList();
       ctor = createJSConstructor(ctorFields, className);
       final eParams = fields.where((f) => f.name != f.name.addDName).map((f) {
         final req = f.type.endsWith("?") ? "" : "required";
         return "$req ${f.type} ${f.name}";
       });
-      final eFields = fields.where((f) => f.name != f.name.addDName).map((f) {
-        return "setProperty(obj,'${f.name.removeDName}',${f.name});";
-      }).join("\n");
-      extensionCtor = """
+      final eFields = fields
+          .where((f) => f.name != f.name.addDName)
+          .map((f) {
+            return "setProperty(obj,'${f.name.removeDName}',${f.name});";
+          })
+          .join("\n");
+      extensionCtor =
+          """
         $className addExtraFeilds({${eParams.join(", ")}}) {
            final obj = this;
            $eFields  
@@ -588,13 +666,13 @@ abstract class ModelUtils {
     final extensionFields = getExtensionJSFields(fields);
     final extensionClass =
         (extensionCtor.isNotEmpty || extensionFields.isNotEmpty)
-            ? """
+        ? """
           extension ${className}Ext on $className {
               $extensionCtor
               $extensionFields
            }
         """
-            : "";
+        : "";
     return """
    @JS()
    @anonymous

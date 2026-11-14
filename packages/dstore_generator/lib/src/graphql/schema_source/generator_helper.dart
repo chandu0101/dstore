@@ -28,7 +28,7 @@ Future<String> generateSchema({
   final comments = schemaMeta.comments;
 
   final enumF = element.fields
-      .singleWhereOrNull((f) => f.name.toLowerCase() == "enums")
+      .singleWhereOrNull((f) => f.name!.toLowerCase() == "enums")
       ?.type
       .element;
   var enumNames = <String>[];

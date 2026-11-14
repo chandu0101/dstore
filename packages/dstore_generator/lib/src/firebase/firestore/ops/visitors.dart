@@ -41,7 +41,8 @@ class FireStoreOpsVisitor extends SimpleAstVisitor<void> {
                """);
       } else {
         ops.add(
-            "static  final ${name} = ${queryVisitor.results.join(".\n")} ;");
+          "static  final ${name} = ${queryVisitor.results.join(".\n")} ;",
+        );
       }
     }
   }
@@ -52,47 +53,54 @@ class FireStoreQueryOpVisitor extends RecursiveAstVisitor<Object> {
   final dynamicVariables = <FireStoreDynamicVariable>[];
   final s = FireStoreDynamicVariable(name: "", type: "");
 
-  String _getOrderByResult(
-      {required String methodName, required NodeList<Expression> arguments}) {
+  String _getOrderByResult({
+    required String methodName,
+    required NodeList<Expression> arguments,
+  }) {
     final args = <String>[];
     if (methodName.contains("_")) {
       args.add("'${methodName.split("_").last}'");
     }
     if (arguments.isNotEmpty) {
-      arguments.forEach((a) {
-        if (a is NamedExpression) {
-          args.add("${a.name.label.name}: ${a.expression}");
-        } else {
-          args.add("${a}");
-        }
-      });
+      // TODO implement this
+      // arguments.forEach((a) {
+      //   if (a is NamedExpression) {
+      //     args.add("${a.name.label.name}: ${a.expression}");
+      //   } else {
+      //     args.add("${a}");
+      //   }
+      // });
     }
     return "orderBy(${args.join(", ")})";
   }
 
-  String _getWhereResult(
-      {required String methodName, required NodeList<Expression> arguments}) {
+  String _getWhereResult({
+    required String methodName,
+    required NodeList<Expression> arguments,
+  }) {
     final args = <String>[];
     if (methodName.contains("_")) {
       args.add("'${methodName.split("_").last}'");
     }
+    // TODO implement this
     if (arguments.isNotEmpty) {
-      arguments.forEach((a) {
-        if (a is NamedExpression) {
-          var v = a.expression.toSource();
-          if (v.startsWith("FireStoreDynamicVariable(")) {
-            final va = v.split(",");
-            final name = va.first.split(":").last.trim();
-            final type = va.last.split(":").last.trim().replaceFirst(")", "");
-            dynamicVariables
-                .add(FireStoreDynamicVariable(name: name, type: type));
-            v = name.replaceQuotes;
-          }
-          args.add("${a.name.label.name}: ${v}");
-        } else {
-          args.add("${a}");
-        }
-      });
+      // arguments.forEach((a) {
+      //   if (a is NamedExpression) {
+      //     var v = a.expression.toSource();
+      //     if (v.startsWith("FireStoreDynamicVariable(")) {
+      //       final va = v.split(",");
+      //       final name = va.first.split(":").last.trim();
+      //       final type = va.last.split(":").last.trim().replaceFirst(")", "");
+      //       dynamicVariables.add(
+      //         FireStoreDynamicVariable(name: name, type: type),
+      //       );
+      //       v = name.replaceQuotes;
+      //     }
+      //     args.add("${a.name.label.name}: ${v}");
+      //   } else {
+      //     args.add("${a}");
+      //   }
+      // });
     }
     return "where(${args.join(", ")})";
   }
@@ -106,19 +114,16 @@ class FireStoreQueryOpVisitor extends RecursiveAstVisitor<Object> {
 
   @override
   Object? visitFunctionExpression(FunctionExpression node) {
-    print(
-      "visitFunctionExpression before $node",
-    );
+    print("visitFunctionExpression before $node");
     super.visitFunctionExpression(node);
-    print(
-      "visitFunctionExpression after $node",
-    );
+    print("visitFunctionExpression after $node");
   }
 
   @override
   Object? visitArgumentList(ArgumentList node) {
     print(
-        "visit ArgumentList enter $node , ${node.parent} ${node.parent.runtimeType}");
+      "visit ArgumentList enter $node , ${node.parent} ${node.parent.runtimeType}",
+    );
     final parent = node.parent;
     final parentStr = parent.toString();
     if (parent is MethodInvocation) {
@@ -145,10 +150,18 @@ class FireStoreQueryOpVisitor extends RecursiveAstVisitor<Object> {
       }
       if (methodName.startsWith("orderBy")) {
         results.add(
-            _getOrderByResult(methodName: methodName, arguments: arguments));
+          _getOrderByResult(
+            methodName: methodName,
+            arguments: arguments.map((e) => e).toList() as NodeList<Expression>,
+          ), // TODO implement this
+        );
       } else if (methodName.startsWith("where")) {
-        results
-            .add(_getWhereResult(methodName: methodName, arguments: arguments));
+        results.add(
+          _getWhereResult(
+            methodName: methodName,
+            arguments: arguments.map((e) => e).toList() as NodeList<Expression>,
+          ),
+        );
       } else if (arguments.length == 1) {
         // single arg methods
         print(arguments.first.runtimeType);

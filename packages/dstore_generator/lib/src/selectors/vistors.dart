@@ -21,7 +21,8 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
     final fields = AstUtils.convertParamsToFields(node.parameters);
     if (fields.isEmpty || fields.length > 1) {
       throw Exception(
-          "Selector functions should be only one param with app state");
+        "Selector functions should be only one param with app state",
+      );
     }
     final field = fields.first;
     var name = node.name.toString();
@@ -30,29 +31,34 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
     }
     final rType = node.returnType.toString();
     final sType = field.type;
-    final bvs =
-        SelectorBodyVisitor(field.name, buildStep); // TODO check field name
+    final bvs = SelectorBodyVisitor(
+      field.name,
+      buildStep,
+    ); // TODO check field name
     node.body.visitChildren(bvs);
 
     print("%%%%% deps : ${bvs.depsList}");
-    final depsMap = _convertDepsListToDeps(bvs.depsList)
-        .map((key, value) => MapEntry(key, value.toList()));
+    final depsMap = _convertDepsListToDeps(
+      bvs.depsList,
+    ).map((key, value) => MapEntry(key, value.toList()));
     mergeDeps(depsMap, bvs.subSelectorDeps);
     final webSocketFieldDepsMap = Map.fromEntries(
-        (_convertDepsListToWebSocketFields(bvs.depsList)
-            .map((key, value) => MapEntry(key, value.toList()))
-            .entries
-            .where((e) => e.value.isNotEmpty)));
+      (_convertDepsListToWebSocketFields(bvs.depsList)
+          .map((key, value) => MapEntry(key, value.toList()))
+          .entries
+          .where((e) => e.value.isNotEmpty)),
+    );
     mergeWsDeps(webSocketFieldDepsMap, bvs.subSelectorDeps);
     final wsDeps = webSocketFieldDepsMap.isEmpty
         ? ""
         : ",wsDeps: ${jsonEncode(webSocketFieldDepsMap)}";
 
     final streamFieldsMap = Map.fromEntries(
-        _convertDepsListToStreamFields(bvs.depsList)
-            .map((key, value) => MapEntry(key, value.toList()))
-            .entries
-            .where((e) => e.value.isNotEmpty));
+      _convertDepsListToStreamFields(bvs.depsList)
+          .map((key, value) => MapEntry(key, value.toList()))
+          .entries
+          .where((e) => e.value.isNotEmpty),
+    );
     mergeStreamFieldsDeps(streamFieldsMap, bvs.subSelectorDeps);
     final sfDeps = streamFieldsMap.isEmpty
         ? ""
@@ -61,20 +67,22 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
         """static final ${name} = Selector<${sType},${rType}>(fn:\$_${modelName}.${name},deps:${jsonEncode(depsMap)}$wsDeps ${sfDeps});""";
     print("Resuult :${result}");
     addSelectorCacheDeps(
-        element,
-        name,
-        SelectorDeps(
-            mainDeps: depsMap,
-            wsDeps:
-                webSocketFieldDepsMap.isEmpty ? null : webSocketFieldDepsMap,
-            sfDeps: streamFieldsMap.isEmpty ? null : streamFieldsMap));
+      element,
+      name,
+      SelectorDeps(
+        mainDeps: depsMap,
+        wsDeps: webSocketFieldDepsMap.isEmpty ? null : webSocketFieldDepsMap,
+        sfDeps: streamFieldsMap.isEmpty ? null : streamFieldsMap,
+      ),
+    );
     selectors.add(result);
     //  node.body.visitChildren(visitor)
     return super.visitMethodDeclaration(node);
   }
 
   Map<String, Set<String>> _convertDepsListToDeps(
-      List<List<MapEntry<String, DartType>>> depsList) {
+    List<List<MapEntry<String, DartType>>> depsList,
+  ) {
     print("depsList $depsList");
     final result = <String, Set<String>>{};
     depsList.map((e) => e.map((e) => e.key).toList()).forEach((dl) {
@@ -97,7 +105,8 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
   }
 
   Map<String, Set<String>> _convertDepsListToWebSocketFields(
-      List<List<MapEntry<String, DartType>>> depsList) {
+    List<List<MapEntry<String, DartType>>> depsList,
+  ) {
     final result = <String, Set<String>>{};
     depsList.forEach((dl) {
       final entry1 = dl[0];
@@ -124,7 +133,8 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
   }
 
   Map<String, Set<String>> _convertDepsListToStreamFields(
-      List<List<MapEntry<String, DartType>>> depsList) {
+    List<List<MapEntry<String, DartType>>> depsList,
+  ) {
     final result = <String, Set<String>>{};
     depsList.forEach((dl) {
       final entry1 = dl[0];
@@ -152,7 +162,8 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
 
   Set<String> _getStreamFieldsForType(DartType type) {
     print(
-        "Getting _getStreamFieldsForType2 for ${type.toString()} ${type.element.runtimeType}");
+      "Getting _getStreamFieldsForType2 for ${type.toString()} ${type.element.runtimeType}",
+    );
     final element = type.element;
     if (!(element is ClassElement)) {
       return {};
@@ -160,7 +171,7 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
     print("fields${element.fields}");
     return element.fields
         .where((f) => _isStreamFieldType(f.type))
-        .map((e) => e.name)
+        .map((e) => e.name!) // TODO check null case
         .toSet();
   }
 
@@ -169,7 +180,8 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
 
   Set<String> _getWebSocketFieldsForType(DartType type) {
     print(
-        "Getting WebSocketFields2 for ${type.toString()} ${type.element.runtimeType}");
+      "Getting WebSocketFields2 for ${type.toString()} ${type.element.runtimeType}",
+    );
     final element = type.element;
     if (!(element is ClassElement)) {
       return {};
@@ -177,7 +189,7 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
     print("fields${element.fields}");
     return element.fields
         .where((f) => _isWebSocketFieldType(f.type))
-        .map((e) => e.name)
+        .map((e) => e.name!) // TODO check null case
         .toSet();
   }
 
@@ -189,11 +201,13 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
       return false;
     }
     print(element.allSupertypes);
-    return element.name.startsWith("WebSocketField<");
+    return element.name!.startsWith("WebSocketField<"); // TODO check null case
   }
 
   void mergeDeps(
-      Map<String, List<String>> deps, List<SelectorDeps> subSelectorDeps) {
+    Map<String, List<String>> deps,
+    List<SelectorDeps> subSelectorDeps,
+  ) {
     subSelectorDeps.forEach((sd) {
       final sdDeps = sd.mainDeps;
       sdDeps.forEach((key, value) {
@@ -214,7 +228,9 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
   }
 
   void mergeWsDeps(
-      Map<String, List<String>> wsDeps, List<SelectorDeps> subSelectorDeps) {
+    Map<String, List<String>> wsDeps,
+    List<SelectorDeps> subSelectorDeps,
+  ) {
     subSelectorDeps.forEach((sd) {
       if (sd.wsDeps != null) {
         final sdDeps = sd.wsDeps!;
@@ -232,7 +248,9 @@ class SelectorsVisitor extends SimpleAstVisitor<dynamic> {
   }
 
   void mergeStreamFieldsDeps(
-      Map<String, List<String>> sfDeps, List<SelectorDeps> subSelectorDeps) {
+    Map<String, List<String>> sfDeps,
+    List<SelectorDeps> subSelectorDeps,
+  ) {
     subSelectorDeps.forEach((sd) {
       if (sd.sfDeps != null) {
         final sdDeps = sd.sfDeps!;
@@ -259,19 +277,22 @@ class SelectorBodyVisitor extends RecursiveAstVisitor<dynamic> {
 
   SelectorBodyVisitor(this.identifier, this.buildStep);
   List<MapEntry<String, DartType>> getPropNamesAndTheirTypes(
-      PropertyAccess node) {
+    PropertyAccess node,
+  ) {
     final result = <MapEntry<String, DartType>>[];
     final prop = node.propertyName.toString();
-    print(
-        "IdentifierElement4 ${node.staticType} ${node.propertyName.staticElement}");
+    // print(
+    //   "IdentifierElement4 ${node.staticType} ${node.propertyName.staticElement}",
+    // );
     if (prop == "wm") {
       final isCe = node.staticType?.element is ClassElement;
       print("wm $isCe");
       if (isCe) {
-        print((node.staticType?.element as ClassElement)
-            .allSupertypes
-            .map((e) => e.getDisplayString(withNullability: true))
-            .join(", "));
+        print(
+          (node.staticType?.element as ClassElement).allSupertypes
+              .map((e) => e.getDisplayString(withNullability: true))
+              .join(", "),
+        );
       }
     }
     result.add(MapEntry(prop, node.staticType!));
@@ -281,10 +302,12 @@ class SelectorBodyVisitor extends RecursiveAstVisitor<dynamic> {
       result.addAll(getPropNamesAndTheirTypes(target));
     } else if (target is PrefixedIdentifier) {
       if (target.prefix.toString() == identifier.toString()) {
-        print(
-            "IdentifierElement3 ${target.identifier.toString()} ${target.staticElement} ${target.staticType}  ${target.identifier.staticType}");
-        result.add(MapEntry(
-            target.identifier.toString(), target.identifier.staticType!));
+        // print(
+        //   "IdentifierElement3 ${target.identifier.toString()} ${target.staticElement} ${target.staticType}  ${target.identifier.staticType}",
+        // );
+        result.add(
+          MapEntry(target.identifier.toString(), target.identifier.staticType!),
+        );
       } else {
         print("target is not identifier ${target.runtimeType} ${target}");
       }
@@ -308,13 +331,16 @@ class SelectorBodyVisitor extends RecursiveAstVisitor<dynamic> {
   @override
   dynamic visitPrefixedIdentifier(PrefixedIdentifier node) {
     logger.shout(
-        "**##### IdenAccess  ${node} id:  ${node.identifier} prefix : ${node.prefix} mid :${identifier.toString()}");
+      "**##### IdenAccess  ${node} id:  ${node.identifier} prefix : ${node.prefix} mid :${identifier.toString()}",
+    );
     if (node.prefix.toString() == identifier.toString()) {
-      print(
-          "IdentifierElement1 ${node.identifier.staticElement} ${node.identifier.staticType}");
+      // print(
+      //   "IdentifierElement1 ${node.identifier.staticElement} ${node.identifier.staticType}",
+      // );
 
-      depsList.add(
-          [MapEntry(node.identifier.toString(), node.identifier.staticType!)]);
+      depsList.add([
+        MapEntry(node.identifier.toString(), node.identifier.staticType!),
+      ]);
     } else {
       print("identifier is not equal ${node.prefix == identifier}");
       logger.shout(node.runtimeType);
@@ -324,8 +350,9 @@ class SelectorBodyVisitor extends RecursiveAstVisitor<dynamic> {
 
   @override
   void visitMethodInvocation(MethodInvocation node) async {
-    logger.shout(
-        "visitMethodInvocation node ${node.target.runtimeType} ${node.target != null ? (node.target as SimpleIdentifier).staticElement?.metadata.map((e) => e.toString()).join(",") : ""} ${node.target?.staticType}");
+    // logger.shout(
+    //   "visitMethodInvocation node ${node.target.runtimeType} ${node.target != null ? (node.target as SimpleIdentifier).staticElement?.metadata.map((e) => e.toString()).join(",") : ""} ${node.target?.staticType}",
+    // );
 
     if (node.target != null && node.target is SimpleIdentifier) {
       if (node.argumentList.arguments.length == 1) {
@@ -333,18 +360,28 @@ class SelectorBodyVisitor extends RecursiveAstVisitor<dynamic> {
         if (arg is SimpleIdentifier &&
             arg.toString() == identifier.toString()) {
           // passing state to another method
-          final element = (node.target as SimpleIdentifier).staticElement;
+          // final element = (node.target as SimpleIdentifier).staticElement;
+          final element = null;
           if (_isSelectorsClass(element)) {
-            logger.shout(
-                "its selector invocation ${node.staticParameterElement}");
+            // logger.shout(
+            //   "its selector invocation ${node.staticParameterElement}",
+            // );
             var scd = getSelectorCachedDeps(element!, node.methodName.name);
             if (scd == null) {
-              logger
-                  .shout("Subselector deps Not found in cache so fetching now");
-              final astNode =
-                  await AstUtils.getAstNodeFromElement(element, buildStep);
-              astNode.visitChildren(SelectorsVisitor(
-                  element.name!.substring(1), element, buildStep));
+              logger.shout(
+                "Subselector deps Not found in cache so fetching now",
+              );
+              final astNode = await AstUtils.getAstNodeFromElement(
+                element,
+                buildStep,
+              );
+              astNode.visitChildren(
+                SelectorsVisitor(
+                  element.name!.substring(1),
+                  element,
+                  buildStep,
+                ),
+              );
               scd = getSelectorCachedDeps(element, node.methodName.name);
             }
             logger.shout("Cached Deps $scd");
@@ -362,7 +399,8 @@ class SelectorBodyVisitor extends RecursiveAstVisitor<dynamic> {
 
   bool _isSelectorsClass(Element? element) =>
       element != null &&
-      element.metadata.singleWhereOrNull(
-              (a) => a.toSource().startsWith("@Selectors")) !=
+      element.metadata.annotations.singleWhereOrNull(
+            (a) => a.toSource().startsWith("@Selectors"),
+          ) !=
           null;
 }

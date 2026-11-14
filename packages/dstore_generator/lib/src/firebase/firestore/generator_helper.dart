@@ -11,8 +11,10 @@ import 'package:dstore_generator/src/utils/utils.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:tuple/tuple.dart';
 
-Future<String> generateFireStoreSchema(
-    {required ClassElement element, required BuildStep buildStep}) async {
+Future<String> generateFireStoreSchema({
+  required ClassElement element,
+  required BuildStep buildStep,
+}) async {
   var collectionModels = "";
   var collectionDsl = "";
   var collectionsRefs = "";
@@ -21,12 +23,14 @@ Future<String> generateFireStoreSchema(
   final collectionSecurityRules = <String>[];
   print("firestore fields ${element.fields}");
   element.fields.forEach((f) {
-    final name = f.name.toLowerCase();
+    final name = f.name!.toLowerCase();
     if (name.toLowerCase() == "collections") {
       final ce = f.type.element as ClassElement;
       collectionModels = getModelsFromCollections(element: ce);
       collectionDsl = getDslFromCollections(
-          element: ce, securityRules: collectionSecurityRules);
+        element: ce,
+        securityRules: collectionSecurityRules,
+      );
       collectionsRefs = getDefaultCollectionRefs(element: ce);
     }
     if (name.toLowerCase() == "nestedobjects") {
@@ -36,7 +40,9 @@ Future<String> generateFireStoreSchema(
   });
 
   await saveSecurityRulesToFile(
-      schemaMeta: schemaMeta, collectionSecurityRules: collectionSecurityRules);
+    schemaMeta: schemaMeta,
+    collectionSecurityRules: collectionSecurityRules,
+  );
   return """
     $collectionModels
     $collectionDsl 
@@ -45,15 +51,18 @@ Future<String> generateFireStoreSchema(
   """;
 }
 
-Future<void> saveSecurityRulesToFile(
-    {required FireStoreSchema schemaMeta,
-    required List<String> collectionSecurityRules}) async {
+Future<void> saveSecurityRulesToFile({
+  required FireStoreSchema schemaMeta,
+  required List<String> collectionSecurityRules,
+}) async {
   final path = schemaMeta.rulesPath;
-  final globalRules = schemaMeta.rules
+  final globalRules =
+      schemaMeta.rules
           ?.map((r) => convertSecurityRuleToString(rule: r))
           .join("\n") ??
       "";
-  final rules = """
+  final rules =
+      """
    rules_version = '2';
    service cloud.firestore {
       match /databases/{database}/documents {
@@ -66,15 +75,17 @@ Future<void> saveSecurityRulesToFile(
   await File(path).writeAsString(rules);
 }
 
-String convertSecurityRuleToString(
-    {required SecurityRule? rule, InterfaceElement? element}) {
+String convertSecurityRuleToString({
+  required SecurityRule? rule,
+  InterfaceElement? element,
+}) {
   final collectionName = element?.collectionAnnotation.name;
   final functions = rule?.functions ?? "";
   final match = rule?.match != null
       ? rule!.match
       : collectionName != null
-          ? "/${collectionName}/{document}"
-          : ""; // probbaly throw error
+      ? "/${collectionName}/{document}"
+      : ""; // probbaly throw error
   final read = rule?.read != null ? "allow read: ${rule!.read};" : "";
   final write = rule?.write != null ? "allow write: ${rule!.write};" : "";
   final update = rule?.update != null ? "allow update: ${rule!.update};" : "";
@@ -88,11 +99,13 @@ String convertSecurityRuleToString(
     // for now lets do collections
     final tuple = getDefaultSecurityFunctions(element: element);
     defaultFunctions = tuple.item1;
-    subCollectionRules = tuple.item2.map((fe) {
-      final element = fe.type.element! as ClassElement;
-      final ca = element.collectionAnnotation;
-      return convertSecurityRuleToString(rule: ca.rules, element: element);
-    }).join("\n");
+    subCollectionRules = tuple.item2
+        .map((fe) {
+          final element = fe.type.element! as ClassElement;
+          final ca = element.collectionAnnotation;
+          return convertSecurityRuleToString(rule: ca.rules, element: element);
+        })
+        .join("\n");
   }
   return """
      $functions
@@ -121,7 +134,7 @@ Tuple2<String, List<FieldElement>> getDefaultSecurityFunctions({
   element.fields.forEach((element) {
     final ca = element.type.element?.annotationFromType(collection);
     final type = element.type.toString();
-    final name = element.name;
+    final name = element.name!;
     if (ca == null) {
       // care about only non sub collection fields
       if (!type.endsWith("?")) {
@@ -138,52 +151,60 @@ Tuple2<String, List<FieldElement>> getDefaultSecurityFunctions({
   final collectionName = element.collectionAnnotation.name;
   final fns = <String>[];
   if (df.validFieldNames) {
-    fns.add(FireStoreGlobalSecurityOrValidationFunctionsMeta
-        .validFieldNamesForCollection(
-            collectionName: collectionName,
-            requiredProps: reqProps,
-            allProps: allProps));
+    fns.add(
+      FireStoreGlobalSecurityOrValidationFunctionsMeta.validFieldNamesForCollection(
+        collectionName: collectionName,
+        requiredProps: reqProps,
+        allProps: allProps,
+      ),
+    );
   }
   return Tuple2(fns.join("\n"), subCollFields);
 }
 
 String getNestedObjects({required ClassElement element}) {
   assetItHasInterfacess(element);
-  return element.interfaces.where((e) => !e.isDartCoreObject).map((e) {
-    final element = e.element;
-    print("generating for nested object ${element.name}");
-    final className = element.name;
-    final fields = ModelUtils.convertFieldElementsToFields(element.fields);
-    var updateClass = "";
-    if (!fields.every((f) => f.type.endsWith("?"))) {
-      final updateFields = fields
-          .map((f) => f.copyWith(type: f.type.addQuestionMarkAtEnd))
-          .toList();
-      updateClass = ModelUtils.createDefaultDartUpdateModelFromFeilds(
-          fields: updateFields,
-          className: className + "Update",
-          isJsonSerializable: true);
-    }
+  return element.interfaces
+      .where((e) => !e.isDartCoreObject)
+      .map((e) {
+        final element = e.element;
+        print("generating for nested object ${element.name}");
+        final className = element.name!;
+        final fields = ModelUtils.convertFieldElementsToFields(element.fields);
+        var updateClass = "";
+        if (!fields.every((f) => f.type.endsWith("?"))) {
+          final updateFields = fields
+              .map((f) => f.copyWith(type: f.type.addQuestionMarkAtEnd))
+              .toList();
+          updateClass = ModelUtils.createDefaultDartUpdateModelFromFeilds(
+            fields: updateFields,
+            className: className + "Update",
+            isJsonSerializable: true,
+          );
+        }
 
-    return """
+        return """
      ${ModelUtils.createDefaultDartModelFromFeilds(fields: fields, className: className, isJsonSerializable: true)}
      ${updateClass}
      """;
-  }).join("\n");
+      })
+      .join("\n");
 }
 
 String getDefaultCollectionRefs({required ClassElement element}) {
-  final colRefs =
-      element.allSupertypes.where((e) => !e.isDartCoreObject).map((e) {
-    final element = e.element;
-    final ca = element.collectionAnnotation;
-    final cname = ca.name;
-    final cMethod = ca.sub ? "collectionGroup" : "collection";
-    final converter = ca.sub ? "" : ".${getWithConverter(element.name)}";
-    return """static final ${ca.name} = 
+  final colRefs = element.allSupertypes
+      .where((e) => !e.isDartCoreObject)
+      .map((e) {
+        final element = e.element;
+        final ca = element.collectionAnnotation;
+        final cname = ca.name;
+        final cMethod = ca.sub ? "collectionGroup" : "collection";
+        final converter = ca.sub ? "" : ".${getWithConverter(element.name!)}";
+        return """static final ${ca.name} = 
      FirebaseFirestore.instance.$cMethod('$cname')$converter;
      """;
-  }).join("\n");
+      })
+      .join("\n");
   return """
      class CollectionRefs {
        $colRefs
@@ -200,62 +221,76 @@ String getModelsFromCollections({required ClassElement element}) {
 }
 
 String convertCollectionModelToDartModel({required InterfaceElement element}) {
-  final className = element.name;
+  final className = element.name!;
   final regularFields = <Field>[];
   final updateFields = <Field>[];
   element.fields
-      .where((f) =>
-          f.type.element?.annotationFromType(collection) ==
-          null) // subcollections are shallow
+      .where(
+        (f) => f.type.element?.annotationFromType(collection) == null,
+      ) // subcollections are shallow
       .forEach((f) {
-    final name = f.name;
-    final type = f.type;
-    var typeStr = type.toString();
-    final annotations = f.metadata.map((e) => e.toSource()).toList();
-    final updateAnnotations = f.metadata.map((e) => e.toSource()).toList();
-    if (typeStr.startsWith("FireStoreRef")) {
-      if (!typeStr.startsWith("FireStoreRef<")) {
-        throw ArgumentError.value(
-            "FireStoreRef field ${name} should provide generic type of collection");
-      }
-      final cType =
-          typeStr.substring(typeStr.indexOf("<") + 1).replaceAll(">", "");
-      if (cType == "dynamic") {
-        throw ArgumentError.value(
-            "FireStoreRef fields should provide generic type of collection class not dynamic");
-      }
-      var op = "";
-      var optional = "";
-      if (typeStr.endsWith("?")) {
-        op = "?";
-        optional = "Optional";
-      }
-      final refName = "${cType}Reference";
-      typeStr = "$refName$op";
-      annotations.add(
-          "@JsonKey(fromJson: ${refName}.fromJson${optional} ,toJson: ${refName}.toJson$optional)");
-      updateAnnotations.add(
-          "@JsonKey(fromJson: ${refName}.fromJsonOptional ,toJson: ${refName}.toJsonOptional)");
-    }
-    final rf = Field(
-        name: name,
-        type: typeStr,
-        isOptional: typeStr.endsWith("?"),
-        annotations: annotations);
-    regularFields.add(rf);
-    updateFields.add(rf.copyWith(
-        type: rf.type.addQuestionMarkAtEnd,
-        isOptional: true,
-        annotations: updateAnnotations));
-  });
+        final name = f.name!;
+        final type = f.type;
+        var typeStr = type.toString();
+        final annotations = f.metadata.annotations
+            .map((e) => e.toSource())
+            .toList();
+        final updateAnnotations = f.metadata.annotations
+            .map((e) => e.toSource())
+            .toList();
+        if (typeStr.startsWith("FireStoreRef")) {
+          if (!typeStr.startsWith("FireStoreRef<")) {
+            throw ArgumentError.value(
+              "FireStoreRef field ${name} should provide generic type of collection",
+            );
+          }
+          final cType = typeStr
+              .substring(typeStr.indexOf("<") + 1)
+              .replaceAll(">", "");
+          if (cType == "dynamic") {
+            throw ArgumentError.value(
+              "FireStoreRef fields should provide generic type of collection class not dynamic",
+            );
+          }
+          var op = "";
+          var optional = "";
+          if (typeStr.endsWith("?")) {
+            op = "?";
+            optional = "Optional";
+          }
+          final refName = "${cType}Reference";
+          typeStr = "$refName$op";
+          annotations.add(
+            "@JsonKey(fromJson: ${refName}.fromJson${optional} ,toJson: ${refName}.toJson$optional)",
+          );
+          updateAnnotations.add(
+            "@JsonKey(fromJson: ${refName}.fromJsonOptional ,toJson: ${refName}.toJsonOptional)",
+          );
+        }
+        final rf = Field(
+          name: name,
+          type: typeStr,
+          isOptional: typeStr.endsWith("?"),
+          annotations: annotations,
+        );
+        regularFields.add(rf);
+        updateFields.add(
+          rf.copyWith(
+            type: rf.type.addQuestionMarkAtEnd,
+            isOptional: true,
+            annotations: updateAnnotations,
+          ),
+        );
+      });
   var updateClass = "";
   if (!regularFields.every((f) => f.type.endsWith("?"))) {
     final updateClassName = className + "Update";
 
     updateClass = ModelUtils.createDefaultDartUpdateModelFromFeilds(
-        fields: updateFields,
-        className: updateClassName,
-        isJsonSerializable: true);
+      fields: updateFields,
+      className: updateClassName,
+      isJsonSerializable: true,
+    );
   }
 
   return """
@@ -295,8 +330,10 @@ String _createReferenceClass(String name) {
   """;
 }
 
-String getDslFromCollections(
-    {required ClassElement element, required List<String> securityRules}) {
+String getDslFromCollections({
+  required ClassElement element,
+  required List<String> securityRules,
+}) {
   final queryItems = <String>[];
   final groupedQueryItems = <String>[];
   final types = <String>[];
@@ -305,14 +342,16 @@ String getDslFromCollections(
     final ca = cElement.collectionAnnotation;
     final name = "${ca.name}_${cElement.name}";
     types.add(
-        convertCollectionModelToDartDSLQuery(element: cElement, name: name));
+      convertCollectionModelToDartDSLQuery(element: cElement, name: name),
+    );
     final qfn = "static ${name}Query $name() { throw Error();}";
     if (ca.sub) {
       groupedQueryItems.add(qfn);
     } else {
       queryItems.add(qfn);
-      securityRules
-          .add(convertSecurityRuleToString(rule: ca.rules, element: cElement));
+      securityRules.add(
+        convertSecurityRuleToString(rule: ca.rules, element: cElement),
+      );
     }
   });
   return """
@@ -335,7 +374,8 @@ extension CollectionElementExt on Element {
     final annot = this.annotationFromType(collection);
     if (annot == null) {
       throw ArgumentError.value(
-          "All collection classes should add @collection annotation, there is no collection annotion for class ${this.name}");
+        "All collection classes should add @collection annotation, there is no collection annotion for class ${this.name}",
+      );
     }
     final reader = ConstantReader(annot.computeConstantValue());
     final name = reader.peek("name")?.stringValue;
@@ -364,34 +404,41 @@ SecurityRule convertDartObjectToSecurity(DartObject obj) {
   DefautSecurityOrValidateFunctions? defaultFunctions;
   if (defaultFunctionsObj != null) {
     final validFieldNames = reader.peek("validFieldNames")?.boolValue ?? false;
-    defaultFunctions =
-        DefautSecurityOrValidateFunctions(validFieldNames: validFieldNames);
+    defaultFunctions = DefautSecurityOrValidateFunctions(
+      validFieldNames: validFieldNames,
+    );
   }
 
   return SecurityRule(
-      read: read,
-      match: match,
-      update: update,
-      create: create,
-      write: write,
-      get: get,
-      list: list,
-      functions: functions,
-      delete: delete,
-      defaultFunctions: defaultFunctions);
+    read: read,
+    match: match,
+    update: update,
+    create: create,
+    write: write,
+    get: get,
+    list: list,
+    functions: functions,
+    delete: delete,
+    defaultFunctions: defaultFunctions,
+  );
 }
 
-String convertCollectionModelToDartDSLQuery(
-    {required InterfaceElement element, required String name}) {
+String convertCollectionModelToDartDSLQuery({
+  required InterfaceElement element,
+  required String name,
+}) {
   final genericQueryFields = <String>[];
   final queryClassName = "${name}Query";
 
-  genericQueryFields
-      .add("$queryClassName limit(int limit) { $CompileTimeError }");
-  genericQueryFields
-      .add("$queryClassName limitToLast(int limit) { $CompileTimeError}");
   genericQueryFields.add(
-      "$queryClassName orderBy(Object field,{bool descending = false}) { $CompileTimeError}");
+    "$queryClassName limit(int limit) { $CompileTimeError }",
+  );
+  genericQueryFields.add(
+    "$queryClassName limitToLast(int limit) { $CompileTimeError}",
+  );
+  genericQueryFields.add(
+    "$queryClassName orderBy(Object field,{bool descending = false}) { $CompileTimeError}",
+  );
   genericQueryFields.add("""
       $queryClassName where(
           Object field, {
@@ -410,19 +457,25 @@ String convertCollectionModelToDartDSLQuery(
       """);
 
   genericQueryFields.add(
-      "$queryClassName endAtDocument(DocumentSnapshot documentSnapshot) { $CompileTimeError }");
+    "$queryClassName endAtDocument(DocumentSnapshot documentSnapshot) { $CompileTimeError }",
+  );
 
   genericQueryFields.add(
-      "$queryClassName startAtDocument(DocumentSnapshot documentSnapshot) {  $CompileTimeError }");
+    "$queryClassName startAtDocument(DocumentSnapshot documentSnapshot) {  $CompileTimeError }",
+  );
   genericQueryFields.add(
-      "$queryClassName startAfterDocument(DocumentSnapshot documentSnapshot) {  $CompileTimeError }");
+    "$queryClassName startAfterDocument(DocumentSnapshot documentSnapshot) {  $CompileTimeError }",
+  );
 
   genericQueryFields.add(
-      "$queryClassName startAfter(List<Object?> values) { $CompileTimeError }");
-  genericQueryFields
-      .add("$queryClassName endAt(List<Object?> values) { $CompileTimeError }");
+    "$queryClassName startAfter(List<Object?> values) { $CompileTimeError }",
+  );
   genericQueryFields.add(
-      "$queryClassName endBefore(List<Object?> values) { $CompileTimeError }");
+    "$queryClassName endAt(List<Object?> values) { $CompileTimeError }",
+  );
+  genericQueryFields.add(
+    "$queryClassName endBefore(List<Object?> values) { $CompileTimeError }",
+  );
   final subCollectionFields = <FieldElement>[];
   final fields = element.fields.map((f) {
     final name = f.name;
@@ -485,12 +538,15 @@ $CompileTimeError
   print("subCollection Fields $subCollectionFields");
   if (subCollectionFields.isNotEmpty) {
     final docName = "${name}QueryDoc";
-    final docFields = subCollectionFields.map((f) {
-      final col = f.type.element?.collectionAnnotation;
-      final name = "${col!.name}_${f.type}";
-      return "${name}Query ${f.name}_${f.type}subcol() { $CompileTimeError }";
-    }).join("\n");
-    docClass = """
+    final docFields = subCollectionFields
+        .map((f) {
+          final col = f.type.element?.collectionAnnotation;
+          final name = "${col!.name}_${f.type}";
+          return "${name}Query ${f.name}_${f.type}subcol() { $CompileTimeError }";
+        })
+        .join("\n");
+    docClass =
+        """
       class $docName {
         $docFields
       }
@@ -517,13 +573,15 @@ FireStoreSchema getFireStoreSchemaFromAnnotation(ClassElement element) {
   final obj = annot.computeConstantValue();
   if (obj == null) {
     throw ArgumentError.value(
-        "Error in evaluating annotation make sure you used all constant values");
+      "Error in evaluating annotation make sure you used all constant values",
+    );
   }
   final reader = ConstantReader(obj);
   final rulesPath = reader.peek("rulesPath")?.stringValue;
   if (rulesPath == null) {
     throw ArgumentError.value(
-        "rulesPath is a required field , please provide it");
+      "rulesPath is a required field , please provide it",
+    );
   }
   final rules = reader
       .peek("rules")
