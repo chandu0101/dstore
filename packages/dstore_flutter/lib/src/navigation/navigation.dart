@@ -1,6 +1,6 @@
 import 'package:dstore/dstore.dart';
 import 'package:dstore_flutter/src/navigation/history/history.dart';
-import 'package:flutter/material.dart' hide Action;
+import 'package:flutter/widgets.dart' hide Action;
 
 import "configuration/confiure_native.dart"
     if (dart.library.html) "configuration/configure_web.dart";
@@ -26,14 +26,9 @@ enum HistoryMode { tabs, stack }
 class NavConfigMeta {
   BeforeLeaveFn? beforeLeave;
   Action? redirectToAction;
-  Action?
-      originAction; // let say user entered protected route ,then he will be redirected to login page ,after that instead of going to home page lets redirect to origin url
+  Action? originAction; // let say user entered protected route ,then he will be redirected to login page ,after that instead of going to home page lets redirect to origin url
   // Action? initialStateAction; // only for nested navs
-  NavConfigMeta({
-    this.beforeLeave,
-    this.redirectToAction,
-    this.originAction,
-  });
+  NavConfigMeta({this.beforeLeave, this.redirectToAction, this.originAction});
 
   @override
   String toString() {
@@ -46,10 +41,11 @@ class NavUrlMeta {
   final UrlToAction urlToAction;
   final bool isProtected;
 
-  NavUrlMeta(
-      {required this.url,
-      required this.urlToAction,
-      required this.isProtected});
+  NavUrlMeta({
+    required this.url,
+    required this.urlToAction,
+    required this.isProtected,
+  });
 }
 
 class NavStateDontTouchMe {
@@ -71,10 +67,10 @@ class NavStateDontTouchMe {
   }
 }
 
-abstract class NavCommonI {
+mixin class NavCommonI {
   late final Page? page;
   List<Page> buildPages() => [];
-  Action notFoundAction(Uri uri);
+  // Action notFoundAction(Uri uri);
   Action fallBackNestedStackNonInitializationAction(NavCommonI navState) {
     throw UnimplementedError();
   }
@@ -145,8 +141,7 @@ class NavOptions<E> {
   final HistoryUpdate? historyUpdate;
 
   final bool blockSameUrl;
-  final E?
-      extraOptions; // use this to pass extra options to navigation action , remember you should handle null case , because when user entered via url extraOptions will be null
+  final E? extraOptions; // use this to pass extra options to navigation action , remember you should handle null case , because when user entered via url extraOptions will be null
 
   NavOptions({this.historyUpdate, this.blockSameUrl = true, this.extraOptions});
 }

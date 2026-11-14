@@ -56,7 +56,8 @@ class DRouterDelegate<S extends AppStateI<S>> extends RouterDelegate<String>
           .urlToAction;
       print("dyn function $dfn");
       if (dfn == null) {
-        _dispatch(navState.notFoundAction(uri));
+        //TODO check mixin navCommonI
+        // _dispatch(navState.notFoundAction(uri));
       } else {
         history.urlChangedInSystem = true;
         dfn(uri, _dispatch);
@@ -72,14 +73,18 @@ class DRouterDelegate<S extends AppStateI<S>> extends RouterDelegate<String>
     print("Rebuilding main navigator");
 
     return NavigationProvider(
-        dotTouchmeHistory: history,
-        child: shell(SelectorBuilder<S, NavStateI>(
+      dotTouchmeHistory: history,
+      child: shell(
+        SelectorBuilder<S, NavStateI>(
           selector: selector,
           onInitState: (context, state) {
             state.dontTouchMe.hisotry = history;
             final nestedNavs = state.getNestedNavs();
             prepareStateFromNestedStacks(
-                history: history, state: state, nestedNavsMeta: nestedNavs);
+              history: history,
+              state: state,
+              nestedNavsMeta: nestedNavs,
+            );
             _navState = state;
             history.fallBackNestedStackNonInitializationAction =
                 state.fallBackNestedStackNonInitializationAction;
@@ -124,8 +129,9 @@ class DRouterDelegate<S extends AppStateI<S>> extends RouterDelegate<String>
             }
           },
           builder: (context, state) {
-            final pages =
-                state.page != null ? [state.page!] : state.buildPages();
+            final pages = state.page != null
+                ? [state.page!]
+                : state.buildPages();
             print("building main navigator state : $state , pages:   $pages");
             if (_preparedState) {
               return Navigator(
@@ -156,23 +162,27 @@ class DRouterDelegate<S extends AppStateI<S>> extends RouterDelegate<String>
               return Scaffold(body: SizedBox.shrink());
             }
           },
-        )));
+        ),
+      ),
+    );
   }
 
-  void prepareStateFromNestedStacks(
-      {required History history,
-      required NavStateI state,
-      required List<NestedNavStateMeta> nestedNavsMeta,
-      NestedNavStateI? parent}) {
+  void prepareStateFromNestedStacks({
+    required History history,
+    required NavStateI state,
+    required List<NestedNavStateMeta> nestedNavsMeta,
+    NestedNavStateI? parent,
+  }) {
     nestedNavsMeta.forEach((nnavmeta) {
       final nnav = nnavmeta.state;
       final rmeta = nnav.getNestedNavs();
       if (rmeta.isNotEmpty) {
         prepareStateFromNestedStacks(
-            history: history,
-            state: state,
-            nestedNavsMeta: rmeta,
-            parent: nnav);
+          history: history,
+          state: state,
+          nestedNavsMeta: rmeta,
+          parent: nnav,
+        );
       }
       nnav.dontTouchMe.hisotry = history;
       state.dontTouchMe.staticMeta.addAll(nnav.dontTouchMe.staticMeta);
@@ -219,11 +229,12 @@ class DRouterDelegate<S extends AppStateI<S>> extends RouterDelegate<String>
   }
 }
 
-Future<bool> _popNestedStack(
-    {required GlobalKey<NavigatorState> navKey,
-    required String cuurentNestedKey,
-    required History history,
-    required AppStateI state}) async {
+Future<bool> _popNestedStack({
+  required GlobalKey<NavigatorState> navKey,
+  required String cuurentNestedKey,
+  required History history,
+  required AppStateI state,
+}) async {
   final nestedHistory = history.nestedNavsHistory[cuurentNestedKey]!;
   print("popping nestedstack $nestedHistory");
   if (nestedHistory.historyMode == HistoryMode.stack) {
@@ -252,26 +263,30 @@ Future<bool> _popNestedStack(
   if (nestedHistory.parentStackTypeName != null) {
     print("going up stack");
     return _popNestedStack(
-        cuurentNestedKey: nestedHistory.parentStackTypeName!,
-        navKey: nestedHistory.parentNavKey!,
-        history: history,
-        state: state);
+      cuurentNestedKey: nestedHistory.parentStackTypeName!,
+      navKey: nestedHistory.parentNavKey!,
+      history: history,
+      state: state,
+    );
   } else {
     return false;
   }
 }
 
-Future<bool> globalPopRoute(
-    {required History history, required AppStateI state}) async {
+Future<bool> globalPopRoute({
+  required History history,
+  required AppStateI state,
+}) async {
   print("popRoute");
   final currentActiveNestedNav = history.currentActiveNestedNav;
   print("currentActiveNestedNav $currentActiveNestedNav");
   if (currentActiveNestedNav != null) {
     final result = await _popNestedStack(
-        navKey: history.currentNavKey!,
-        cuurentNestedKey: currentActiveNestedNav,
-        history: history,
-        state: state);
+      navKey: history.currentNavKey!,
+      cuurentNestedKey: currentActiveNestedNav,
+      history: history,
+      state: state,
+    );
     print("Nested stack result $result");
     if (result) {
       return true;
@@ -296,8 +311,11 @@ Future<bool> globalPopRoute(
   }
 }
 
-bool handleBeforeLeave(
-    {required History history, required Store store, Action? action}) {
+bool handleBeforeLeave({
+  required History history,
+  required Store store,
+  Action? action,
+}) {
   print("handleBeforeLeave triggered");
   if (history.beforeLeave != null) {
     final lResult = history.beforeLeave!(store.state);
@@ -307,7 +325,11 @@ bool handleBeforeLeave(
     } else {
       if (lResult.dialogBuilder != null) {
         handleDialog(
-            history: history, lResult: lResult, store: store, action: action);
+          history: history,
+          lResult: lResult,
+          store: store,
+          action: action,
+        );
       }
       return false;
     }
@@ -316,15 +338,17 @@ bool handleBeforeLeave(
   }
 }
 
-void handleDialog(
-    {required History history,
-    required BeforeLeaveResult lResult,
-    required Store store,
-    required Action? action}) async {
+void handleDialog({
+  required History history,
+  required BeforeLeaveResult lResult,
+  required Store store,
+  required Action? action,
+}) async {
   final ncontext = history.globalNavKey.currentContext;
   history.isPreventModal = true;
   final result = await history.globalNavKey.currentState!.push<bool>(
-      DialogRoute<bool>(context: ncontext!, builder: lResult.dialogBuilder!));
+    DialogRoute<bool>(context: ncontext!, builder: lResult.dialogBuilder!),
+  );
   print("Result from dialog $result");
   if (result == true) {
     history.beforeLeave = null;
