@@ -16,36 +16,46 @@ import "package:collection/collection.dart";
 
 abstract class AstUtils {
   static Future<AstNode> getAstNodeFromElement(
-      Element element, BuildStep buildStep,
-      {bool resolve = false}) async {
-    var library = element.library!;
-    while (true) {
-      try {
-        final session = library.session;
-        AstNode node;
-        if (resolve) {
-          final le = await session.getResolvedLibraryByElement(library)
-              as ResolvedLibraryResult;
+    Element element,
+    BuildStep buildStep, {
+    bool resolve = false,
+  }) async {
+    // var library = element.library!;
+    // while (true) {
+    //   try {
+    //     final session = library.session;
+    //     AstNode node;
+    //     if (resolve) {
+    //       final le = await session.getResolvedLibraryByElement(library)
+    //           as ResolvedLibraryResult;
+    //       // node = le.getElementDeclaration(element)!.node;
 
-          node = le.getElementDeclaration(element)!.node;
-        } else {
-          final pr =
-              session.getParsedLibraryByElement(library) as ParsedLibraryResult;
-          node = pr.getElementDeclaration(element)!.node;
-        }
-        return node;
-      } on InconsistentAnalysisException {
-        library = await buildStep.resolver.libraryFor(
-          await buildStep.resolver.assetIdForElement(element.library!),
-        );
-      }
-    }
+    //     } else {
+    //       final pr =
+    //           session.getParsedLibraryByElement(library) as ParsedLibraryResult;
+    //       // node = pr.getElementDeclaration(element)!.node;
+    //     }
+    //     return node;
+    //   } on InconsistentAnalysisException {
+    //     library = await buildStep.resolver.libraryFor(
+    //       await
+    //     );
+    //   }
+    //     // library =   await buildStep.resolver.astNodeFor(element);
+    // }
+    final node = await buildStep.resolver.astNodeFor(
+      element.firstFragment,
+      resolve: resolve,
+    );
+    return node!;
   }
 
   static Tuple2<String, String> getTypeParamsAndBounds(
-      List<TypeParameterElement> typeParameters) {
-    final typeParamsWithBounds =
-        typeParameters.map((e) => e.toString()).join(",");
+    List<TypeParameterElement> typeParameters,
+  ) {
+    final typeParamsWithBounds = typeParameters
+        .map((e) => e.toString())
+        .join(",");
     final typeParams = typeParameters.map((e) => e.name).join(",");
     return Tuple2(typeParams, typeParamsWithBounds);
   }
@@ -57,8 +67,10 @@ abstract class AstUtils {
         : value;
   }
 
-  static List<Field> convertParamsToFields(FormalParameterList? parameters,
-      {bool isDImmutable = false}) {
+  static List<Field> convertParamsToFields(
+    FormalParameterList? parameters, {
+    bool isDImmutable = false,
+  }) {
     if (parameters == null) {
       return [];
     }
@@ -79,17 +91,20 @@ abstract class AstUtils {
         type = t?.toString() ?? "dynamic";
       }
       return Field(
-          name: name,
-          type: type,
-          value: value,
-          annotations: annotations,
-          isOptional: isOptional,
-          param: param);
+        name: name,
+        type: type,
+        value: value,
+        annotations: annotations,
+        isOptional: isOptional,
+        param: param,
+      );
     }).toList();
   }
 
-  static List<Field> convertParamElementsToFields(List<ParameterElement> params,
-      {bool dim = false}) {
+  static List<Field> convertParamElementsToFields(
+    List<ParameterElement> params, {
+    bool dim = false,
+  }) {
     return params.map((param) {
       final name = param.name;
       final type = param.type.getDisplayString(withNullability: true);
@@ -102,7 +117,8 @@ abstract class AstUtils {
           defaultValue = param.defaultValueFromAnnotation;
           if (defaultValue == null) {
             throw ArgumentError.value(
-                "Should provide Default for field ${name} using @Default annotation in DImmutable models");
+              "Should provide Default for field ${name} using @Default annotation in DImmutable models",
+            );
           }
           isOptional = false;
           if (param.hasJsonKey) {
@@ -110,9 +126,11 @@ abstract class AstUtils {
             if (!jsonKeyAnnot!.toSource().contains("defaultValue")) {
               // jsonKey doesnt have defaultValue but Default is specified as Default annotation so lets merge
               annotations = param.mergeJsonKeyAndReturnAnnotations(
-                  <String, dynamic>{"defaultValue": defaultValue});
+                <String, dynamic>{"defaultValue": defaultValue},
+              );
               logger.shout(
-                  "Default value $defaultValue annotationation $annotations");
+                "Default value $defaultValue annotationation $annotations",
+              );
             }
           } else {
             annotations.add("@JsonKey(defaultValue : $defaultValue)");
@@ -162,7 +180,9 @@ abstract class AnnotationUtils {
   }
 
   static List<String> mergeJsonKeyAndReturnAnnotations(
-      Element element, Map<String, dynamic> newFields) {
+    Element element,
+    Map<String, dynamic> newFields,
+  ) {
     final tc = TypeChecker.fromRuntime(JsonKey);
     return element.metadata.map((e) {
       final type = e.type;
@@ -285,20 +305,23 @@ extension ElementAnnotationExt on ElementAnnotation {
 extension JsonKeyExt on JsonKey {
   JsonKey copyWithMap(Map<String, dynamic> map) {
     return JsonKey(
-      defaultValue:
-          map.containsKey("defaultValue") ? map["defaultValue"] : defaultValue,
+      defaultValue: map.containsKey("defaultValue")
+          ? map["defaultValue"]
+          : defaultValue,
       disallowNullValue: map.containsKey("disallowNullValue")
           ? map["disallowNullValue"] as bool?
           : disallowNullValue,
-      fromJson:
-          map.containsKey("fromJson") ? map["fromJson"] as Function? : fromJson,
+      fromJson: map.containsKey("fromJson")
+          ? map["fromJson"] as Function?
+          : fromJson,
       ignore: map.containsKey("ignore") ? map["ignore"] as bool? : ignore,
       includeIfNull: map.containsKey("includeIfNull")
           ? map["includeIfNull"] as bool?
           : includeIfNull,
       name: map.containsKey("name") ? map["name"] as String? : name,
-      required:
-          map.containsKey("required") ? map["required"] as bool? : required,
+      required: map.containsKey("required")
+          ? map["required"] as bool?
+          : required,
       toJson: map.containsKey("toJson") ? map["toJson"] as Function? : toJson,
       // unknownEnumValue: map.containsKey("unknownEnumValue")
       //     ? map["unknownEnumValue"]
@@ -315,13 +338,15 @@ extension ParameterElementExt on ParameterElement {
   String? get defaultValueFromAnnotation => AnnotationUtils.defaultValue(this);
 
   List<String> mergeJsonKeyAndReturnAnnotations(
-          Map<String, dynamic> newFields) =>
-      AnnotationUtils.mergeJsonKeyAndReturnAnnotations(this, newFields);
+    Map<String, dynamic> newFields,
+  ) => AnnotationUtils.mergeJsonKeyAndReturnAnnotations(this, newFields);
 }
 
 extension DartObjectExt on DartObject {
-  String? functionNameForField(String name,
-      {String? Function(ExecutableElement fn)? validateFn}) {
+  String? functionNameForField(
+    String name, {
+    String? Function(ExecutableElement fn)? validateFn,
+  }) {
     final fn = getField(name)?.toFunctionValue();
     if (fn != null) {
       logger.shout("fn = ${fn} Rt ${fn.returnType}");
@@ -339,15 +364,15 @@ extension DartObjectExt on DartObject {
 
   Map<String, String>? getStringMapForField(String name) {
     final m = getField(name)?.toMapValue();
-    return m?.map((key, value) =>
-        MapEntry(key!.toStringValue()!, value!.toStringValue()!));
+    return m?.map(
+      (key, value) => MapEntry(key!.toStringValue()!, value!.toStringValue()!),
+    );
   }
 
   List<String>? getStringList(String name) {
-    return getField(name)
-        ?.toListValue()
-        ?.map((e) => e.toStringValue()!)
-        .toList();
+    return getField(
+      name,
+    )?.toListValue()?.map((e) => e.toStringValue()!).toList();
   }
 
   T? getEnumField<T>(String name, List<T> values) {
@@ -380,8 +405,10 @@ extension ConstReadExt on ConstantReader {
     return objectValue.getEnumField(name, values);
   }
 
-  String? functionNameForField(String name,
-      {String? Function(ExecutableElement fn)? validateFn}) {
+  String? functionNameForField(
+    String name, {
+    String? Function(ExecutableElement fn)? validateFn,
+  }) {
     return objectValue.functionNameForField(name, validateFn: validateFn);
   }
 
@@ -398,8 +425,8 @@ extension FieldElementExt on FieldElement {
   bool get hasJsonKey => AnnotationUtils.hasJsonKey(this);
 
   List<String> mergeJsonKeyAndReturnAnnotations(
-          Map<String, dynamic> newFields) =>
-      AnnotationUtils.mergeJsonKeyAndReturnAnnotations(this, newFields);
+    Map<String, dynamic> newFields,
+  ) => AnnotationUtils.mergeJsonKeyAndReturnAnnotations(this, newFields);
 }
 
 extension MethodElementExt on MethodElement {
@@ -410,10 +437,7 @@ extension MethodElementExt on MethodElement {
       final url = ao.peek("path")?.stringValue;
       final isProtected = ao.peek("isProtected")?.boolValue ?? false;
       final nt = ao.peek("nestedType")?.objectValue.toTypeValue()?.element;
-      return Tuple2(
-        Url(url!, isProtected: isProtected),
-        nt,
-      );
+      return Tuple2(Url(url!, isProtected: isProtected), nt);
     }
   }
 }
