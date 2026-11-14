@@ -19,8 +19,10 @@ List<HttpFieldInfo> getHttpFields(List<FieldElement> fields) {
   return result;
 }
 
-HttpFieldInfo? _getHttpFieldInfo(FieldElement element,
-    {bool isTypeDef = true}) {
+HttpFieldInfo? _getHttpFieldInfo(
+  FieldElement element, {
+  bool isTypeDef = true,
+}) {
   late InterfaceType ht;
   ElementAnnotation? anot;
   if (isTypeDef) {
@@ -40,20 +42,25 @@ HttpFieldInfo? _getHttpFieldInfo(FieldElement element,
   }
 
   print(
-      "Getting http for field ${element.type} ${element.type.runtimeType} Alias ${element.type.element}");
+    "Getting http for field ${element.type} ${element.type.runtimeType} Alias ${element.type.element}",
+  );
   // final ht = AstUtils.isSubTypeof(type, "HttpField");
 
   if (ht.typeArguments.length != 3) {
     throw ArgumentError.value(
-        "You should specify all 3 generic types of HttpField");
+      "You should specify all 3 generic types of HttpField",
+    );
   }
 
   String? inputType = replaceEndStar(
-      ht.typeArguments[0].getDisplayString(withNullability: true));
+    ht.typeArguments[0].getDisplayString(withNullability: true),
+  );
   var responseType = replaceEndStar(
-      ht.typeArguments[1].getDisplayString(withNullability: true));
+    ht.typeArguments[1].getDisplayString(withNullability: true),
+  );
   final errorType = replaceEndStar(
-      ht.typeArguments[2].getDisplayString(withNullability: true));
+    ht.typeArguments[2].getDisplayString(withNullability: true),
+  );
 
   if (anot == null) {
     throw ArgumentError.value("You should anotate type ${ht} with HttpRequest");
@@ -63,8 +70,10 @@ HttpFieldInfo? _getHttpFieldInfo(FieldElement element,
   final reader = ConstantReader(value);
   final url = reader.read("url").stringValue;
   final method = reader.read("method").stringValue;
-  var responseTypeEnum =
-      reader.getEnumField("responseType", HttpResponseType.values);
+  var responseTypeEnum = reader.getEnumField(
+    "responseType",
+    HttpResponseType.values,
+  );
   if (responseTypeEnum == null) {
     if (responseType == "String") {
       responseTypeEnum = HttpResponseType.STRING;
@@ -88,7 +97,8 @@ HttpFieldInfo? _getHttpFieldInfo(FieldElement element,
   var errorDeserializer =
       reader.functionNameForField("errorDeserializer") ?? "IdentifyFn";
   final graphqlQuery = getGraphqlRequestPartFromDartObj(
-      reader.peek("graphqlQuery")?.objectValue);
+    reader.peek("graphqlQuery")?.objectValue,
+  );
   final inputSerializer = reader.functionNameForField("inputSerializer");
   final responseSerializer = reader.functionNameForField("responseSerializer");
   final inputDeserializer = reader.functionNameForField("inputDeserializer");
@@ -109,72 +119,84 @@ HttpFieldInfo? _getHttpFieldInfo(FieldElement element,
   final reqExtAnnot = element.annotationFromType(HttpRequestExtension);
   if (reqExtAnnot != null) {
     final reqE = ConstantReader(reqExtAnnot.computeConstantValue());
-    transformer = reqE.functionNameForField("transformer", validateFn: (ex) {
-      final params = ex.parameters;
-      final at = element.type.element?.name;
-      final error =
-          "transformer function should contain two paramaeter one ${at} other one is $responseType? and return type is $at";
-      if (params.length != 2) {
-        return error;
-      }
-      print("Return type ${ex.returnType}");
-      if (!ex.returnType.toString().startsWith(element.type.toString())) {
-        return error;
-      }
-      final p1 = params.first.type.toString();
-      final p2 = "${params.last.type.toString()}";
-      if (p1.startsWith(at!) || p2 != "${responseType}?") {
-        return error;
-      }
-    });
-    canProcessOfflineAction =
-        reqE.functionNameForField("canProcessOfflineAction");
+    transformer = reqE.functionNameForField(
+      "transformer",
+      validateFn: (ex) {
+        // final params = ex.parameters;
+        final params = null; // TODO implement this;
+        final at = element.type.element?.name;
+        final error =
+            "transformer function should contain two paramaeter one ${at} other one is $responseType? and return type is $at";
+        if (params.length != 2) {
+          return error;
+        }
+        print("Return type ${ex.returnType}");
+        if (!ex.returnType.toString().startsWith(element.type.toString())) {
+          return error;
+        }
+        final p1 = params.first.type.toString();
+        final p2 = "${params.last.type.toString()}";
+        if (p1.startsWith(at!) || p2 != "${responseType}?") {
+          return error;
+        }
+      },
+    );
+    canProcessOfflineAction = reqE.functionNameForField(
+      "canProcessOfflineAction",
+    );
     persitDataBetweenFetches =
         reqE.peek("persitDataBetweenFetches")?.boolValue ?? false;
   }
 
   return HttpFieldInfo(
-      name: element.name,
-      url: url,
-      method: method,
-      headers: headers,
-      fieldType: element.type.toString(),
-      inputTypeEnum: inputTypeEnum,
-      responseTypeEnum: responseTypeEnum!,
-      inputDeserializer: inputDeserializer,
-      responseSerializer: responseSerializer,
-      inputType: inputType,
-      errorType: errorType,
-      transformType: transformType,
-      canProcessOfflineAction: canProcessOfflineAction,
-      responseDeserializer: responseDeserializer,
-      errorDeserializer: errorDeserializer,
-      queryParamsType: queryParamsType,
-      inputSerializer: inputSerializer,
-      responseType: responseType,
-      pathParamsType: pathParamsType,
-      persitDataBetweenFetches: persitDataBetweenFetches,
-      transformer: transformer,
-      graphqlQuery: graphqlQuery);
+    name: element.name!, // TODO check null case
+    url: url,
+    method: method,
+    headers: headers,
+    fieldType: element.type.toString(),
+    inputTypeEnum: inputTypeEnum,
+    responseTypeEnum: responseTypeEnum!,
+    inputDeserializer: inputDeserializer,
+    responseSerializer: responseSerializer,
+    inputType: inputType,
+    errorType: errorType,
+    transformType: transformType,
+    canProcessOfflineAction: canProcessOfflineAction,
+    responseDeserializer: responseDeserializer,
+    errorDeserializer: errorDeserializer,
+    queryParamsType: queryParamsType,
+    inputSerializer: inputSerializer,
+    responseType: responseType,
+    pathParamsType: pathParamsType,
+    persitDataBetweenFetches: persitDataBetweenFetches,
+    transformer: transformer,
+    graphqlQuery: graphqlQuery,
+  );
 }
 
 GraphqlRequestPart? getGraphqlRequestPartFromDartObj(
-    DartObject? graphqlQueryObj) {
+  DartObject? graphqlQueryObj,
+) {
   if (graphqlQueryObj != null) {
     final query = graphqlQueryObj.getField("query")!.toStringValue()!;
     final hash = graphqlQueryObj.getField("hash")?.toStringValue();
-    final useGetForPersist =
-        graphqlQueryObj.getField("useGetForPersist")?.toBoolValue();
+    final useGetForPersist = graphqlQueryObj
+        .getField("useGetForPersist")
+        ?.toBoolValue();
     return GraphqlRequestPart(
-        query: query, hash: hash, useGetForPersist: useGetForPersist ?? false);
+      query: query,
+      hash: hash,
+      useGetForPersist: useGetForPersist ?? false,
+    );
   }
 }
 
-String convertHttpFieldInfoToAction(
-    {required HttpFieldInfo hf,
-    required String type,
-    required String modelName,
-    bool psHistoryEnabled = false}) {
+String convertHttpFieldInfoToAction({
+  required HttpFieldInfo hf,
+  required String type,
+  required String modelName,
+  bool psHistoryEnabled = false,
+}) {
   final params = <String>[];
   final payloadFields = <String>[];
 
@@ -184,14 +206,14 @@ String convertHttpFieldInfoToAction(
 
       final graphqlQueryPart = hf.graphqlQuery!;
       final gparams = <String>[
-        "query: ${graphqlQueryPart.query.replaceAll("\$", "\\\$").addTripleQuotes}"
+        "query: ${graphqlQueryPart.query.replaceAll("\$", "\\\$").addTripleQuotes}",
       ];
       if (graphqlQueryPart.hash != null) {
         final extensions = jsonEncode(<String, dynamic>{
           "persistedQuery": <String, dynamic>{
             "version": 1,
-            "sha256Hash": graphqlQueryPart.hash
-          }
+            "sha256Hash": graphqlQueryPart.hash,
+          },
         });
         gparams.add("extensions: <String,dynamic>${extensions}");
       }

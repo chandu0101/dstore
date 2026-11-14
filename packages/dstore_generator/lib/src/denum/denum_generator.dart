@@ -1,6 +1,5 @@
-import 'package:build/src/builder/build_step.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:build/build.dart';
 import 'package:dstore_generator/src/utils/utils.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:dstore_annotation/dstore_annotation.dart';
@@ -8,12 +7,16 @@ import 'package:dstore_annotation/dstore_annotation.dart';
 class DEnumGenerator extends GeneratorForAnnotation<DEnum> {
   @override
   String generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) {
+    Element element,
+    ConstantReader annotation,
+    BuildStep buildStep,
+  ) {
     try {
       // if (element is EnumElementImpl) {}
       if (!element.toString().trim().startsWith("enum")) {
         throw ArgumentError.value(
-            "You should use @DEnum annotation only on enums");
+          "You should use @DEnum annotation only on enums",
+        );
       }
       final name = element.name;
       logger.shout("Enum ${element.runtimeType} ${element.name} ${element}");

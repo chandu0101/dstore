@@ -21,27 +21,30 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
   final bool isNav;
   final List<NestedNavsInfo>? nestedNavs;
 
-  PStateAstVisitor(
-      {required this.element,
-      required this.isPersitable,
-      this.isNav = false,
-      this.historyLimit,
-      this.nestedNavs,
-      required this.historyEnabled}) {
+  PStateAstVisitor({
+    required this.element,
+    required this.isPersitable,
+    this.isNav = false,
+    this.historyLimit,
+    this.nestedNavs,
+    required this.historyEnabled,
+  }) {
     if (isNav) {
       fields.add(Field(name: "page", type: "Page?", isOptional: true));
       fields.add(
-          Field(name: "beforeLeave", type: "BeforeLeaveFn?", isOptional: true));
-      fields.add(Field(
+        Field(name: "beforeLeave", type: "BeforeLeaveFn?", isOptional: true),
+      );
+      fields.add(
+        Field(
           name: "meta",
           type: "NavConfigMeta",
           isOptional: false,
-          value: "NavConfigMeta()"));
-      fields.add(Field(
-        name: "navOptions",
-        type: "NavOptions?",
-        isOptional: false,
-      ));
+          value: "NavConfigMeta()",
+        ),
+      );
+      fields.add(
+        Field(name: "navOptions", type: "NavOptions?", isOptional: false),
+      );
     }
     if (historyEnabled) {
       fields.add(Field(name: "canUndo", type: "bool", value: "false"));
@@ -60,18 +63,22 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
     if (regularAnnot != null ||
         (isNav && navStateRegularMethods.contains(name))) {
       logger.shout("buildPages : ${node.toSource()}");
-      methods.add(PStateMethod(
+      methods.add(
+        PStateMethod(
           isAsync: false,
           name: name,
           params: [],
           isRegular: true,
           keysModified: [],
-          body: node.toSource()));
+          body: node.toSource(),
+        ),
+      );
       return;
     }
     if (node.isGetter || node.isSetter) {
       throw NotAllowedError(
-          "getters and setters are not allowed in pstates , remove '${node.name}' from PStste");
+        "getters and setters are not allowed in pstates , remove '${node.name}' from PStste",
+      );
     }
     final body = node.body;
     if (body is EmptyFunctionBody) {
@@ -83,10 +90,12 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
     if (node.body.isAsynchronous && (rt != "Future<void>" && rt != "void")) {
       isAsync = true;
       throw InvalidSignatureError(
-          "You should annotate method  '${node.name.lexeme}' return type with Future<void>  ");
+        "You should annotate method  '${node.name.lexeme}' return type with Future<void>  ",
+      );
     } else if (!node.body.isAsynchronous && rt != "void") {
       throw InvalidSignatureError(
-          "You should annotate method  '${node.name.lexeme}' return type with void  ");
+        "You should annotate method  '${node.name.lexeme}' return type with void  ",
+      );
     }
 
     final params = AstUtils.convertParamsToFields(node.parameters);
@@ -100,8 +109,10 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
     var isNavProtected = false;
 
     if (isNav) {
-      final urlTuple =
-          getUrlFromMethod(mparams: params, methodElement: methodElement);
+      final urlTuple = getUrlFromMethod(
+        mparams: params,
+        methodElement: methodElement,
+      );
       rawUrl = urlTuple?.rawUrl;
       finalUrl = urlTuple?.finalUrl;
       final protectedAnnot = methodElement.annotationFromType(Protected);
@@ -117,13 +128,17 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
         final i = isNavPState(nestedNavElement);
         if (i?.startsWith("NestedNavState") != true) {
           throw ArgumentError.value(
-              "nestedType param of Url annotation should be a class annotated with PState and  extends NestedNavState ");
+            "nestedType param of Url annotation should be a class annotated with PState and  extends NestedNavState ",
+          );
         }
         nestedNavTypeName = getFullTypeName(nestedNavElement);
-        nestedNavs!.add(NestedNavsInfo(
+        nestedNavs!.add(
+          NestedNavsInfo(
             typeName: nestedNavTypeName,
             url: rawUrl!,
-            defaultAction: "${element.name.substring(2)}Actions.$name()"));
+            defaultAction: "${element.name!.substring(2)}Actions.$name()",
+          ),
+        ); // TODO check null case
       }
     }
     if (body is ExpressionFunctionBody) {
@@ -131,31 +146,36 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
       if (e is AssignmentExpression) {
         if (!_isThisPropertyAccessExpression(e.leftHandSide)) {
           throw Exception(
-              "Singleline body should be assigment expression of class variable with this. prefix");
+            "Singleline body should be assigment expression of class variable with this. prefix",
+          );
         }
         final pa = e.leftHandSide as PropertyAccess;
         keys.add(pa.propertyName.name);
         final fname = pa.toString().split(".")[1];
-        mbody = """
+        mbody =
+            """
            ${paramsStr}
            return ${STATE_VARIABLE}.copyWith(${fname}:${e.rightHandSide.toString().replaceAll("this.", "${STATE_VARIABLE}.")});
         """;
       } else {
         throw Exception(
-            "Singleline body should assigment expression of class variable with this.prefix");
+          "Singleline body should assigment expression of class variable with this.prefix",
+        );
       }
     } else if (body is BlockFunctionBody) {
       print("processMethodStatements ${name} isAsync $isAsync ");
       final msr = processMethodStatements(
-          statements: body.block.statements,
-          historyEnabled: historyEnabled,
-          url: finalUrl,
-          isAsyncMethod: isAsync,
-          isNav: isNav,
-          limit: historyLimit);
+        statements: body.block.statements,
+        historyEnabled: historyEnabled,
+        url: finalUrl,
+        isAsyncMethod: isAsync,
+        isNav: isNav,
+        limit: historyLimit,
+      );
       final statements = msr.item1;
       keys.addAll(msr.item2);
-      mbody = """
+      mbody =
+          """
            ${paramsStr}
            ${statements}
            """;
@@ -166,7 +186,8 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
       node.body.visitChildren(bodyVisitor);
       ex.block.statements.forEach((statement) {
         print(
-            "************** Check ${statement.toString()} ${statement.runtimeType}");
+          "************** Check ${statement.toString()} ${statement.runtimeType}",
+        );
         if (statement is ExpressionStatement) {
           print("exrp");
           print(statement.expression.runtimeType);
@@ -182,7 +203,8 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
       });
     }
 
-    methods.add(PStateMethod(
+    methods.add(
+      PStateMethod(
         isAsync: node.body.isAsynchronous,
         name: name,
         url: rawUrl,
@@ -190,11 +212,18 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
         params: params,
         nestedNavTypeName: nestedNavTypeName,
         keysModified: keys
-            .map((e) => fields.singleWhere((element) => element.name == e,
+            .map(
+              (e) => fields.singleWhere(
+                (element) => element.name == e,
                 orElse: () => throw ArgumentError.value(
-                    "key $e not found in fields $fields , this can occur if you're using pstate as nav but didnt specified isNav param")))
+                  "key $e not found in fields $fields , this can occur if you're using pstate as nav but didnt specified isNav param",
+                ),
+              ),
+            )
             .toList(),
-        body: mbody));
+        body: mbody,
+      ),
+    );
     return super.visitMethodDeclaration(node);
   }
 
@@ -203,14 +232,16 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
     final typeA = node.fields.type;
     if (typeA == null) {
       throw InvalidSignatureError(
-          "Should provide type annotation for fields , specify type for field '${node.fields.variables.first.name}'");
+        "Should provide type annotation for fields , specify type for field '${node.fields.variables.first.name}'",
+      );
     }
     final type = typeA.toString();
     node.fields.variables.forEach((v) {
       final name = v.name.toString();
       final valueE = v.initializer;
-      final fe = element.fields
-          .singleWhere((element) => element.name == v.name.lexeme);
+      final fe = element.fields.singleWhere(
+        (element) => element.name == v.name.lexeme,
+      );
       if (v.isLate) {
         // check for psdeps
 
@@ -218,7 +249,8 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
         if (!type.startsWith("\$_") ||
             fe.type.element?.annotationFromType(PState) == null) {
           throw NotAllowedError(
-              "Only PState models are allowed as late variables");
+            "Only PState models are allowed as late variables",
+          );
         }
         final psDepElement = fe.type.element as ClassElement;
         final dt = getFullTypeName(psDepElement);
@@ -233,47 +265,56 @@ class PStateAstVisitor extends SimpleAstVisitor<dynamic> {
         if (!type.endsWith("?") && valueE == null) {
           logger.shout("Special Field ${node.runtimeType} $node  ");
           throw InvalidSignatureError(
-              "Should provide initital value for fields");
+            "Should provide initital value for fields",
+          );
         }
         final value = valueE.toString();
         final fe = element.fields.singleWhere((f) => f.name == name);
-        logger.shout(
-            "Variable Annotations $fe ${fe.metadata} element ${v.declaredElement}");
+        // logger.shout(
+        //   "Variable Annotations $fe ${fe.metadata} element ${v.declaredElement}",
+        // );
 
-        var annotations = fe.metadata.map((e) => e.toSource()).toList();
+        // var annotations = fe.metadata.map((e) => e.toSource()).toList();
         final noPersitAnnot = fe.annotationFromType(ExcludeThisKeyWhilePersit);
-        if (isPersitable && noPersitAnnot != null) {
-          if (fe.hasJsonKey) {
-            annotations = fe.mergeJsonKeyAndReturnAnnotations(
-                <String, dynamic>{"ignore": true});
-          } else {
-            annotations.add("@JsonKey(ignore: true)");
-          }
-        }
+        // if (isPersitable && noPersitAnnot != null) {
+        //   if (fe.hasJsonKey) {
+        //     annotations = fe.mergeJsonKeyAndReturnAnnotations(<String, dynamic>{
+        //       "ignore": true,
+        //     });
+        //   } else {
+        //     annotations.add("@JsonKey(ignore: true)");
+        //   }
+        // }
         if (name == "h") {
           print(
-              "nonconst annot ${fe.annotationFromType(PSNonConstClassField)}");
+            "nonconst annot ${fe.annotationFromType(PSNonConstClassField)}",
+          );
         }
         final nonConstValue =
             fe.annotationFromType(PSNonConstClassField) != null &&
-                value != "null";
+            value != "null";
         print("nonConstValue $name $nonConstValue");
-        fields.add(Field(
+        fields.add(
+          Field(
             name: name,
-            annotations: annotations,
+            annotations: [""], // TODO implement this
             type: type,
             value: value,
-            nonConstValue: nonConstValue));
+            nonConstValue: nonConstValue,
+          ),
+        );
       }
     });
     print(
-        "declared element : ${node.fields.type} node : ${node.fields.variables[0]}");
+      "declared element : ${node.fields.type} node : ${node.fields.variables[0]}",
+    );
     return super.visitFieldDeclaration(node);
   }
 
   bool _isPStateModel(VariableDeclaration v) {
-    final fe =
-        element.fields.singleWhere((element) => element.name == v.name.lexeme);
+    final fe = element.fields.singleWhere(
+      (element) => element.name == v.name.lexeme,
+    );
     print("fe $fe");
     return fe.type.element?.annotationFromType(PState) != null;
   }
@@ -284,8 +325,10 @@ String _convertMethodParamsToString(List<Field> params) {
     return "final ${PAYLOAD_VARIBALE} = ${ACTION_VARIABLE}.payload;";
   }
   final p = params
-      .map((p) =>
-          "final ${p.name} = ${PAYLOAD_VARIBALE}[\"${p.name}\"] as ${p.type};")
+      .map(
+        (p) =>
+            "final ${p.name} = ${PAYLOAD_VARIBALE}[\"${p.name}\"] as ${p.type};",
+      )
       .join("\n");
   return """
       final ${PAYLOAD_VARIBALE} = ${ACTION_VARIABLE}.payload!;
@@ -346,11 +389,15 @@ ForEachStatementResult processForEachStatement(Statement statement) {
     statementResults = processStatements(body.block.statements);
   }
   return ForEachStatementResult(
-      statement: statement, statementResults: statementResults);
+    statement: statement,
+    statementResults: statementResults,
+  );
 }
 
 IfStatementResult processIfOnlyStatement(
-    Statement statement, ProcessStatementOptions options) {
+  Statement statement,
+  ProcessStatementOptions options,
+) {
   final thenStatement = (statement as IfStatement).thenStatement;
   var statementResults = <StatementResult>[];
   if (thenStatement is ExpressionStatement) {
@@ -360,11 +407,15 @@ IfStatementResult processIfOnlyStatement(
     statementResults = processStatements(thenStatement.statements, options);
   }
   return IfStatementResult(
-      statement: statement, statementResults: statementResults);
+    statement: statement,
+    statementResults: statementResults,
+  );
 }
 
 IfElseStatementResult processIfElseStatement(
-    Statement statement, ProcessStatementOptions options) {
+  Statement statement,
+  ProcessStatementOptions options,
+) {
   final thenStatement = (statement as IfStatement).thenStatement;
   var ifStatementResults = <StatementResult>[];
   if (thenStatement is ExpressionStatement) {
@@ -386,33 +437,41 @@ IfElseStatementResult processIfElseStatement(
     elseStatementResults = processStatements([elseStatement!], options);
   }
   return IfElseStatementResult(
-      statement: statement,
-      ifStatementResults: ifStatementResults,
-      elseStatementResults: elseStatementResults);
+    statement: statement,
+    ifStatementResults: ifStatementResults,
+    elseStatementResults: elseStatementResults,
+  );
 }
 
 TryStatementResult processTryStatement(
-    TryStatement statement, ProcessStatementOptions options) {
+  TryStatement statement,
+  ProcessStatementOptions options,
+) {
   print("Processing try statement $statement");
-  final tryStatementResults =
-      processStatements(statement.body.statements, options);
+  final tryStatementResults = processStatements(
+    statement.body.statements,
+    options,
+  );
   final catchStatementResults = statement.catchClauses
       .map((cc) => processStatements(cc.body.statements, options))
       .toList();
   print("catch done");
   final List<StatementResult> finalStatementResults =
       statement.finallyBlock == null
-          ? []
-          : processStatements(statement.finallyBlock!.statements, options);
+      ? []
+      : processStatements(statement.finallyBlock!.statements, options);
   return TryStatementResult(
-      statement: statement,
-      tryStatementResults: tryStatementResults,
-      catchStatementResults: catchStatementResults,
-      finalStatementResults: finalStatementResults);
+    statement: statement,
+    tryStatementResults: tryStatementResults,
+    catchStatementResults: catchStatementResults,
+    finalStatementResults: finalStatementResults,
+  );
 }
 
 ForStatementResult processForStatement(
-    ForStatement statement, ProcessStatementOptions options) {
+  ForStatement statement,
+  ProcessStatementOptions options,
+) {
   late List<StatementResult> statementResults;
   final body = statement.body;
   if (body is Block) {
@@ -421,16 +480,21 @@ ForStatementResult processForStatement(
     statementResults = processStatements([body], options);
   }
   return ForStatementResult(
-      statement: statement, statementResults: statementResults);
+    statement: statement,
+    statementResults: statementResults,
+  );
 }
 
-List<StatementResult> processStatements(List<AstNode> statements,
-    [ProcessStatementOptions options = const ProcessStatementOptions()]) {
+List<StatementResult> processStatements(
+  List<AstNode> statements, [
+  ProcessStatementOptions options = const ProcessStatementOptions(),
+]) {
   return statements.map((statement) {
     late StatementResult result;
     if (isMutationStatement(statement)) {
-      final exp = ((statement as ExpressionStatement).expression
-          as AssignmentExpression);
+      final exp =
+          ((statement as ExpressionStatement).expression
+              as AssignmentExpression);
       final key = exp.leftHandSide.toString().split(".")[1];
       final code =
           """${DSTORE_PREFIX}${key} ${exp.operator} ${exp.rightHandSide.toString().replaceAll("this.", "${STATE_VARIABLE}.")};""";
@@ -470,9 +534,14 @@ String replaceThisWithState(AstNode node, Iterable<String> keys) {
 }
 
 String convertIfStatementResultToString(
-    IfStatementResult statementResult, Iterable<String> keys) {
-  final condition =
-      replaceThisWithState(statementResult.statement.condition, keys);
+  IfStatementResult statementResult,
+  Iterable<String> keys,
+) {
+  // final condition = replaceThisWithState(
+  //   statementResult.statement.condition,
+  //   keys,
+  // );
+  final condition = true; // TODO implement this
   return """
        if(${condition}) {
          ${convertStatementResultsToString(statementResult.statementResults, keys).join("\n")}
@@ -481,15 +550,22 @@ String convertIfStatementResultToString(
 }
 
 String convertIfElseStatementResultToString(
-    IfElseStatementResult iesr, Iterable<String> keys) {
+  IfElseStatementResult iesr,
+  Iterable<String> keys,
+) {
   final ies = iesr.statement;
-  final ifCond = replaceThisWithState(ies.condition, keys);
-  final ifBody =
-      convertStatementResultsToString(iesr.ifStatementResults, keys).join("\n");
+  // TODO implement this
+  // final ifCond = replaceThisWithState(ies.condition, keys);
+  final ifcond = true;
+  final ifBody = convertStatementResultsToString(
+    iesr.ifStatementResults,
+    keys,
+  ).join("\n");
   final elseS = ies.elseStatement;
   var else_str = "";
   if (elseS is Block || elseS is ExpressionStatement) {
-    else_str = """else {
+    else_str =
+        """else {
          ${convertStatementResultsToString(iesr.elseStatementResults, keys).join("\n")}
        }""";
   } else if (elseS is IfStatement && elseS.elseStatement == null) {
@@ -501,48 +577,63 @@ String convertIfElseStatementResultToString(
   }
 
   return """
-    if(${ifCond}) {
+    if(${ifcond}) {
       ${ifBody}
     } ${else_str}
   """;
 }
 
 String converForEachStatementResultToString(
-    ForEachStatementResult fesr, Iterable<String> keys) {
+  ForEachStatementResult fesr,
+  Iterable<String> keys,
+) {
   final mi = fesr.statement.expression as MethodInvocation;
 
   final fExp = mi.argumentList.arguments[0] as FunctionExpression;
   final params = fExp.parameters!.parameters.map((p) => p.toString()).join(",");
   final call = "${mi.target}.${mi.methodName}";
-  final body =
-      convertStatementResultsToString(fesr.statementResults, keys).join("\n");
+  final body = convertStatementResultsToString(
+    fesr.statementResults,
+    keys,
+  ).join("\n");
   return """${call}((${params}) {
      ${body}
   }); """;
 }
 
 String convertTryStatementResultToString(
-    TryStatementResult tsr, Iterable<String> keys) {
-  final tb =
-      convertStatementResultsToString(tsr.tryStatementResults, keys).join("\n");
+  TryStatementResult tsr,
+  Iterable<String> keys,
+) {
+  final tb = convertStatementResultsToString(
+    tsr.tryStatementResults,
+    keys,
+  ).join("\n");
   print("tb $tb");
-  final cb = tsr.statement.catchClauses.asMap().entries.map((me) {
-    final i = me.key;
-    final c = me.value;
-    final cb =
-        convertStatementResultsToString(tsr.catchStatementResults[i], keys)
-            .join("\n");
-    print(
-        "cblock $c ck ${c.catchKeyword} cp ${c.exceptionParameter} sp ${c.stackTraceParameter} ");
-    final onException =
-        c.exceptionType != null ? "on ${c.exceptionType} " : " ";
-    final catchClause = c.catchKeyword != null
-        ? "catch(${c.exceptionParameter}${c.stackTraceParameter != null ? ", ${c.stackTraceParameter}" : ""})"
-        : "";
-    return """${onException} ${catchClause} {
+  final cb = tsr.statement.catchClauses
+      .asMap()
+      .entries
+      .map((me) {
+        final i = me.key;
+        final c = me.value;
+        final cb = convertStatementResultsToString(
+          tsr.catchStatementResults[i],
+          keys,
+        ).join("\n");
+        print(
+          "cblock $c ck ${c.catchKeyword} cp ${c.exceptionParameter} sp ${c.stackTraceParameter} ",
+        );
+        final onException = c.exceptionType != null
+            ? "on ${c.exceptionType} "
+            : " ";
+        final catchClause = c.catchKeyword != null
+            ? "catch(${c.exceptionParameter}${c.stackTraceParameter != null ? ", ${c.stackTraceParameter}" : ""})"
+            : "";
+        return """${onException} ${catchClause} {
         ${cb}
       }""";
-  }).join("\n");
+      })
+      .join("\n");
   final fb = tsr.finalStatementResults.isNotEmpty
       ? """ finally {
         ${convertStatementResultsToString(tsr.finalStatementResults, keys).join("\n")}
@@ -558,7 +649,9 @@ String convertTryStatementResultToString(
 }
 
 String convertForStatementResultToString(
-    ForStatementResult fsr, Iterable<String> keys) {
+  ForStatementResult fsr,
+  Iterable<String> keys,
+) {
   final flp = replaceThisWithState(fsr.statement.forLoopParts, keys);
   return """
     for(${flp}) {
@@ -568,7 +661,9 @@ String convertForStatementResultToString(
 }
 
 List<String> convertStatementResultsToString(
-    List<StatementResult> statmentResults, Iterable<String> keys) {
+  List<StatementResult> statmentResults,
+  Iterable<String> keys,
+) {
   final result = <String>[];
   statmentResults.forEach((sr) {
     switch (sr.kind) {
@@ -605,32 +700,39 @@ List<String> convertStatementResultsToString(
   return result;
 }
 
-Tuple2<String, Set<String>> processMethodStatements(
-    {required List<Statement> statements,
-    required bool historyEnabled,
-    required bool isAsyncMethod,
-    String? url,
-    bool isNav = false,
-    int? limit}) {
+Tuple2<String, Set<String>> processMethodStatements({
+  required List<Statement> statements,
+  required bool historyEnabled,
+  required bool isAsyncMethod,
+  String? url,
+  bool isNav = false,
+  int? limit,
+}) {
   final statementResults = processStatements(statements);
   print("statementResults ${statementResults}");
   List<MutationStatementResult> getMutationOnlyStatementResults(
-      List<StatementResult> statementResults) {
+    List<StatementResult> statementResults,
+  ) {
     final result = <MutationStatementResult>[];
     statementResults.forEach((sr) {
       switch (sr.kind) {
         case MethodStatementKind.GeneralStatement:
           break;
         case MethodStatementKind.IfStatement:
-          result.addAll(getMutationOnlyStatementResults(
-              (sr as IfStatementResult).statementResults));
+          result.addAll(
+            getMutationOnlyStatementResults(
+              (sr as IfStatementResult).statementResults,
+            ),
+          );
           break;
         case MethodStatementKind.IfElseStatement:
           final ies = sr as IfElseStatementResult;
-          result
-              .addAll(getMutationOnlyStatementResults(ies.ifStatementResults));
           result.addAll(
-              getMutationOnlyStatementResults(ies.elseStatementResults));
+            getMutationOnlyStatementResults(ies.ifStatementResults),
+          );
+          result.addAll(
+            getMutationOnlyStatementResults(ies.elseStatementResults),
+          );
           break;
         case MethodStatementKind.ForeachStatement:
           final fs = sr as ForEachStatementResult;
@@ -638,14 +740,16 @@ Tuple2<String, Set<String>> processMethodStatements(
           break;
         case MethodStatementKind.TryStatement:
           final tsr = sr as TryStatementResult;
-          result
-              .addAll(getMutationOnlyStatementResults(tsr.tryStatementResults));
+          result.addAll(
+            getMutationOnlyStatementResults(tsr.tryStatementResults),
+          );
           tsr.catchStatementResults.forEach((csr) {
             result.addAll(getMutationOnlyStatementResults(csr));
           });
 
           result.addAll(
-              getMutationOnlyStatementResults(tsr.finalStatementResults));
+            getMutationOnlyStatementResults(tsr.finalStatementResults),
+          );
           break;
         case MethodStatementKind.MutationStatement:
           result.add(sr as MutationStatementResult);
@@ -663,12 +767,15 @@ Tuple2<String, Set<String>> processMethodStatements(
   print("isAsyncMethod $isAsyncMethod");
   if (!isAsyncMethod && mutationStatements.isEmpty) {
     throw Exception(
-        "There should be atleast one assignemtn operation for class fields");
+      "There should be atleast one assignemtn operation for class fields",
+    );
   }
   final keys = mutationStatements.map((e) => e.key).toSet();
   final specialKeys = <String>[];
-  final statementsStr =
-      convertStatementResultsToString(statementResults, keys).join("\n");
+  final statementsStr = convertStatementResultsToString(
+    statementResults,
+    keys,
+  ).join("\n");
   print("hellokeys $keys");
   if (isNav) {
     //  _DStoreState.meta
@@ -682,7 +789,8 @@ Tuple2<String, Set<String>> processMethodStatements(
   //   specialKeys.add("canRedo: ${STATE_VARIABLE}.dontTouchMePSHistory.canRedo");
   // }
   final spl = specialKeys.isEmpty ? "" : ",${specialKeys.join(",")}";
-  final stataments = """
+  final stataments =
+      """
     ${keys.map((k) => "var ${DSTORE_PREFIX}${k} = ${STATE_VARIABLE}.${k};").join("\n")}
     ${statementsStr}
     ${(historyEnabled || url != null || isNav) ? """
@@ -717,25 +825,30 @@ class MethodAstVisitor extends RecursiveAstVisitor<dynamic> {
     if (isNav) {
       allowedClassMembers.addAll(navStateFeilds);
     }
-    allowedClassMembers.addAll(element.fields.map((e) => e.name));
-    allowedClassMembers.addAll(element.methods
-        .where((m) => m.annotationFromType(RegularMethod) != null)
-        .map((e) => e.name));
+    allowedClassMembers.addAll(element.fields.map((e) => e.name!));
+    allowedClassMembers.addAll(
+      element.methods
+          .where((m) => m.annotationFromType(RegularMethod) != null)
+          .map((e) => e.name!),
+    );
     // allowedMethods.addAll(element.methods
     //     .where((m) => m.annotationFromType(RegularMethod) != null)
     //     .map((e) => e.name));
     print("allowedClassMembers $allowedClassMembers");
-    notAllowedClassMembers.addAll(element.methods
-        .where((m) => m.annotationFromType(RegularMethod) == null)
-        .map((e) => e.name));
+    notAllowedClassMembers.addAll(
+      element.methods
+          .where((m) => m.annotationFromType(RegularMethod) == null)
+          .map((e) => e.name!),
+    );
     print("notAllowedClassMembers $notAllowedClassMembers");
   }
 
   @override
   dynamic visitSimpleIdentifier(SimpleIdentifier node) {
     final name = node.name;
-    print(
-        "visitSimpleIdentifier $name , Parent ${node.parent}  runtime type ${node.parent.runtimeType} ${node.parent?.toString().startsWith("this.")} , ${node.parent.runtimeType} pe ${node.staticParameterElement} se ${node.staticElement} st ${node.staticType} , ");
+    // print(
+    // "visitSimpleIdentifier $name , Parent ${node.parent}  runtime type ${node.parent.runtimeType} ${node.parent?.toString().startsWith("this.")} , ${node.parent.runtimeType} pe ${node.staticParameterElement} se ${node.staticElement} st ${node.staticType} , ",
+    // );
     // node.parent?.childEntities.forEach((element) {
     //   print("parent : ce ${element} ${element.runtimeType}");
     // });
@@ -759,7 +872,8 @@ class MethodAstVisitor extends RecursiveAstVisitor<dynamic> {
         (node.parent == null ||
             node.parent?.toString().startsWith("this.") == true)) {
       throw NotAllowedError(
-          "You shouldnt call action method with name '${name}' inside any other method, if you want to reuse logic use methods with @RegularMethod() annotation ");
+        "You shouldnt call action method with name '${name}' inside any other method, if you want to reuse logic use methods with @RegularMethod() annotation ",
+      );
     }
     return super.visitSimpleIdentifier(node);
   }

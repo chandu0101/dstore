@@ -18,18 +18,20 @@ class DSLFieldsVisitor extends SimpleAstVisitor<Object> {
   final ClassElement element;
   final bool isJS;
 
-  DSLFieldsVisitor(
-      {required this.className,
-      required this.element,
-      required this.api,
-      this.isJS = false});
+  DSLFieldsVisitor({
+    required this.className,
+    required this.element,
+    required this.api,
+    this.isJS = false,
+  });
   @override
   dynamic visitFieldDeclaration(FieldDeclaration node) {
     final field = node.fields.variables.first;
     final name = field.name.lexeme;
     if (field.initializer == null) {
       throw ArgumentError.value(
-          "You should provide inititalizer for  field $name");
+        "You should provide inititalizer for  field $name",
+      );
     }
     final opSource = field.initializer!.toSource();
     if (opSource.startsWith("Query(") ||
@@ -37,7 +39,8 @@ class DSLFieldsVisitor extends SimpleAstVisitor<Object> {
         opSource.startsWith("Subscription(")) {
       if (!opSource.substring(opSource.indexOf(")") + 1).startsWith("..")) {
         throw ArgumentError.value(
-            "All graphql ops should use method method cascade to access properties , exmaple : Query()..field, Mutation()..field");
+          "All graphql ops should use method method cascade to access properties , exmaple : Query()..field, Mutation()..field",
+        );
       }
       final tn = "${className}_${name}";
 
@@ -48,7 +51,12 @@ class DSLFieldsVisitor extends SimpleAstVisitor<Object> {
       final schema = graphqlSchemaMap[api.apiUrl]!;
       final op = isJS
           ? getJSOp(
-              schema: schema, query: query, doc: doc, api: api, name: name)
+              schema: schema,
+              query: query,
+              doc: doc,
+              api: api,
+              name: name,
+            )
           : generateOpsTypeForQuery(
               schema: schema,
               query: query,
@@ -70,15 +78,26 @@ class DSLFieldsVisitor extends SimpleAstVisitor<Object> {
         if (dupOpsVisitor.opType != null) {
           if (dupOpsVisitor.isMultipleOpsExist) {
             throw Exception(
-                " You should specify only single query or mutation or subscription , not combined ops");
+              " You should specify only single query or mutation or subscription , not combined ops",
+            );
           }
           final tn = "${element.name}_${name}";
 
           final op = isJS
               ? getJSOp(
-                  schema: schema, query: query, doc: doc, api: api, name: name)
+                  schema: schema,
+                  query: query,
+                  doc: doc,
+                  api: api,
+                  name: name,
+                )
               : generateOpsTypeForQuery(
-                  schema: schema, query: query, doc: doc, name: tn, api: api);
+                  schema: schema,
+                  query: query,
+                  doc: doc,
+                  name: tn,
+                  api: api,
+                );
           ops.add(op);
         }
       }
@@ -144,19 +163,25 @@ class DSLVisitor extends RecursiveAstVisitor<Object> {
           final objectName = argsList.first.toString().replaceAll("()", "");
           try {
             objSpread = GraphqlAstUtils.getObjectQuery(
-                objectName: objectName, apiUrl: apiUrl);
+              objectName: objectName,
+              apiUrl: apiUrl,
+            );
           } catch (e) {
             throw ArgumentError.value(
-                "Error in getting full object query of $objectName specify fields you need");
+              "Error in getting full object query of $objectName specify fields you need",
+            );
           }
         }
         if (argsList.length > 1) {
-          tuple = _getAliasArgsAndDirective(argsList.sublist(1));
+          // tuple = _getAliasArgsAndDirective(argsList.sublist(1
+          //     )); // TODO check this
         }
       } else {
         // scalar field
         if (argsList.isNotEmpty) {
-          tuple = _getAliasArgsAndDirective(argsList);
+          // TODO check this
+          // tuple = _getAliasArgsAndDirective(argsList);
+          tuple = Tuple3<String?, String?, String?>("", "", "");
         }
       }
       print("Tuple $tuple");
@@ -194,64 +219,71 @@ class DSLVisitor extends RecursiveAstVisitor<Object> {
     }
   }
 
+  //TODO implement this
   Tuple3<String?, String?, String?> _getAliasArgsAndDirective(
-      List<Expression> argsList) {
+    List<Expression> argsList,
+  ) {
     String? alias;
     final args = <String>[];
     String? directive;
-    argsList.forEach((e) {
-      if (e is NamedExpression) {
-        final name = e.name.label.name;
-        logger.shout("Arg Type ${e.expression.runtimeType}");
-        var value = e.expression.toString();
-        if (name == "alias") {
-          alias = value.substring(1, value.length - 1);
-        } else if (name == "directive") {
-          directive = value.substring(1, value.length - 1);
-        } else {
-          args.add(_getFieldArg(e));
-        }
-      }
-    });
+    // argsList.forEach((e) {
+    //   if (e is NamedExpression) {
+    //     final name = e.name.label.name;
+    //     logger.shout("Arg Type ${e.expression.runtimeType}");
+    //     var value = e.expression.toString();
+    //     if (name == "alias") {
+    //       alias = value.substring(1, value.length - 1);
+    //     } else if (name == "directive") {
+    //       directive = value.substring(1, value.length - 1);
+    //     } else {
+    //       args.add(_getFieldArg(e));
+    //     }
+    //   }
+    // });
 
     return Tuple3(alias, args.isEmpty ? null : args.join(", "), directive);
   }
 
-  String _getFieldArg(NamedExpression e) {
-    final name = e.name.label.name.removeDName;
-    final valueE = e.expression;
-    var value = "";
-    final valueStr = e.expression.toString();
-    if (valueStr.startsWith("\"\\\$") || valueStr.startsWith("\'\\\$")) {
-      // query variable
-      value = valueStr.substring(2, valueStr.substring(1).indexOf("\"") + 1);
-    } else if (valueE is PrefixedIdentifier) {
-      // enum
-      value = valueStr.split(".").last;
-    } else if (valueE is MethodInvocation) {
-      logger.shout("Input object $valueStr");
-      // input object
-      final visitor = ObjectArgVisitor();
-      valueE.visitChildren(visitor);
-      value = visitor.arg + " } ";
-    } else if (_isEnumList(valueE)) {
-      final ve = valueE as ListLiteral;
-      final vls =
-          ve.elements.map((e) => e.toString().split(".").last).join(", ");
-      value = "[$vls]";
-    } else if (_isObjectList(valueE)) {
-      final ve = valueE as ListLiteral;
-      final vls = ve.elements.map((e) {
-        final visitor = ObjectArgVisitor();
-        valueE.visitChildren(visitor);
-        value = visitor.arg + " } ";
-        return value;
-      }).join(", ");
-      value = "[$vls]";
-    } else {
-      value = valueStr;
-    }
-    return "$name: $value";
+  // TODO implement this
+  String _getFieldArg(Expression e) {
+    // final name = e.name.label.name.removeDName;
+    // final valueE = e.expression;
+    // var value = "";
+    // final valueStr = e.expression.toString();
+    // if (valueStr.startsWith("\"\\\$") || valueStr.startsWith("\'\\\$")) {
+    //   // query variable
+    //   value = valueStr.substring(2, valueStr.substring(1).indexOf("\"") + 1);
+    // } else if (valueE is PrefixedIdentifier) {
+    //   // enum
+    //   value = valueStr.split(".").last;
+    // } else if (valueE is MethodInvocation) {
+    //   logger.shout("Input object $valueStr");
+    //   // input object
+    //   final visitor = ObjectArgVisitor();
+    //   valueE.visitChildren(visitor);
+    //   value = visitor.arg + " } ";
+    // } else if (_isEnumList(valueE)) {
+    //   final ve = valueE as ListLiteral;
+    //   final vls = ve.elements
+    //       .map((e) => e.toString().split(".").last)
+    //       .join(", ");
+    //   value = "[$vls]";
+    // } else if (_isObjectList(valueE)) {
+    //   final ve = valueE as ListLiteral;
+    //   final vls = ve.elements
+    //       .map((e) {
+    //         final visitor = ObjectArgVisitor();
+    //         valueE.visitChildren(visitor);
+    //         value = visitor.arg + " } ";
+    //         return value;
+    //       })
+    //       .join(", ");
+    //   value = "[$vls]";
+    // } else {
+    //   value = valueStr;
+    // }
+    // return "$name: $value";
+    return "";
   }
 }
 
@@ -303,32 +335,33 @@ class ObjectArgVisitor extends RecursiveAstVisitor<Object> {
     return super.visitArgumentList(node);
   }
 
+  // TODO implement this
   @override
-  Object? visitNamedExpression(NamedExpression node) {
-    print("visitNamedExpression $node");
-    _addPrefixIdentifier = false;
-    var name = node.name.label.name.removeDName;
-    final valueE = node.expression;
-    var value = "";
-    final valueStr = node.expression.toString();
-    if (valueStr.startsWith("\"\\\$") || valueStr.startsWith("\'\\\$")) {
-      // query variable
-      value = valueStr.substring(2, valueStr.substring(1).indexOf("\"") + 1);
-    } else if (valueE is PrefixedIdentifier) {
-      // enum
-      value = valueStr.split(".").last;
-    } else if (valueE is MethodInvocation) {
-      value = "";
-    } else if (_isEnumList(valueE) || _isObjectList(valueE)) {
-      if (_isEnumList(valueE)) {
-        _addPrefixIdentifier = true;
-      }
-      value = "";
-    } else {
-      value = valueStr;
-    }
-    arg += "$name: $value${value.isEmpty ? "" : ", "}";
-    return super.visitNamedExpression(node);
+  Object? visitNamedExpression(Expression node) {
+    // print("visitNamedExpression $node");
+    // _addPrefixIdentifier = false;
+    // var name = node.name.label.name.removeDName;
+    // final valueE = node.expression;
+    // var value = "";
+    // final valueStr = node.expression.toString();
+    // if (valueStr.startsWith("\"\\\$") || valueStr.startsWith("\'\\\$")) {
+    //   // query variable
+    //   value = valueStr.substring(2, valueStr.substring(1).indexOf("\"") + 1);
+    // } else if (valueE is PrefixedIdentifier) {
+    //   // enum
+    //   value = valueStr.split(".").last;
+    // } else if (valueE is MethodInvocation) {
+    //   value = "";
+    // } else if (_isEnumList(valueE) || _isObjectList(valueE)) {
+    //   if (_isEnumList(valueE)) {
+    //     _addPrefixIdentifier = true;
+    //   }
+    //   value = "";
+    // } else {
+    //   value = valueStr;
+    // }
+    // arg += "$name: $value${value.isEmpty ? "" : ", "}";
+    // // return super.visitNamedExpression(node);
   }
 
   @override

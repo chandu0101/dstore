@@ -5,19 +5,22 @@ import 'package:dstore_generator/src/errors.dart';
 import 'package:dstore_generator/src/utils/utils.dart';
 import "./class_generator_helper.dart";
 
-Future<String> generateDImmutableFromFunction(
-    {required FunctionElement element, required BuildStep buildStep}) async {
-  if (!element.name.startsWith("\$_")) {
+Future<String> generateDImmutableFromFunction({
+  required FunctionTypedElement element,
+  required BuildStep buildStep,
+}) async {
+  if (!element.name!.startsWith("\$_")) {
     throw NotAllowedError(
-        "dimmutable function name should start with \$_ , but you specified ${element.name}");
+      "dimmutable function name should start with \$_ , but you specified ${element.name}",
+    );
   }
   final dim = element.getDImmutableAnnotation();
-  final className = element.name.substring(2);
+  final className = element.name!.substring(2); // TODO check null case
   final isJsonSerializable = dim.isJsonSerializable;
   final tuple = AstUtils.getTypeParamsAndBounds(element.typeParameters);
   final typeParamsWithBounds = tuple.item2;
   final typeParams = tuple.item1;
-  element.parameters.forEach((element) {
+  element.formalParameters.forEach((element) {
     print(element);
     print(element.defaultValueCode);
   });
@@ -26,7 +29,8 @@ Future<String> generateDImmutableFromFunction(
   final ast = await AstUtils.getAstNodeFromElement(element, buildStep);
   ast.childEntities.forEach((element) {
     print(
-        "function element entity ${element} runtime type ${element.runtimeType}");
+      "function element entity ${element} runtime type ${element.runtimeType}",
+    );
   });
   ast.visitChildren(visitor);
   print("visitor fields ${visitor.fields}");

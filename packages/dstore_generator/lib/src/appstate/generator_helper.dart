@@ -1,12 +1,15 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:dstore_generator/src/utils/utils.dart';
 
-String createAppState(FunctionElement element) {
-  final name = element.name.substring(2);
-  final fields = element.parameters;
+String createAppState(FunctionTypedElement element) {
+  final name = element.name!.substring(2);
+  final fields = element.formalParameters;
+
   final copyWithMapBody = fields
-      .map((f) =>
-          "..${f.name} = map.containsKey('${f.name}') ? map['${f.name}'] as ${f.type} : this.${f.name}")
+      .map(
+        (f) =>
+            "..${f.name} = map.containsKey('${f.name}') ? map['${f.name}'] as ${f.type} : this.${f.name}",
+      )
       .join("\n");
 
   final copyWithMap =
@@ -15,13 +18,15 @@ String createAppState(FunctionElement element) {
   final toMap =
       """Map<String,PStateModel<dynamic>> toMap() => <String,PStateModel<dynamic>>{${fields.map((f) => """ "${f.name}" : this.${f.name} """).join(", ")}};""";
 
-  final finalFields =
-      fields.map((f) => "late final ${f.type}  ${f.name};").join("\n");
+  final finalFields = fields
+      .map((f) => "late final ${f.type}  ${f.name};")
+      .join("\n");
 
   final meta =
       "<String,PStateMeta>{${fields.map((f) => '"${f.name}" : ${f.type}Meta').join(", ")}}";
 
-  final createStore = """
+  final createStore =
+      """
     
     Store<$name> createStore({required StoreErrorHandle handleError, List<Middleware<$name>>? middlewares,
     StorageOptions? storageOptions,

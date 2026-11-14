@@ -3,7 +3,6 @@ import 'package:build/build.dart';
 import 'package:dstore_annotation/dstore_annotation.dart';
 import 'package:dstore_generator/src/appstate/app_state_generator.dart';
 import 'package:dstore_generator/src/denum/denum_generator.dart';
-import 'package:dstore_generator/src/dunion/union_generator.dart';
 import 'package:dstore_generator/src/env/env_generator.dart';
 import 'package:dstore_generator/src/firebase/firestore/firestore_schema_generator.dart';
 import 'package:dstore_generator/src/firebase/firestore/ops/firestore_ops_generator.dart';
@@ -23,7 +22,10 @@ var lDebugMode = true;
 class RGen extends GeneratorForAnnotation<RegularMethod> {
   @override
   String generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) {
+    Element element,
+    ConstantReader annotation,
+    BuildStep buildStep,
+  ) {
     return """
       typedef HelloT = HttpField<String>;
     """;
@@ -35,20 +37,14 @@ Builder dstorePSGen(BuilderOptions options) {
   print("dstorePSGen ************************* options ${options.config}");
   // EnvGenerator.generate();
   PStateGeneratorBuildOptions.fromOptions(options.config);
-  return PartBuilder(
-    [PStateGenerator()],
-    '.ps.dstore.dart',
-  );
+  return PartBuilder([PStateGenerator()], '.ps.dstore.dart');
 }
 
 Builder dstoreApiGen(BuilderOptions options) {
   print(" dstoreApiGen ************************* options ${options.config}");
   // EnvGenerator.generate();
   return PartBuilder(
-    [
-      GraphqlSchemaGenerator(),
-      GraphqlOpsGenerator(),
-    ], //OpenApiGenerator()
+    [GraphqlSchemaGenerator(), GraphqlOpsGenerator()], //OpenApiGenerator()
     '.api.dstore.dart',
   );
 }
@@ -57,21 +53,21 @@ Builder dstoreGen(BuilderOptions options) {
   print("dstoreGen Options $options");
   // EnvGenerator.generate();
   return PartBuilder(
-      [
-        FormModelGenerator(),
-        UnionGenerator(),
-        AppStateGenerator(),
-        SelectorsGenerator(),
-        SchemaSourceGenerator(),
-        DEnumGenerator(),
-        FireStoreSchemaGenerator(),
-        FireStoreOpsGenerator(),
-        DImmutableGenerator(),
-        RGen(),
-      ],
-      '.dstore.dart',
-      header: '''
+    [
+      FormModelGenerator(),
+      AppStateGenerator(),
+      SelectorsGenerator(),
+      SchemaSourceGenerator(),
+      DEnumGenerator(),
+      FireStoreSchemaGenerator(),
+      FireStoreOpsGenerator(),
+      DImmutableGenerator(),
+      RGen(),
+    ],
+    '.dstore.dart',
+    header: '''
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
-    ''');
+    ''',
+  );
 }

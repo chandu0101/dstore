@@ -1,4 +1,4 @@
-import 'package:build/src/builder/build_step.dart';
+import 'package:build/build.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:dstore_annotation/dstore_annotation.dart';
 import 'package:dstore_generator/src/graphql/globals.dart';
@@ -14,14 +14,19 @@ import 'package:source_gen/source_gen.dart';
 class GraphqlOpsJSGenerator extends GeneratorForAnnotation<GraphqlOpsJS> {
   @override
   Future<String> generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) async {
+    Element element,
+    ConstantReader annotation,
+    BuildStep buildStep,
+  ) async {
     try {
       if (!(element is ClassElement)) {
         throw Exception(
-            "GraphqlopsJs annotation should should only be applied on abstract classes");
+          "GraphqlopsJs annotation should should only be applied on abstract classes",
+        );
       }
 
-      final opsAnnotations = element.metadata.first.computeConstantValue();
+      final opsAnnotations = element.metadata.annotations.first
+          .computeConstantValue();
       final apiA = opsAnnotations?.getField("api")!;
       final gAPi = getGraphqlApi(apiA);
       final apiUrl = gAPi.apiUrl;
@@ -30,7 +35,11 @@ class GraphqlOpsJSGenerator extends GeneratorForAnnotation<GraphqlOpsJS> {
       }
 
       final visitor = DSLFieldsVisitor(
-          className: element.name, element: element, api: gAPi, isJS: true);
+        className: element.name!, // TODO check null case
+        element: element,
+        api: gAPi,
+        isJS: true,
+      );
       final ast = await AstUtils.getAstNodeFromElement(element, buildStep);
       ast.visitChildren(visitor);
       final ops = visitor.ops.join("\n");
@@ -44,12 +53,13 @@ class GraphqlOpsJSGenerator extends GeneratorForAnnotation<GraphqlOpsJS> {
   }
 }
 
-String getJSOp(
-    {required GraphQLSchema schema,
-    required String query,
-    required DocumentNode doc,
-    required GraphqlApi api,
-    required String name}) {
+String getJSOp({
+  required GraphQLSchema schema,
+  required String query,
+  required DocumentNode doc,
+  required GraphqlApi api,
+  required String name,
+}) {
   final visitor = OperationVisitor(documentNode: doc, schema: schema, api: api);
   doc.accept(visitor);
   final types = getJSTypes(visitor, name);
@@ -63,8 +73,12 @@ String getJSTypes(OperationVisitor visitor, String name) {
   final list = <GType>[];
   final fragmentMap = visitor.fragmentFieldsMap;
 
-  final gt =
-      getGType(visitor.fields, visitor.fragments, "${name}Data", fragmentMap);
+  final gt = getGType(
+    visitor.fields,
+    visitor.fragments,
+    "${name}Data",
+    fragmentMap,
+  );
   list.add(gt);
   list.addAll(getAllGTypes(gt.fields));
   print(gt);
@@ -83,7 +97,9 @@ String createVariableJSType(List<GField> gFields, String name) {
   final fields = gFields.map(converGFieldToField).toList();
 
   return ModelUtils.createDefaultDartJSModelFromFeilds(
-      fields: fields, className: name);
+    fields: fields,
+    className: name,
+  );
 }
 
 String convertGTypeToDartJSType(GType gtype) {
@@ -111,7 +127,9 @@ String convertGTypeToDartJSType(GType gtype) {
     return Field(name: f.name, type: f.type, annotations: annotations);
   }).toList();
   return ModelUtils.createDefaultDartJSModelFromFeilds(
-      fields: fields, className: name);
+    fields: fields,
+    className: name,
+  );
 }
 
 String _convertUnionOrInterfaceGTypeToDartJSType(GType gtype) {

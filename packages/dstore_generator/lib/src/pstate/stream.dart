@@ -20,21 +20,26 @@ StreamFieldInfo? _getStreamFieldInfoForElement(FieldElement element) {
   if (type.toString().startsWith("StreamField") && type is InterfaceType) {
     if (type.typeArguments.length != 2) {
       throw ArgumentError.value(
-          "You should provide Stream response type as StreamField typeArg");
+        "You should provide Stream response type as StreamField typeArg",
+      );
     }
     final typeArgs = type.typeArguments;
     final dataTYpe = typeArgs.first.toString();
     final errorType = typeArgs.last.toString();
     return StreamFieldInfo(
-        outputType: dataTYpe, errorType: errorType, name: element.name);
+      outputType: dataTYpe,
+      errorType: errorType,
+      name: element.name!,
+    ); // TODO check null case
   }
   return null;
 }
 
-String convertStreamFieldInfoToAction(
-    {required StreamFieldInfo sfi,
-    required String type,
-    bool psHistoryEnabled = false}) {
+String convertStreamFieldInfoToAction({
+  required StreamFieldInfo sfi,
+  required String type,
+  bool psHistoryEnabled = false,
+}) {
   final name = sfi.name;
   final mockType = "Iterable<${sfi.outputType}>";
   var psHistoryPayload = "";

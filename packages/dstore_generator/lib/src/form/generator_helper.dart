@@ -4,15 +4,16 @@ import 'package:dstore_generator/src/form/visitors.dart';
 import 'package:dstore_generator/src/utils/utils.dart';
 
 Future<String> generateFormModel(ClassElement element, BuildStep step) async {
-  final typeParamsWithBounds =
-      element.typeParameters.map((e) => e.toString()).join(",");
+  final typeParamsWithBounds = element.typeParameters
+      .map((e) => e.toString())
+      .join(",");
   final typeParams = element.typeParameters.map((e) => e.name).join(",");
-  final modelName = element.name.substring(2);
+  final modelName = element.name!.substring(2); // TODO check null case
   final visitor = FormModelVisitor(element.fields, modelName);
   final astNode = await AstUtils.getAstNodeFromElement(element, step);
   astNode.visitChildren(visitor);
 
-  final annotations = element.metadata
+  final annotations = element.metadata.annotations
       .map((e) => e.toSource())
       .where((e) => !e.startsWith("@FormModel"))
       .toList();
@@ -28,10 +29,11 @@ Future<String> generateFormModel(ClassElement element, BuildStep step) async {
      """;
 }
 
-String _createValidator(
-    {required Map<String, String> validators,
-    required String modelName,
-    required String enumName}) {
+String _createValidator({
+  required Map<String, String> validators,
+  required String modelName,
+  required String enumName,
+}) {
   final mapType = "<String,Function>";
   return """
    const ${modelName}Validators = ${mapType}{${validators.entries.map((e) => "\"${e.key}\": ${e.value}").join(", ")}};
@@ -39,13 +41,14 @@ String _createValidator(
   """;
 }
 
-String _createModel(
-    {required String name,
-    required List<Field> fields,
-    required String typeParams,
-    required String typeParamsWithBounds,
-    bool isJson = false,
-    required List<String> annotations}) {
+String _createModel({
+  required String name,
+  required List<Field> fields,
+  required String typeParams,
+  required String typeParamsWithBounds,
+  bool isJson = false,
+  required List<String> annotations,
+}) {
   return """
       
       @immutable

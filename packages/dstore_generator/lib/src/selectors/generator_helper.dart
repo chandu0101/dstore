@@ -7,12 +7,14 @@ import 'package:dstore_generator/src/utils/utils.dart';
 final selectorDepsCache = <int, Map<String, SelectorDeps>>{};
 
 SelectorDeps? getSelectorCachedDeps(Element element, String name) {
-  final code = "${element.source?.fullName}${element.name}".hashCode;
+  // final code = "${element.source?.fullName}${element.name}".hashCode;
+  final code = " implement this";
   return selectorDepsCache[code]?[name];
 }
 
 void addSelectorCacheDeps(Element element, String name, SelectorDeps sdeps) {
-  final code = "${element.source?.fullName}${element.name}".hashCode;
+  // final code = "${element.source?.fullName}${element.name}".hashCode;
+  final code = 5; // TODO implement this
   final existinValue = selectorDepsCache[code];
   if (existinValue == null) {
     selectorDepsCache[code] = {name: sdeps};
@@ -21,13 +23,17 @@ void addSelectorCacheDeps(Element element, String name, SelectorDeps sdeps) {
   }
 }
 
-Future<String> generateSelectors(
-    {required String modelName,
-    required ClassElement element,
-    required BuildStep buildStep}) async {
+Future<String> generateSelectors({
+  required String modelName,
+  required ClassElement element,
+  required BuildStep buildStep,
+}) async {
   final visitor = SelectorsVisitor(modelName, element, buildStep);
-  final astNode =
-      await AstUtils.getAstNodeFromElement(element, buildStep, resolve: true);
+  final astNode = await AstUtils.getAstNodeFromElement(
+    element,
+    buildStep,
+    resolve: true,
+  );
 
   astNode.visitChildren(visitor);
 

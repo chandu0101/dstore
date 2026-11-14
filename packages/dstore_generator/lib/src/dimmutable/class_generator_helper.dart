@@ -5,8 +5,10 @@ import 'package:dstore_generator/src/dimmutable/vistors.dart';
 import 'package:dstore_generator/src/utils/utils.dart';
 import 'package:source_gen/source_gen.dart';
 
-Future<String> generateDImmutableFromClass(
-    {required ClassElement element, required BuildStep buildStep}) async {
+Future<String> generateDImmutableFromClass({
+  required ClassElement element,
+  required BuildStep buildStep,
+}) async {
   final dim = element.getDImmutableAnnotation();
   final tuple = AstUtils.getTypeParamsAndBounds(element.typeParameters);
   final typeParamsWithBounds = tuple.item2;
@@ -17,7 +19,7 @@ Future<String> generateDImmutableFromClass(
   ast.visitChildren(visitor);
   final fields = ModelUtils.processFields(visitor.fields);
   final methods = visitor.methods.join("\n");
-  final name = element.name.substring(2);
+  final name = element.name!.substring(2); // TODO check null case
   print("Params : $fields");
   final isJosnSerializable = dim.isJsonSerializable;
   final interfaces = <String>[];
@@ -26,7 +28,8 @@ Future<String> generateDImmutableFromClass(
   }
   final i = interfaces.isNotEmpty ? "implements ${interfaces.join(", ")}" : "";
   final ext = "$i";
-  final result = """
+  final result =
+      """
       ${ModelUtils.createDefaultDartModelFromFeilds(fields: fields, extendClass: ext, methods: methods, className: name, typeParams: typeParams, typeParamsWithBounds: typeParamsWithBounds, isJsonSerializable: isJosnSerializable, collectionEquality: dim.collectionEquality, toMap: dim.toMap, copyWithMap: dim.copyWithMap)}
     """;
   return result;
@@ -37,18 +40,22 @@ extension DImmutableEllementExt on Element {
     final annot = this.annotationFromType(DImmutable);
     if (annot == null) {
       throw ArgumentError.value(
-          "Element ${this.name} is not anotated with @DImmutable");
+        "Element ${this.name} is not anotated with @DImmutable",
+      );
     }
     final reader = ConstantReader(annot.computeConstantValue());
     final isJsonSerializable = reader.read("isJsonSerializable").boolValue;
-    final collectionEquality =
-        reader.getEnumField("collectionEquality", CollectionEquality.values);
+    final collectionEquality = reader.getEnumField(
+      "collectionEquality",
+      CollectionEquality.values,
+    );
     final toMap = reader.peek("toMap")?.boolValue ?? false;
     final copyWithMap = reader.peek("copyWithMap")?.boolValue ?? false;
     return DImmutable(
-        isJsonSerializable: isJsonSerializable,
-        collectionEquality: collectionEquality,
-        toMap: toMap,
-        copyWithMap: copyWithMap);
+      isJsonSerializable: isJsonSerializable,
+      collectionEquality: collectionEquality,
+      toMap: toMap,
+      copyWithMap: copyWithMap,
+    );
   }
 }

@@ -17,11 +17,14 @@ class DImmutableClassVisitor extends SimpleAstVisitor<dynamic> {
       final name = v.name.lexeme;
       // final n = v.name.stringValue;
       final value = v.initializer?.toSource();
-      fields.add(Field(
+      fields.add(
+        Field(
           name: name,
           type: type,
           value: value,
-          isOptional: type.endsWith("?")));
+          isOptional: type.endsWith("?"),
+        ),
+      );
     });
   }
 
@@ -55,19 +58,22 @@ class DImmutableFunctionVisitor extends SimpleAstVisitor<dynamic> {
       final name = p.name!.lexeme; // TODO identifier
       var type = "dynamic";
       String? value;
-
-      if (p is SimpleFormalParameter) {
-        type = p.type?.toSource() ?? "dynamic";
-      } else if (p is DefaultFormalParameter) {
-        value = p.defaultValue?.toSource();
-        type = (p.parameter as SimpleFormalParameter).type?.toSource() ??
-            "dynamic";
-      }
-      fields.add(Field(
+      // TODO check this commented bloc
+      // if (p is SimpleFormalParameter) {
+      //   type = p.type?.toSource() ?? "dynamic";
+      // } else if (p is DefaultFormalParameter) {
+      //   value = p.defaultValue?.toSource();
+      //   type = (p.parameter as SimpleFormalParameter).type?.toSource() ??
+      //       "dynamic";
+      // }
+      fields.add(
+        Field(
           name: name,
           type: type,
           isOptional: type.endsWith("?"),
-          value: value));
+          value: value,
+        ),
+      );
     });
     return super.visitFunctionExpression(node);
   }

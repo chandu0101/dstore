@@ -1,5 +1,5 @@
-import 'package:build/src/builder/build_step.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:build/build.dart';
 import 'package:dstore_annotation/dstore_annotation.dart';
 import 'package:dstore_generator/src/graphql/globals.dart';
 import 'package:dstore_generator/src/graphql/ops/gql_visitors.dart';
@@ -15,18 +15,23 @@ import 'package:source_gen/source_gen.dart';
 class GraphqlOpsGenerator extends GeneratorForAnnotation<GraphqlOps> {
   @override
   Future<String> generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) async {
+    Element element,
+    ConstantReader annotation,
+    BuildStep buildStep,
+  ) async {
     try {
       if (!(element is ClassElement)) {
         throw Exception(
-            "Graphqlops annotation should should only be applied on abstract classes");
+          "Graphqlops annotation should should only be applied on abstract classes",
+        );
       }
       final name = element.name;
       print("OpsName $name fields ${element.fields}");
       element.fields.forEach((f) {
         print("${f.name} ${f.isStatic} ${f.isConst}");
       });
-      final opsAnnotations = element.metadata.first.computeConstantValue();
+      final opsAnnotations = element.metadata.annotations.first
+          .computeConstantValue();
       final apiA = opsAnnotations?.getField("api")!;
       final gAPi = getGraphqlApi(apiA);
 
@@ -36,7 +41,10 @@ class GraphqlOpsGenerator extends GeneratorForAnnotation<GraphqlOps> {
       }
 
       final visitor = DSLFieldsVisitor(
-          className: element.name, element: element, api: gAPi);
+        className: element.name!, // TODO check null case
+        element: element,
+        api: gAPi,
+      );
       final ast = await AstUtils.getAstNodeFromElement(element, buildStep);
       ast.visitChildren(visitor);
       final ops = visitor.ops.join("\n");
@@ -70,19 +78,22 @@ String generateOpsTypeForQuery({
     useGetPersitant = api.enablePersitantQueries == PersitantQueryMode.GET;
   }
   final graphqlQuery = GraphqlRequestPart(
-      query: gq,
-      hash: hash != null ? '"$hash"' : null,
-      useGetForPersist: useGetPersitant);
+    query: gq,
+    hash: hash != null ? '"$hash"' : null,
+    useGetForPersist: useGetPersitant,
+  );
   final responseType = "${name}Data";
   final responseSerializer = "${responseType}Serializer";
   final responserDeserializer = "${responseType}Deserializer";
-  final responseSerializerFn = """
+  final responseSerializerFn =
+      """
       
       Map<String,dynamic> $responseSerializer(int status,$responseType resp) => resp.toJson();
     
     """;
 
-  final responseDeserializerFunction = """
+  final responseDeserializerFunction =
+      """
       $responseType $responserDeserializer(int status,dynamic json) => $responseType.fromJson(json as Map<String,dynamic>);
     """;
   final inputSerilizer = "GraphqlRequestInput.toJson";
@@ -93,7 +104,8 @@ String generateOpsTypeForQuery({
   final inputType =
       "GraphqlRequestInput${visitor.variables.isNotEmpty ? "<$variablesName>" : "<Null>"}";
   if (visitor.variables.isNotEmpty) {
-    inputDeserializerFn = """        
+    inputDeserializerFn =
+        """        
         $inputType $inputDeserializer(dynamic json) {
              json = json as Map<String,dynamic>;
              final variables = $variablesName.fromJson(json["variables"] as Map<String,dynamic>);
@@ -101,7 +113,8 @@ String generateOpsTypeForQuery({
         }
       """;
   } else {
-    inputDeserializerFn = """        
+    inputDeserializerFn =
+        """        
         $inputType $inputDeserializer(dynamic json) {
              return GraphqlRequestInput.fromJson(json as Map<String,dynamic>);
         }
@@ -110,7 +123,8 @@ String generateOpsTypeForQuery({
 
   if (visitor.opType == OperationType.query ||
       visitor.opType == OperationType.mutation) {
-    final req = """
+    final req =
+        """
    @HttpRequest(
     method: "POST",
     url: "${api.apiUrl}",
@@ -122,7 +136,8 @@ String generateOpsTypeForQuery({
     inputDeserializer: $inputDeserializer,
     responseDeserializer: $responserDeserializer)
   """;
-    result = """
+    result =
+        """
     $types    
     $inputDeserializerFn
     $responseSerializerFn
@@ -137,19 +152,23 @@ String generateOpsTypeForQuery({
     // subscription
     if (api.wsUrl == null) {
       throw ArgumentError.value(
-          "You should provide websocket url in u r GraphqlApi config inorder to use subscriptions ");
+        "You should provide websocket url in u r GraphqlApi config inorder to use subscriptions ",
+      );
     }
-    final responseDeserializerFunction = """
+    final responseDeserializerFunction =
+        """
       $responseType $responserDeserializer(dynamic value) => $responseType.fromJson(value as Map<String,dynamic>);
     """;
-    final req = """
+    final req =
+        """
    @WebSocketRequest(
     url: "${api.wsUrl}",
     graphqlQuery: $graphqlQuery,
     inputSerializer: $inputSerilizer,
     responseDeserializer: $responserDeserializer)
   """;
-    result = """
+    result =
+        """
     $types    
     $responseDeserializerFunction
     $req

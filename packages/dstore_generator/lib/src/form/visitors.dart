@@ -21,7 +21,8 @@ class FormModelVisitor extends SimpleAstVisitor<dynamic> {
     if (typeA == null) {
       if (typeA == null) {
         throw InvalidSignatureError(
-            "Should provide type annotation for fields , specify type for field '${fd.fields.variables.first.name}'");
+          "Should provide type annotation for fields , specify type for field '${fd.fields.variables.first.name}'",
+        );
       }
     }
     final type = typeA.toSource();
@@ -31,7 +32,8 @@ class FormModelVisitor extends SimpleAstVisitor<dynamic> {
 
       if (!v.isLate && !type.endsWith("?") && initalValueE == null) {
         throw InvalidSignatureError(
-            "You should provide default value for field '${name}'");
+          "You should provide default value for field '${name}'",
+        );
       }
       final value = initalValueE?.toString();
       var isOptional = false;
@@ -39,20 +41,27 @@ class FormModelVisitor extends SimpleAstVisitor<dynamic> {
         isOptional = true;
       }
       final fe = fieldElements.singleWhere((element) => element.name == name);
-      final annotations = fe.metadata.map((e) => e.toSource()).toList();
+      final annotations = fe.metadata.annotations
+          .map((e) => e.toSource())
+          .toList();
       final va = fe.annotationFromType(Validator);
       if (va != null) {
         final vao = va.computeConstantValue();
-        final fn = vao?.functionNameForField("fn",
-            validateFn: _validateFunctionSignature);
+        final fn = vao?.functionNameForField(
+          "fn",
+          validateFn: _validateFunctionSignature,
+        );
         validators["${name}"] = fn!;
       }
-      fields.add(Field(
+      fields.add(
+        Field(
           name: name,
           type: type,
           annotations: annotations,
           isOptional: isOptional,
-          value: value));
+          value: value,
+        ),
+      );
     });
   }
 
@@ -61,7 +70,8 @@ class FormModelVisitor extends SimpleAstVisitor<dynamic> {
     if (rt != "String?" && rt != "Future<String?>") {
       return "Return type of validator function ${fn.name} should be String? or Future<String?>";
     }
-    if (fn.parameters.length != 2) {
+    if (fn.fragments.length != 2) {
+      // TODO check this
       return "Validator function ${fn.name} should accept two parameters one for field value and an another one for form value";
     }
     //TODO probaly check param type too!
