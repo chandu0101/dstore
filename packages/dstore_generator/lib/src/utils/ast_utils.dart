@@ -43,6 +43,7 @@ abstract class AstUtils {
     //   }
     //     // library =   await buildStep.resolver.astNodeFor(element);
     // }
+    // TODO check fragments or first fragment
     final node = await buildStep.resolver.astNodeFor(
       element.firstFragment,
       resolve: resolve,
@@ -79,15 +80,16 @@ abstract class AstUtils {
       var isOptional = param.isOptional;
       late String type;
       String? value;
-      if (param is SimpleFormalParameter) {
+      if (param is RegularFormalParameter) {
         print("simpleformal");
         type = param.type?.toString() ?? "dynamic";
       }
       final annotations = param.metadata.map((e) => e.toString()).toList();
-      if (param is DefaultFormalParameter) {
+      // TODO check this below code
+      if (param is FormalParameter && param.defaultClause != null) {
         print("defaultformal");
-        value = param.defaultValue?.toString();
-        final t = (param.parameter as SimpleFormalParameter).type;
+        value = param.defaultClause?.toSource();
+        final t = (param as RegularFormalParameter).type;
         type = t?.toString() ?? "dynamic";
       }
       return Field(
@@ -102,15 +104,17 @@ abstract class AstUtils {
   }
 
   static List<Field> convertParamElementsToFields(
-    List<ParameterElement> params, {
+    List<FormalParameterElement> params, {
     bool dim = false,
   }) {
     return params.map((param) {
-      final name = param.name;
+      final name = param.name!; // TODO check null case
       final type = param.type.getDisplayString(withNullability: true);
       var defaultValue = param.defaultValueCode;
 
-      var annotations = param.metadata.map((e) => e.toSource()).toList();
+      var annotations = param.metadata.annotations
+          .map((e) => e.toSource())
+          .toList();
       var isOptional = param.isOptional;
       if (dim) {
         if (param.isOptional && !type.endsWith("?")) {
@@ -167,8 +171,8 @@ abstract class AstUtils {
 
 abstract class AnnotationUtils {
   static bool hasJsonKey(Element element) =>
-      TypeChecker.fromRuntime(JsonKey).hasAnnotationOf(element);
-
+      // TypeChecker.fromRuntime(JsonKey).hasAnnotationOf(element);
+      element.annotationFromType(JsonKey) != null;
   static String? defaultValue(Element element) {
     final annot = element.annotationFromType(Default);
     if (annot == null) {
@@ -183,8 +187,9 @@ abstract class AnnotationUtils {
     Element element,
     Map<String, dynamic> newFields,
   ) {
-    final tc = TypeChecker.fromRuntime(JsonKey);
-    return element.metadata.map((e) {
+    // final tc = TypeChecker.fromRuntime(JsonKey);
+    final tc = TypeChecker.typeNamed(JsonKey);
+    return element.metadata.annotations.map((e) {
       final type = e.type;
       if (type != null && tc.isAssignableFromType(type)) {
         final o = e.computeConstantValue();
@@ -267,8 +272,8 @@ abstract class AnnotationUtils {
 
 extension ElementExt on Element {
   ElementAnnotation? annotationFromType(Type type) {
-    final tc = TypeChecker.fromRuntime(type);
-    return metadata.singleWhereOrNull((e) {
+    final tc = TypeChecker.typeNamed(type);
+    return metadata.annotations.singleWhereOrNull((e) {
       final v = e.computeConstantValue();
       return v != null && v.type != null && tc.isAssignableFromType(v.type!);
     });
@@ -277,8 +282,8 @@ extension ElementExt on Element {
 
 extension TypelAliasElementExt on TypeAliasElement {
   ElementAnnotation? annotationFromType(Type type) {
-    final tc = TypeChecker.fromRuntime(type);
-    return metadata.singleWhereOrNull((e) {
+    final tc = TypeChecker.typeNamed(type);
+    return metadata.annotations.singleWhereOrNull((e) {
       final v = e.computeConstantValue();
       return v != null && v.type != null && tc.isAssignableFromType(v.type!);
     });
@@ -287,7 +292,8 @@ extension TypelAliasElementExt on TypeAliasElement {
 
 extension VariableDeclarationExt on VariableDeclaration {
   Annotation? annotationFromType(Type type) {
-    final tc = TypeChecker.fromRuntime(type);
+    final tc = TypeChecker.typeNamed(type);
+
     return this.metadata.singleWhereOrNull((e) {
       final v = e.elementAnnotation?.computeConstantValue();
       return v != null && v.type != null && tc.isAssignableFromType(v.type!);
@@ -333,7 +339,7 @@ extension JsonKeyExt on JsonKey {
       "@JsonKey(defaultValue : $defaultValue, disallowNullValue : $disallowNullValue, fromJson : $fromJson, ignore : $ignore, includeIfNull : $includeIfNull, name : $name, required : $required, toJson : $toJson, unknownEnumValue : $unknownEnumValue)";
 }
 
-extension ParameterElementExt on ParameterElement {
+extension ParameterElementExt on FormalParameterElement {
   bool get hasJsonKey => AnnotationUtils.hasJsonKey(this);
   String? get defaultValueFromAnnotation => AnnotationUtils.defaultValue(this);
 
@@ -357,7 +363,7 @@ extension DartObjectExt on DartObject {
         }
       }
       final name = fn.name;
-      final enclosingName = fn.enclosingElement.name;
+      final enclosingName = fn.enclosingElement?.name;
       return enclosingName != null ? "${enclosingName}.$name" : name;
     }
   }
