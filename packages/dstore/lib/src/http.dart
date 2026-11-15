@@ -39,18 +39,19 @@ class HttpProgress {
 
 @DImmutable(toMap: true)
 void $_HttpField<I, R, E>(
-    R? data,
-    E? error, // always check for error type is null or not to find error is there or not ,in case of cors errors error will be null but errorType will not be null
-    dynamic? genericError,
-    Map<String, String>? responseHeaders,
-    int? status,
-    HttpProgress? progress,
-    HttpErrorType? errorType,
-    AbortController? abortController,
-    {bool optimistic = false,
-    bool loading = false,
-    bool completed = false,
-    bool offline = false}) {}
+  R? data,
+  E? error, // always check for error type is null or not to find error is there or not ,in case of cors errors error will be null but errorType will not be null
+  dynamic? genericError,
+  Map<String, String>? responseHeaders,
+  int? status,
+  HttpProgress? progress,
+  HttpErrorType? errorType,
+  AbortController? abortController, {
+  bool optimistic = false,
+  bool loading = false,
+  bool completed = false,
+  bool offline = false,
+}) {}
 
 @DImmutable()
 class $_HttpMeta<PP, QP, I, R, E, T> {
@@ -89,17 +90,21 @@ class $_HttpPayload<PP, QP, I, R, E, T> {
   bool abortable = false;
 
   static HttpPayload fromJson<PP, QP, I, R, E, T>(
-      Map<String, dynamic> map, HttpMeta<PP, QP, I, R, E, T> meta) {
+    Map<String, dynamic> map,
+    HttpMeta<PP, QP, I, R, E, T> meta,
+  ) {
     final url = map["url"] as String;
     final method = map["method"] as String;
-    final responseType =
-        HttpResponseTypeExt.fromValue(map["responseType"] as String)!;
+    final responseType = HttpResponseTypeExt.fromValue(
+      map["responseType"] as String,
+    )!;
     final dataObj = map["data"] as Map<String, dynamic>?;
     I? data;
     if (dataObj != null) {
       if (meta.inputDeserializer == null) {
         throw ArgumentError.value(
-            "You should provide inputDeserializer for http field");
+          "You should provide inputDeserializer for http field",
+        );
       }
       data = meta.inputDeserializer!(data);
     }
@@ -119,7 +124,8 @@ class $_HttpPayload<PP, QP, I, R, E, T> {
     if (queryParamsObj != null) {
       if (meta.queryParamsDeserializer == null) {
         throw ArgumentError.value(
-            "You should specify queryParamsDeserializer in HttpMeta   to deserialize payload");
+          "You should specify queryParamsDeserializer in HttpMeta   to deserialize payload",
+        );
       }
       queryParams = meta.queryParamsDeserializer!(queryParams);
     }
@@ -128,26 +134,31 @@ class $_HttpPayload<PP, QP, I, R, E, T> {
     if (pathParamsObj != null) {
       if (meta.pathParamsDeserializer == null) {
         throw ArgumentError.value(
-            "You should specify pathParamsDeserializer in HttpMeta to deserialize payload");
+          "You should specify pathParamsDeserializer in HttpMeta to deserialize payload",
+        );
       }
       pathParams = meta.pathParamsDeserializer!(pathParamsObj);
     }
     final sendTimeout = map["sendTimeout"] as int?;
+    // TODO check this time convertion int to DUration
+    final st = Duration(milliseconds: sendTimeout ?? 0);
     final receiveTieout = map["receiveTieout"] as int?;
+    final rt = Duration(milliseconds: receiveTieout ?? 0);
     final abortable = map["abortable"] as bool;
 
     return HttpPayload<PP, QP, I, R, E, T>(
-        url: url,
-        method: method,
-        responseType: responseType,
-        data: data,
-        optimisticResponse: optimisticResponse,
-        headers: headers,
-        queryParams: queryParams,
-        pathParams: pathParams,
-        sendTimeout: sendTimeout,
-        receiveTieout: receiveTieout,
-        abortable: abortable);
+      url: url,
+      method: method,
+      responseType: responseType,
+      data: data,
+      optimisticResponse: optimisticResponse,
+      headers: headers,
+      queryParams: queryParams,
+      pathParams: pathParams,
+      sendTimeout: st,
+      receiveTieout: rt,
+      abortable: abortable,
+    );
   }
 
   Map<String, dynamic> toJson(HttpMeta meta) {
@@ -157,7 +168,8 @@ class $_HttpPayload<PP, QP, I, R, E, T> {
     if (data != null) {
       if (meta.inputSerializer == null) {
         throw ArgumentError.value(
-            "You should provide inputSerializer for http field");
+          "You should provide inputSerializer for http field",
+        );
       }
       map["data"] = meta.inputSerializer!(data);
     }
@@ -165,10 +177,13 @@ class $_HttpPayload<PP, QP, I, R, E, T> {
     if (optimisticResponse != null && optimisticHttpStatus != null) {
       if (meta.responseSerializer == null) {
         throw ArgumentError.value(
-            "You should provide responseSerializer for http field");
+          "You should provide responseSerializer for http field",
+        );
       }
-      map["optimisticResponse"] =
-          meta.responseSerializer!(optimisticHttpStatus!, optimisticResponse);
+      map["optimisticResponse"] = meta.responseSerializer!(
+        optimisticHttpStatus!,
+        optimisticResponse,
+      );
     }
     // if (inputType != null) {
     //   map["inputType"] = inputType!.value;
@@ -188,14 +203,16 @@ class $_HttpPayload<PP, QP, I, R, E, T> {
     if (queryParams != null) {
       if (meta.queryParamsSerializer == null) {
         throw ArgumentError.value(
-            "You should provide queryParamsSerializer in HttpMeta to serialize payload");
+          "You should provide queryParamsSerializer in HttpMeta to serialize payload",
+        );
       }
       map["queryParams"] = meta.queryParamsSerializer!(queryParams);
     }
     if (pathParams != null) {
       if (meta.pathParamsSerializer == null) {
         throw ArgumentError.value(
-            "You should provide pathParamsSerializer in HttpMeta to serialize payload");
+          "You should provide pathParamsSerializer in HttpMeta to serialize payload",
+        );
       }
       map["pathParams"] = meta.pathParamsSerializer!(pathParams);
     }
