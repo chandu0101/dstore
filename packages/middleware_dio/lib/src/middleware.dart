@@ -13,7 +13,9 @@ class _DioAbort extends AbortController {
 }
 
 Options _getOptions(
-    HttpPayload payload, DioMiddlewareOptions? middlewareOptions) {
+  HttpPayload payload,
+  DioMiddlewareOptions? middlewareOptions,
+) {
   final url = payload.url;
   GlobalHttpOptions? go;
   if (middlewareOptions != null) {
@@ -53,15 +55,19 @@ Options _getOptions(
     }
   }
   return Options(
-      method: method,
-      headers: headers,
-      responseType: responseType,
-      sendTimeout: payload.sendTimeout,
-      receiveTimeout: payload.receiveTieout);
+    method: method,
+    headers: headers,
+    responseType: responseType,
+    sendTimeout: payload.sendTimeout,
+    receiveTimeout: payload.receiveTieout,
+  );
 }
 
-void _handleDioError(
-    {required DioError e, required Action action, required Store store}) {
+void _handleDioError({
+  required DioError e,
+  required Action action,
+  required Store store,
+}) {
   print("handling dio Error $e");
   final psm = store.getPStateMetaFromAction(action);
   final payload = action.http!;
@@ -71,9 +77,11 @@ void _handleDioError(
   dynamic error;
   late HttpErrorType errorType;
   switch (e.type) {
-    case DioErrorType.connectTimeout:
-      errorType = HttpErrorType.ConnectTimeout;
-      break;
+    // TODO implement this case
+    // case DioErrorType.connectTimeout:
+    //   errorType = HttpErrorType.ConnectTimeout;
+    //   break;
+
     case DioErrorType.sendTimeout:
       errorType = HttpErrorType.SendTimeout;
 
@@ -81,21 +89,22 @@ void _handleDioError(
     case DioErrorType.receiveTimeout:
       errorType = HttpErrorType.ReceiveTimeout;
       break;
-    case DioErrorType.response:
-      if (e.response != null) {
-        dynamic re = e.response!.data;
-        print("Response Error $re");
-        if (meta?.errorDeserializer != null) {
-          re = meta?.errorDeserializer!(e.response!.statusCode ?? 500, re);
-        }
-        error = re;
-      } else {
-        error = null;
-      }
+    // TODO implement this case
+    // case Dio.response:
+    //   if (e.response != null) {
+    //     dynamic re = e.response!.data;
+    //     print("Response Error $re");
+    //     if (meta?.errorDeserializer != null) {
+    //       re = meta?.errorDeserializer!(e.response!.statusCode ?? 500, re);
+    //     }
+    //     error = re;
+    //   } else {
+    //     error = null;
+    //   }
 
-      errorType = HttpErrorType.Response;
+    //   errorType = HttpErrorType.Response;
 
-      break;
+    //   break;
     case DioErrorType.cancel:
       errorType = HttpErrorType.Aborted;
       break;
@@ -108,34 +117,46 @@ void _handleDioError(
       (errorType == HttpErrorType.Default ||
           errorType == HttpErrorType.ConnectTimeout)) {
     store.addOfflineAction(action);
-    store.dispatch(action.copyWith(
+    store.dispatch(
+      action.copyWith(
         offlinedAt: DateTime.now(),
         internal: ActionInternal(
-            processed: true,
-            type: ActionInternalType.FIELD,
-            data: field.copyWith(
-                loading: false,
-                offline: true,
-                error: null,
-                completed: true,
-                data: persistDataBetweenFetches ? field.data : null))));
+          processed: true,
+          type: ActionInternalType.FIELD,
+          data: field.copyWith(
+            loading: false,
+            offline: true,
+            error: null,
+            completed: true,
+            data: persistDataBetweenFetches ? field.data : null,
+          ),
+        ),
+      ),
+    );
   } else {
     final c = field.copyWith(
-        error: error,
-        errorType: errorType,
-        loading: false,
-        offline: false,
-        completed: true,
-        data: persistDataBetweenFetches ? field.data : null);
+      error: error,
+      errorType: errorType,
+      loading: false,
+      offline: false,
+      completed: true,
+      data: persistDataBetweenFetches ? field.data : null,
+    );
     dynamic ef;
     if (meta?.transformer != null) {
       ef = meta?.transformer!(c, null);
     } else {
       ef = c;
     }
-    store.dispatch(action.copyWith(
+    store.dispatch(
+      action.copyWith(
         internal: ActionInternal(
-            processed: true, type: ActionInternalType.FIELD, data: ef)));
+          processed: true,
+          type: ActionInternalType.FIELD,
+          data: ef,
+        ),
+      ),
+    );
   }
 }
 
@@ -148,7 +169,8 @@ String _getUrlFromPayload({required Action action, required HttpMeta? meta}) {
     if (pathParams != null) {
       if (meta?.pathParamsSerializer == null) {
         throw ArgumentError.value(
-            "pathParamsSerializer is missing in HttpMeta for action :  ${action.id}");
+          "pathParamsSerializer is missing in HttpMeta for action :  ${action.id}",
+        );
       }
       final pp = meta!.pathParamsSerializer!(pathParams);
       pp.forEach((key, dynamic value) {
@@ -158,7 +180,8 @@ String _getUrlFromPayload({required Action action, required HttpMeta? meta}) {
     if (queryParams != null) {
       if (meta?.queryParamsSerializer == null) {
         throw ArgumentError.value(
-            "queryParamsSerializer is missing in HttpMeta for action :  ${action.id}");
+          "queryParamsSerializer is missing in HttpMeta for action :  ${action.id}",
+        );
       }
       final qp = meta!.queryParamsSerializer!(queryParams);
       final uri = Uri(path: result, queryParameters: qp);
@@ -168,8 +191,10 @@ String _getUrlFromPayload({required Action action, required HttpMeta? meta}) {
   return result;
 }
 
-Future<bool> _canProcessHtpAction(
-    {required HttpMeta? meta, required Action action}) async {
+Future<bool> _canProcessHtpAction({
+  required HttpMeta? meta,
+  required Action action,
+}) async {
   if (action.offlinedAt != null && meta?.canProcessOfflineAction != null) {
     return meta!.canProcessOfflineAction!(action);
   } else {
@@ -177,8 +202,12 @@ Future<bool> _canProcessHtpAction(
   }
 }
 
-void _processHttpAction(DioMiddlewareOptions? middlewareOptions, Store store,
-    Action action, Dio dio) async {
+void _processHttpAction(
+  DioMiddlewareOptions? middlewareOptions,
+  Store store,
+  Action action,
+  Dio dio,
+) async {
   final psm = store.getPStateMetaFromAction(action);
   final payload = action.http!;
   final meta = psm.httpMetaMap?[action.name];
@@ -187,7 +216,8 @@ void _processHttpAction(DioMiddlewareOptions? middlewareOptions, Store store,
   final canProcess = await _canProcessHtpAction(meta: meta, action: action);
   if (!canProcess) {
     print(
-        "Action $action is skipped because its blocked by offline can process  action");
+      "Action $action is skipped because its blocked by offline can process  action",
+    );
     return;
   }
   final persistDataBetweenFetches = meta?.persitDataBetweenFetches ?? false;
@@ -200,30 +230,39 @@ void _processHttpAction(DioMiddlewareOptions? middlewareOptions, Store store,
   }
   final options = _getOptions(payload, middlewareOptions);
   if (payload.optimisticResponse != null) {
-    store.dispatch(action.copyWith(
+    store.dispatch(
+      action.copyWith(
         internal: ActionInternal(
-            processed: true,
-            type: ActionInternalType.FIELD,
-            data: field.copyWith(
-              error: null,
-              completed: false,
-              data: payload.optimisticResponse,
-              abortController: abortController,
-              optimistic: true,
-            ))));
+          processed: true,
+          type: ActionInternalType.FIELD,
+          data: field.copyWith(
+            error: null,
+            completed: false,
+            data: payload.optimisticResponse,
+            abortController: abortController,
+            optimistic: true,
+          ),
+        ),
+      ),
+    );
   } else {
-    store.dispatch(action.copyWith(
+    store.dispatch(
+      action.copyWith(
         internal: ActionInternal(
-            processed: true,
-            type: ActionInternalType.FIELD,
-            data: field.copyWith(
-                loading: true,
-                completed: false,
-                error: null,
-                offline: false,
-                optimistic: false,
-                abortController: abortController,
-                data: persistDataBetweenFetches ? field.data : null))));
+          processed: true,
+          type: ActionInternalType.FIELD,
+          data: field.copyWith(
+            loading: true,
+            completed: false,
+            error: null,
+            offline: false,
+            optimistic: false,
+            abortController: abortController,
+            data: persistDataBetweenFetches ? field.data : null,
+          ),
+        ),
+      ),
+    );
   }
   late final Response? response;
   try {
@@ -248,37 +287,50 @@ void _processHttpAction(DioMiddlewareOptions? middlewareOptions, Store store,
     void Function(int, int)? onReceiveProgress;
     if (payload.listenReceiveProgress) {
       onReceiveProgress = (int got, int total) {
-        store.dispatch(action.copyWith(
+        store.dispatch(
+          action.copyWith(
             internal: ActionInternal(
-                processed: true,
-                type: ActionInternalType.FIELD,
-                data: field.copyWith(
-                    loading: true,
-                    progress: HttpProgress(current: got, total: total)))));
+              processed: true,
+              type: ActionInternalType.FIELD,
+              data: field.copyWith(
+                loading: true,
+                progress: HttpProgress(current: got, total: total),
+              ),
+            ),
+          ),
+        );
       };
     }
     void Function(int, int)? onSendProgress;
     if (payload.listenSendProgress) {
       onSendProgress = (int sent, int total) {
-        store.dispatch(action.copyWith(
+        store.dispatch(
+          action.copyWith(
             internal: ActionInternal(
-                processed: true,
-                type: ActionInternalType.FIELD,
-                data: field.copyWith(
-                    loading: true,
-                    progress: HttpProgress(current: sent, total: total)))));
+              processed: true,
+              type: ActionInternalType.FIELD,
+              data: field.copyWith(
+                loading: true,
+                progress: HttpProgress(current: sent, total: total),
+              ),
+            ),
+          ),
+        );
       };
     }
     print("Sending request to server $url ");
     print("data $data");
-    response = await dio.request<dynamic>(url,
-        data: data,
-        cancelToken: cancelToken,
-        onReceiveProgress: onReceiveProgress,
-        onSendProgress: onSendProgress,
-        options: options);
+    response = await dio.request<dynamic>(
+      url,
+      data: data,
+      cancelToken: cancelToken,
+      onReceiveProgress: onReceiveProgress,
+      onSendProgress: onSendProgress,
+      options: options,
+    );
     print(
-        "Response from server ${response.data} status : ${response.statusCode}");
+      "Response from server ${response.data} status : ${response.statusCode}",
+    );
   } on DioError catch (e) {
     _handleDioError(e: e, action: action, store: store);
     return;
@@ -302,13 +354,23 @@ void _processHttpAction(DioMiddlewareOptions? middlewareOptions, Store store,
       rdata = meta!.responseDeserializer(200, response.data["data"]);
     }
     var hf = field.copyWith(
-        error: error, errorType: errorType, data: rdata, completed: true);
+      error: error,
+      errorType: errorType,
+      data: rdata,
+      completed: true,
+    );
     if (meta?.transformer != null) {
       hf = meta!.transformer!(field.copyWith(completed: true), hf) as HttpField;
     }
-    store.dispatch(action.copyWith(
+    store.dispatch(
+      action.copyWith(
         internal: ActionInternal(
-            processed: true, type: ActionInternalType.FIELD, data: hf)));
+          processed: true,
+          type: ActionInternalType.FIELD,
+          data: hf,
+        ),
+      ),
+    );
   }
 
   if (response != null) {
@@ -317,7 +379,10 @@ void _processHttpAction(DioMiddlewareOptions? middlewareOptions, Store store,
       if (isPersistQueryNotFoundError(response)) {
         try {
           final presp = await createPersistedGraphqlQuery(
-              payload: payload, options: options, meta: meta);
+            payload: payload,
+            options: options,
+            meta: meta,
+          );
           handleGraphqlResponse(presp);
         } on DioError catch (e) {
           _handleDioError(e: e, action: action, store: store);
@@ -328,8 +393,10 @@ void _processHttpAction(DioMiddlewareOptions? middlewareOptions, Store store,
         handleGraphqlResponse(response);
       }
     } else {
-      dynamic data =
-          meta!.responseDeserializer(response.statusCode ?? 200, response.data);
+      dynamic data = meta!.responseDeserializer(
+        response.statusCode ?? 200,
+        response.data,
+      );
 
       dynamic hf;
       if (meta.transformer != null) {
@@ -338,17 +405,24 @@ void _processHttpAction(DioMiddlewareOptions? middlewareOptions, Store store,
         hf = field.copyWith(data: data, completed: true);
       }
       print("Sending response $hf");
-      store.dispatch(action.copyWith(
+      store.dispatch(
+        action.copyWith(
           internal: ActionInternal(
-              processed: true, type: ActionInternalType.FIELD, data: hf)));
+            processed: true,
+            type: ActionInternalType.FIELD,
+            data: hf,
+          ),
+        ),
+      );
     }
   }
 }
 
-Future<Response> createPersistedGraphqlQuery(
-    {required HttpPayload payload,
-    required Options options,
-    required HttpMeta? meta}) async {
+Future<Response> createPersistedGraphqlQuery({
+  required HttpPayload payload,
+  required Options options,
+  required HttpMeta? meta,
+}) async {
   final req = payload.data as GraphqlRequestInput;
   var url = payload.url;
   dynamic data;
@@ -389,8 +463,9 @@ class DioMiddlewareOptions {
   DioMiddlewareOptions({required this.urlOptions});
 }
 
-Middleware<S> createDioMiddleware<S extends AppStateI<S>>(
-    [DioMiddlewareOptions? options]) {
+Middleware<S> createDioMiddleware<S extends AppStateI<S>>([
+  DioMiddlewareOptions? options,
+]) {
   final dio = Dio();
   return (Store<S> store, Dispatch next, Action action) {
     if (action.isProcessed) {
@@ -400,17 +475,24 @@ Middleware<S> createDioMiddleware<S extends AppStateI<S>>(
     if (mock != null) {
       // final mock
       mock = mock as HttpField;
-      return store.dispatch(action.copyWith(
+      return store.dispatch(
+        action.copyWith(
           internal: ActionInternal(
-              processed: true, data: mock, type: ActionInternalType.FIELD)));
+            processed: true,
+            data: mock,
+            type: ActionInternalType.FIELD,
+          ),
+        ),
+      );
     }
     if (action.http == null) {
       return next(action);
     }
 
     DstoreDevUtils.handleUnCaughtError(
-        store: store,
-        action: action,
-        callback: () => _processHttpAction(options, store, action, dio));
+      store: store,
+      action: action,
+      callback: () => _processHttpAction(options, store, action, dio),
+    );
   };
 }

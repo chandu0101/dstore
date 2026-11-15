@@ -35,19 +35,20 @@ class HttpField<I, R, E> implements ToMap<HttpField> {
   _$HttpFieldCopyWith<I, R, E, HttpField<I, R, E>> get copyWith =>
       __$HttpFieldCopyWithImpl<I, R, E, HttpField<I, R, E>>(this, IdentityFn);
 
-  const HttpField(
-      {this.data,
-      this.error,
-      this.genericError,
-      this.responseHeaders,
-      this.status,
-      this.progress,
-      this.errorType,
-      this.abortController,
-      this.optimistic = false,
-      this.loading = false,
-      this.completed = false,
-      this.offline = false});
+  const HttpField({
+    this.data,
+    this.error,
+    this.genericError,
+    this.responseHeaders,
+    this.status,
+    this.progress,
+    this.errorType,
+    this.abortController,
+    this.optimistic = false,
+    this.loading = false,
+    this.completed = false,
+    this.offline = false,
+  });
 
   @override
   bool operator ==(Object o) {
@@ -83,19 +84,19 @@ class HttpField<I, R, E> implements ToMap<HttpField> {
       offline.hashCode;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        "data": this.data,
-        "error": this.error,
-        "genericError": this.genericError,
-        "responseHeaders": this.responseHeaders,
-        "status": this.status,
-        "progress": this.progress,
-        "errorType": this.errorType,
-        "abortController": this.abortController,
-        "optimistic": this.optimistic,
-        "loading": this.loading,
-        "completed": this.completed,
-        "offline": this.offline
-      };
+    "data": this.data,
+    "error": this.error,
+    "genericError": this.genericError,
+    "responseHeaders": this.responseHeaders,
+    "status": this.status,
+    "progress": this.progress,
+    "errorType": this.errorType,
+    "abortController": this.abortController,
+    "optimistic": this.optimistic,
+    "loading": this.loading,
+    "completed": this.completed,
+    "offline": this.offline,
+  };
 
   @override
   HttpField copyWithMap(Map<String, dynamic> map) => throw UnimplementedError();
@@ -107,21 +108,23 @@ class HttpField<I, R, E> implements ToMap<HttpField> {
 
 abstract class $HttpFieldCopyWith<I, R, E, O> {
   factory $HttpFieldCopyWith(
-          HttpField<I, R, E> value, O Function(HttpField<I, R, E>) then) =
-      _$HttpFieldCopyWithImpl<I, R, E, O>;
-  O call(
-      {R? data,
-      E? error,
-      dynamic? genericError,
-      Map<String, String>? responseHeaders,
-      int? status,
-      HttpProgress? progress,
-      HttpErrorType? errorType,
-      AbortController? abortController,
-      bool optimistic,
-      bool loading,
-      bool completed,
-      bool offline});
+    HttpField<I, R, E> value,
+    O Function(HttpField<I, R, E>) then,
+  ) = _$HttpFieldCopyWithImpl<I, R, E, O>;
+  O call({
+    R? data,
+    E? error,
+    dynamic? genericError,
+    Map<String, String>? responseHeaders,
+    int? status,
+    HttpProgress? progress,
+    HttpErrorType? errorType,
+    AbortController? abortController,
+    bool optimistic,
+    bool loading,
+    bool completed,
+    bool offline,
+  });
 }
 
 class _$HttpFieldCopyWithImpl<I, R, E, O>
@@ -131,20 +134,22 @@ class _$HttpFieldCopyWithImpl<I, R, E, O>
   _$HttpFieldCopyWithImpl(this._value, this._then);
 
   @override
-  O call(
-      {Object? data = dimmutable,
-      Object? error = dimmutable,
-      Object? genericError = dimmutable,
-      Object? responseHeaders = dimmutable,
-      Object? status = dimmutable,
-      Object? progress = dimmutable,
-      Object? errorType = dimmutable,
-      Object? abortController = dimmutable,
-      Object? optimistic = dimmutable,
-      Object? loading = dimmutable,
-      Object? completed = dimmutable,
-      Object? offline = dimmutable}) {
-    return _then(_value.copyWith(
+  O call({
+    Object? data = dimmutable,
+    Object? error = dimmutable,
+    Object? genericError = dimmutable,
+    Object? responseHeaders = dimmutable,
+    Object? status = dimmutable,
+    Object? progress = dimmutable,
+    Object? errorType = dimmutable,
+    Object? abortController = dimmutable,
+    Object? optimistic = dimmutable,
+    Object? loading = dimmutable,
+    Object? completed = dimmutable,
+    Object? offline = dimmutable,
+  }) {
+    return _then(
+      _value.copyWith(
         data: data == dimmutable ? _value.data : data as R?,
         error: error == dimmutable ? _value.error : error as E?,
         genericError: genericError == dimmutable
@@ -163,60 +168,69 @@ class _$HttpFieldCopyWithImpl<I, R, E, O>
         abortController: abortController == dimmutable
             ? _value.abortController
             : abortController as AbortController?,
-        optimistic:
-            optimistic == dimmutable ? _value.optimistic : optimistic as bool,
+        optimistic: optimistic == dimmutable
+            ? _value.optimistic
+            : optimistic as bool,
         loading: loading == dimmutable ? _value.loading : loading as bool,
-        completed:
-            completed == dimmutable ? _value.completed : completed as bool,
-        offline: offline == dimmutable ? _value.offline : offline as bool));
+        completed: completed == dimmutable
+            ? _value.completed
+            : completed as bool,
+        offline: offline == dimmutable ? _value.offline : offline as bool,
+      ),
+    );
   }
 }
 
 abstract class _$HttpFieldCopyWith<I, R, E, O>
     implements $HttpFieldCopyWith<I, R, E, O> {
   factory _$HttpFieldCopyWith(
-          HttpField<I, R, E> value, O Function(HttpField<I, R, E>) then) =
-      __$HttpFieldCopyWithImpl<I, R, E, O>;
-  O call(
-      {R? data,
-      E? error,
-      dynamic? genericError,
-      Map<String, String>? responseHeaders,
-      int? status,
-      HttpProgress? progress,
-      HttpErrorType? errorType,
-      AbortController? abortController,
-      bool optimistic,
-      bool loading,
-      bool completed,
-      bool offline});
+    HttpField<I, R, E> value,
+    O Function(HttpField<I, R, E>) then,
+  ) = __$HttpFieldCopyWithImpl<I, R, E, O>;
+  O call({
+    R? data,
+    E? error,
+    dynamic? genericError,
+    Map<String, String>? responseHeaders,
+    int? status,
+    HttpProgress? progress,
+    HttpErrorType? errorType,
+    AbortController? abortController,
+    bool optimistic,
+    bool loading,
+    bool completed,
+    bool offline,
+  });
 }
 
 class __$HttpFieldCopyWithImpl<I, R, E, O>
     extends _$HttpFieldCopyWithImpl<I, R, E, O>
     implements _$HttpFieldCopyWith<I, R, E, O> {
   __$HttpFieldCopyWithImpl(
-      HttpField<I, R, E> _value, O Function(HttpField<I, R, E>) _then)
-      : super(_value, (v) => _then(v));
+    HttpField<I, R, E> _value,
+    O Function(HttpField<I, R, E>) _then,
+  ) : super(_value, (v) => _then(v));
 
   @override
   HttpField<I, R, E> get _value => super._value;
 
   @override
-  O call(
-      {Object? data = dimmutable,
-      Object? error = dimmutable,
-      Object? genericError = dimmutable,
-      Object? responseHeaders = dimmutable,
-      Object? status = dimmutable,
-      Object? progress = dimmutable,
-      Object? errorType = dimmutable,
-      Object? abortController = dimmutable,
-      Object? optimistic = dimmutable,
-      Object? loading = dimmutable,
-      Object? completed = dimmutable,
-      Object? offline = dimmutable}) {
-    return _then(HttpField(
+  O call({
+    Object? data = dimmutable,
+    Object? error = dimmutable,
+    Object? genericError = dimmutable,
+    Object? responseHeaders = dimmutable,
+    Object? status = dimmutable,
+    Object? progress = dimmutable,
+    Object? errorType = dimmutable,
+    Object? abortController = dimmutable,
+    Object? optimistic = dimmutable,
+    Object? loading = dimmutable,
+    Object? completed = dimmutable,
+    Object? offline = dimmutable,
+  }) {
+    return _then(
+      HttpField(
         data: data == dimmutable ? _value.data : data as R?,
         error: error == dimmutable ? _value.error : error as E?,
         genericError: genericError == dimmutable
@@ -235,12 +249,16 @@ class __$HttpFieldCopyWithImpl<I, R, E, O>
         abortController: abortController == dimmutable
             ? _value.abortController
             : abortController as AbortController?,
-        optimistic:
-            optimistic == dimmutable ? _value.optimistic : optimistic as bool,
+        optimistic: optimistic == dimmutable
+            ? _value.optimistic
+            : optimistic as bool,
         loading: loading == dimmutable ? _value.loading : loading as bool,
-        completed:
-            completed == dimmutable ? _value.completed : completed as bool,
-        offline: offline == dimmutable ? _value.offline : offline as bool));
+        completed: completed == dimmutable
+            ? _value.completed
+            : completed as bool,
+        offline: offline == dimmutable ? _value.offline : offline as bool,
+      ),
+    );
   }
 }
 
@@ -272,23 +290,27 @@ class HttpMeta<PP, QP, I, R, E, T> {
   final bool persitDataBetweenFetches;
 
   _$HttpMetaCopyWith<PP, QP, I, R, E, T, HttpMeta<PP, QP, I, R, E, T>>
-      get copyWith => __$HttpMetaCopyWithImpl<PP, QP, I, R, E, T,
-          HttpMeta<PP, QP, I, R, E, T>>(this, IdentityFn);
+  get copyWith =>
+      __$HttpMetaCopyWithImpl<PP, QP, I, R, E, T, HttpMeta<PP, QP, I, R, E, T>>(
+        this,
+        IdentityFn,
+      );
 
-  const HttpMeta(
-      {required this.responseDeserializer,
-      this.responseSerializer,
-      this.transformer,
-      this.inputSerializer,
-      this.inputStorageSerializer,
-      this.inputDeserializer,
-      this.errorDeserializer,
-      this.canProcessOfflineAction,
-      this.pathParamsDeserializer,
-      this.pathParamsSerializer,
-      this.queryParamsDeserializer,
-      this.queryParamsSerializer,
-      this.persitDataBetweenFetches = false});
+  const HttpMeta({
+    required this.responseDeserializer,
+    this.responseSerializer,
+    this.transformer,
+    this.inputSerializer,
+    this.inputStorageSerializer,
+    this.inputDeserializer,
+    this.errorDeserializer,
+    this.canProcessOfflineAction,
+    this.pathParamsDeserializer,
+    this.pathParamsSerializer,
+    this.queryParamsDeserializer,
+    this.queryParamsSerializer,
+    this.persitDataBetweenFetches = false,
+  });
 
   @override
   bool operator ==(Object o) {
@@ -331,23 +353,25 @@ class HttpMeta<PP, QP, I, R, E, T> {
 }
 
 abstract class $HttpMetaCopyWith<PP, QP, I, R, E, T, O> {
-  factory $HttpMetaCopyWith(HttpMeta<PP, QP, I, R, E, T> value,
-          O Function(HttpMeta<PP, QP, I, R, E, T>) then) =
-      _$HttpMetaCopyWithImpl<PP, QP, I, R, E, T, O>;
-  O call(
-      {R Function(int status, dynamic resp) responseDeserializer,
-      dynamic Function(int, R)? responseSerializer,
-      Function? transformer,
-      Function? inputSerializer,
-      Future<dynamic> Function(I)? inputStorageSerializer,
-      I Function(dynamic)? inputDeserializer,
-      E Function(int status, dynamic resp)? errorDeserializer,
-      Future<bool> Function(Action)? canProcessOfflineAction,
-      PP Function(dynamic)? pathParamsDeserializer,
-      Map<String, dynamic> Function(dynamic)? pathParamsSerializer,
-      QP Function(dynamic)? queryParamsDeserializer,
-      Map<String, dynamic> Function(dynamic)? queryParamsSerializer,
-      bool persitDataBetweenFetches});
+  factory $HttpMetaCopyWith(
+    HttpMeta<PP, QP, I, R, E, T> value,
+    O Function(HttpMeta<PP, QP, I, R, E, T>) then,
+  ) = _$HttpMetaCopyWithImpl<PP, QP, I, R, E, T, O>;
+  O call({
+    R Function(int status, dynamic resp) responseDeserializer,
+    dynamic Function(int, R)? responseSerializer,
+    Function? transformer,
+    Function? inputSerializer,
+    Future<dynamic> Function(I)? inputStorageSerializer,
+    I Function(dynamic)? inputDeserializer,
+    E Function(int status, dynamic resp)? errorDeserializer,
+    Future<bool> Function(Action)? canProcessOfflineAction,
+    PP Function(dynamic)? pathParamsDeserializer,
+    Map<String, dynamic> Function(dynamic)? pathParamsSerializer,
+    QP Function(dynamic)? queryParamsDeserializer,
+    Map<String, dynamic> Function(dynamic)? queryParamsSerializer,
+    bool persitDataBetweenFetches,
+  });
 }
 
 class _$HttpMetaCopyWithImpl<PP, QP, I, R, E, T, O>
@@ -357,21 +381,23 @@ class _$HttpMetaCopyWithImpl<PP, QP, I, R, E, T, O>
   _$HttpMetaCopyWithImpl(this._value, this._then);
 
   @override
-  O call(
-      {Object? responseDeserializer = dimmutable,
-      Object? responseSerializer = dimmutable,
-      Object? transformer = dimmutable,
-      Object? inputSerializer = dimmutable,
-      Object? inputStorageSerializer = dimmutable,
-      Object? inputDeserializer = dimmutable,
-      Object? errorDeserializer = dimmutable,
-      Object? canProcessOfflineAction = dimmutable,
-      Object? pathParamsDeserializer = dimmutable,
-      Object? pathParamsSerializer = dimmutable,
-      Object? queryParamsDeserializer = dimmutable,
-      Object? queryParamsSerializer = dimmutable,
-      Object? persitDataBetweenFetches = dimmutable}) {
-    return _then(_value.copyWith(
+  O call({
+    Object? responseDeserializer = dimmutable,
+    Object? responseSerializer = dimmutable,
+    Object? transformer = dimmutable,
+    Object? inputSerializer = dimmutable,
+    Object? inputStorageSerializer = dimmutable,
+    Object? inputDeserializer = dimmutable,
+    Object? errorDeserializer = dimmutable,
+    Object? canProcessOfflineAction = dimmutable,
+    Object? pathParamsDeserializer = dimmutable,
+    Object? pathParamsSerializer = dimmutable,
+    Object? queryParamsDeserializer = dimmutable,
+    Object? queryParamsSerializer = dimmutable,
+    Object? persitDataBetweenFetches = dimmutable,
+  }) {
+    return _then(
+      _value.copyWith(
         responseDeserializer: responseDeserializer == dimmutable
             ? _value.responseDeserializer
             : responseDeserializer as R Function(int status, dynamic resp),
@@ -410,57 +436,64 @@ class _$HttpMetaCopyWithImpl<PP, QP, I, R, E, T, O>
             : queryParamsSerializer as Map<String, dynamic> Function(dynamic)?,
         persitDataBetweenFetches: persitDataBetweenFetches == dimmutable
             ? _value.persitDataBetweenFetches
-            : persitDataBetweenFetches as bool));
+            : persitDataBetweenFetches as bool,
+      ),
+    );
   }
 }
 
 abstract class _$HttpMetaCopyWith<PP, QP, I, R, E, T, O>
     implements $HttpMetaCopyWith<PP, QP, I, R, E, T, O> {
-  factory _$HttpMetaCopyWith(HttpMeta<PP, QP, I, R, E, T> value,
-          O Function(HttpMeta<PP, QP, I, R, E, T>) then) =
-      __$HttpMetaCopyWithImpl<PP, QP, I, R, E, T, O>;
-  O call(
-      {R Function(int status, dynamic resp) responseDeserializer,
-      dynamic Function(int, R)? responseSerializer,
-      Function? transformer,
-      Function? inputSerializer,
-      Future<dynamic> Function(I)? inputStorageSerializer,
-      I Function(dynamic)? inputDeserializer,
-      E Function(int status, dynamic resp)? errorDeserializer,
-      Future<bool> Function(Action)? canProcessOfflineAction,
-      PP Function(dynamic)? pathParamsDeserializer,
-      Map<String, dynamic> Function(dynamic)? pathParamsSerializer,
-      QP Function(dynamic)? queryParamsDeserializer,
-      Map<String, dynamic> Function(dynamic)? queryParamsSerializer,
-      bool persitDataBetweenFetches});
+  factory _$HttpMetaCopyWith(
+    HttpMeta<PP, QP, I, R, E, T> value,
+    O Function(HttpMeta<PP, QP, I, R, E, T>) then,
+  ) = __$HttpMetaCopyWithImpl<PP, QP, I, R, E, T, O>;
+  O call({
+    R Function(int status, dynamic resp) responseDeserializer,
+    dynamic Function(int, R)? responseSerializer,
+    Function? transformer,
+    Function? inputSerializer,
+    Future<dynamic> Function(I)? inputStorageSerializer,
+    I Function(dynamic)? inputDeserializer,
+    E Function(int status, dynamic resp)? errorDeserializer,
+    Future<bool> Function(Action)? canProcessOfflineAction,
+    PP Function(dynamic)? pathParamsDeserializer,
+    Map<String, dynamic> Function(dynamic)? pathParamsSerializer,
+    QP Function(dynamic)? queryParamsDeserializer,
+    Map<String, dynamic> Function(dynamic)? queryParamsSerializer,
+    bool persitDataBetweenFetches,
+  });
 }
 
 class __$HttpMetaCopyWithImpl<PP, QP, I, R, E, T, O>
     extends _$HttpMetaCopyWithImpl<PP, QP, I, R, E, T, O>
     implements _$HttpMetaCopyWith<PP, QP, I, R, E, T, O> {
-  __$HttpMetaCopyWithImpl(HttpMeta<PP, QP, I, R, E, T> _value,
-      O Function(HttpMeta<PP, QP, I, R, E, T>) _then)
-      : super(_value, (v) => _then(v));
+  __$HttpMetaCopyWithImpl(
+    HttpMeta<PP, QP, I, R, E, T> _value,
+    O Function(HttpMeta<PP, QP, I, R, E, T>) _then,
+  ) : super(_value, (v) => _then(v));
 
   @override
   HttpMeta<PP, QP, I, R, E, T> get _value => super._value;
 
   @override
-  O call(
-      {Object? responseDeserializer = dimmutable,
-      Object? responseSerializer = dimmutable,
-      Object? transformer = dimmutable,
-      Object? inputSerializer = dimmutable,
-      Object? inputStorageSerializer = dimmutable,
-      Object? inputDeserializer = dimmutable,
-      Object? errorDeserializer = dimmutable,
-      Object? canProcessOfflineAction = dimmutable,
-      Object? pathParamsDeserializer = dimmutable,
-      Object? pathParamsSerializer = dimmutable,
-      Object? queryParamsDeserializer = dimmutable,
-      Object? queryParamsSerializer = dimmutable,
-      Object? persitDataBetweenFetches = dimmutable}) {
-    return _then(HttpMeta(
+  O call({
+    Object? responseDeserializer = dimmutable,
+    Object? responseSerializer = dimmutable,
+    Object? transformer = dimmutable,
+    Object? inputSerializer = dimmutable,
+    Object? inputStorageSerializer = dimmutable,
+    Object? inputDeserializer = dimmutable,
+    Object? errorDeserializer = dimmutable,
+    Object? canProcessOfflineAction = dimmutable,
+    Object? pathParamsDeserializer = dimmutable,
+    Object? pathParamsSerializer = dimmutable,
+    Object? queryParamsDeserializer = dimmutable,
+    Object? queryParamsSerializer = dimmutable,
+    Object? persitDataBetweenFetches = dimmutable,
+  }) {
+    return _then(
+      HttpMeta(
         responseDeserializer: responseDeserializer == dimmutable
             ? _value.responseDeserializer
             : responseDeserializer as R Function(int status, dynamic resp),
@@ -499,7 +532,9 @@ class __$HttpMetaCopyWithImpl<PP, QP, I, R, E, T, O>
             : queryParamsSerializer as Map<String, dynamic> Function(dynamic)?,
         persitDataBetweenFetches: persitDataBetweenFetches == dimmutable
             ? _value.persitDataBetweenFetches
-            : persitDataBetweenFetches as bool));
+            : persitDataBetweenFetches as bool,
+      ),
+    );
   }
 }
 
@@ -524,9 +559,9 @@ class HttpPayload<PP, QP, I, R, E, T> {
 
   final PP? pathParams;
 
-  final int? sendTimeout;
+  final Duration? sendTimeout;
 
-  final int? receiveTieout;
+  final Duration? receiveTieout;
 
   final bool listenSendProgress;
 
@@ -535,38 +570,51 @@ class HttpPayload<PP, QP, I, R, E, T> {
   final bool abortable;
 
   _$HttpPayloadCopyWith<PP, QP, I, R, E, T, HttpPayload<PP, QP, I, R, E, T>>
-      get copyWith => __$HttpPayloadCopyWithImpl<PP, QP, I, R, E, T,
-          HttpPayload<PP, QP, I, R, E, T>>(this, IdentityFn);
+  get copyWith =>
+      __$HttpPayloadCopyWithImpl<
+        PP,
+        QP,
+        I,
+        R,
+        E,
+        T,
+        HttpPayload<PP, QP, I, R, E, T>
+      >(this, IdentityFn);
 
-  const HttpPayload(
-      {required this.url,
-      this.data,
-      required this.method,
-      required this.responseType,
-      this.optimisticResponse,
-      this.optimisticHttpStatus,
-      this.offline = false,
-      this.headers,
-      this.queryParams,
-      this.pathParams,
-      this.sendTimeout,
-      this.receiveTieout,
-      this.listenSendProgress = false,
-      this.listenReceiveProgress = false,
-      this.abortable = false});
+  const HttpPayload({
+    required this.url,
+    this.data,
+    required this.method,
+    required this.responseType,
+    this.optimisticResponse,
+    this.optimisticHttpStatus,
+    this.offline = false,
+    this.headers,
+    this.queryParams,
+    this.pathParams,
+    this.sendTimeout,
+    this.receiveTieout,
+    this.listenSendProgress = false,
+    this.listenReceiveProgress = false,
+    this.abortable = false,
+  });
 
   static HttpPayload fromJson<PP, QP, I, R, E, T>(
-      Map<String, dynamic> map, HttpMeta<PP, QP, I, R, E, T> meta) {
+    Map<String, dynamic> map,
+    HttpMeta<PP, QP, I, R, E, T> meta,
+  ) {
     final url = map["url"] as String;
     final method = map["method"] as String;
-    final responseType =
-        HttpResponseTypeExt.fromValue(map["responseType"] as String)!;
+    final responseType = HttpResponseTypeExt.fromValue(
+      map["responseType"] as String,
+    )!;
     final dataObj = map["data"] as Map<String, dynamic>?;
     I? data;
     if (dataObj != null) {
       if (meta.inputDeserializer == null) {
         throw ArgumentError.value(
-            "You should provide inputDeserializer for http field");
+          "You should provide inputDeserializer for http field",
+        );
       }
       data = meta.inputDeserializer!(data);
     }
@@ -585,7 +633,8 @@ class HttpPayload<PP, QP, I, R, E, T> {
     if (queryParamsObj != null) {
       if (meta.queryParamsDeserializer == null) {
         throw ArgumentError.value(
-            "You should specify queryParamsDeserializer in HttpMeta   to deserialize payload");
+          "You should specify queryParamsDeserializer in HttpMeta   to deserialize payload",
+        );
       }
       queryParams = meta.queryParamsDeserializer!(queryParams);
     }
@@ -594,7 +643,8 @@ class HttpPayload<PP, QP, I, R, E, T> {
     if (pathParamsObj != null) {
       if (meta.pathParamsDeserializer == null) {
         throw ArgumentError.value(
-            "You should specify pathParamsDeserializer in HttpMeta to deserialize payload");
+          "You should specify pathParamsDeserializer in HttpMeta to deserialize payload",
+        );
       }
       pathParams = meta.pathParamsDeserializer!(pathParamsObj);
     }
@@ -602,17 +652,18 @@ class HttpPayload<PP, QP, I, R, E, T> {
     final receiveTieout = map["receiveTieout"] as int?;
     final abortable = map["abortable"] as bool;
     return HttpPayload<PP, QP, I, R, E, T>(
-        url: url,
-        method: method,
-        responseType: responseType,
-        data: data,
-        optimisticResponse: optimisticResponse,
-        headers: headers,
-        queryParams: queryParams,
-        pathParams: pathParams,
-        sendTimeout: sendTimeout,
-        receiveTieout: receiveTieout,
-        abortable: abortable);
+      url: url,
+      method: method,
+      responseType: responseType,
+      data: data,
+      optimisticResponse: optimisticResponse,
+      headers: headers,
+      queryParams: queryParams,
+      pathParams: pathParams,
+      sendTimeout: sendTimeout,
+      receiveTieout: receiveTieout,
+      abortable: abortable,
+    );
   }
 
   Map<String, dynamic> toJson(HttpMeta meta) {
@@ -622,7 +673,8 @@ class HttpPayload<PP, QP, I, R, E, T> {
     if (data != null) {
       if (meta.inputSerializer == null) {
         throw ArgumentError.value(
-            "You should provide inputSerializer for http field");
+          "You should provide inputSerializer for http field",
+        );
       }
       map["data"] = meta.inputSerializer!(data);
     }
@@ -630,10 +682,13 @@ class HttpPayload<PP, QP, I, R, E, T> {
     if (optimisticResponse != null && optimisticHttpStatus != null) {
       if (meta.responseSerializer == null) {
         throw ArgumentError.value(
-            "You should provide responseSerializer for http field");
+          "You should provide responseSerializer for http field",
+        );
       }
-      map["optimisticResponse"] =
-          meta.responseSerializer!(optimisticHttpStatus!, optimisticResponse);
+      map["optimisticResponse"] = meta.responseSerializer!(
+        optimisticHttpStatus!,
+        optimisticResponse,
+      );
     }
     if (headers != null) {
       map["headers"] = headers;
@@ -650,14 +705,16 @@ class HttpPayload<PP, QP, I, R, E, T> {
     if (queryParams != null) {
       if (meta.queryParamsSerializer == null) {
         throw ArgumentError.value(
-            "You should provide queryParamsSerializer in HttpMeta to serialize payload");
+          "You should provide queryParamsSerializer in HttpMeta to serialize payload",
+        );
       }
       map["queryParams"] = meta.queryParamsSerializer!(queryParams);
     }
     if (pathParams != null) {
       if (meta.pathParamsSerializer == null) {
         throw ArgumentError.value(
-            "You should provide pathParamsSerializer in HttpMeta to serialize payload");
+          "You should provide pathParamsSerializer in HttpMeta to serialize payload",
+        );
       }
       map["pathParams"] = meta.pathParamsSerializer!(pathParams);
     }
@@ -710,25 +767,27 @@ class HttpPayload<PP, QP, I, R, E, T> {
 }
 
 abstract class $HttpPayloadCopyWith<PP, QP, I, R, E, T, O> {
-  factory $HttpPayloadCopyWith(HttpPayload<PP, QP, I, R, E, T> value,
-          O Function(HttpPayload<PP, QP, I, R, E, T>) then) =
-      _$HttpPayloadCopyWithImpl<PP, QP, I, R, E, T, O>;
-  O call(
-      {String url,
-      I? data,
-      String method,
-      HttpResponseType responseType,
-      R? optimisticResponse,
-      int? optimisticHttpStatus,
-      bool offline,
-      Map<String, String>? headers,
-      QP? queryParams,
-      PP? pathParams,
-      int? sendTimeout,
-      int? receiveTieout,
-      bool listenSendProgress,
-      bool listenReceiveProgress,
-      bool abortable});
+  factory $HttpPayloadCopyWith(
+    HttpPayload<PP, QP, I, R, E, T> value,
+    O Function(HttpPayload<PP, QP, I, R, E, T>) then,
+  ) = _$HttpPayloadCopyWithImpl<PP, QP, I, R, E, T, O>;
+  O call({
+    String url,
+    I? data,
+    String method,
+    HttpResponseType responseType,
+    R? optimisticResponse,
+    int? optimisticHttpStatus,
+    bool offline,
+    Map<String, String>? headers,
+    QP? queryParams,
+    PP? pathParams,
+    int? sendTimeout,
+    int? receiveTieout,
+    bool listenSendProgress,
+    bool listenReceiveProgress,
+    bool abortable,
+  });
 }
 
 class _$HttpPayloadCopyWithImpl<PP, QP, I, R, E, T, O>
@@ -738,23 +797,25 @@ class _$HttpPayloadCopyWithImpl<PP, QP, I, R, E, T, O>
   _$HttpPayloadCopyWithImpl(this._value, this._then);
 
   @override
-  O call(
-      {Object? url = dimmutable,
-      Object? data = dimmutable,
-      Object? method = dimmutable,
-      Object? responseType = dimmutable,
-      Object? optimisticResponse = dimmutable,
-      Object? optimisticHttpStatus = dimmutable,
-      Object? offline = dimmutable,
-      Object? headers = dimmutable,
-      Object? queryParams = dimmutable,
-      Object? pathParams = dimmutable,
-      Object? sendTimeout = dimmutable,
-      Object? receiveTieout = dimmutable,
-      Object? listenSendProgress = dimmutable,
-      Object? listenReceiveProgress = dimmutable,
-      Object? abortable = dimmutable}) {
-    return _then(_value.copyWith(
+  O call({
+    Object? url = dimmutable,
+    Object? data = dimmutable,
+    Object? method = dimmutable,
+    Object? responseType = dimmutable,
+    Object? optimisticResponse = dimmutable,
+    Object? optimisticHttpStatus = dimmutable,
+    Object? offline = dimmutable,
+    Object? headers = dimmutable,
+    Object? queryParams = dimmutable,
+    Object? pathParams = dimmutable,
+    Object? sendTimeout = dimmutable,
+    Object? receiveTieout = dimmutable,
+    Object? listenSendProgress = dimmutable,
+    Object? listenReceiveProgress = dimmutable,
+    Object? abortable = dimmutable,
+  }) {
+    return _then(
+      _value.copyWith(
         url: url == dimmutable ? _value.url : url as String,
         data: data == dimmutable ? _value.data : data as I?,
         method: method == dimmutable ? _value.method : method as String,
@@ -771,10 +832,12 @@ class _$HttpPayloadCopyWithImpl<PP, QP, I, R, E, T, O>
         headers: headers == dimmutable
             ? _value.headers
             : headers as Map<String, String>?,
-        queryParams:
-            queryParams == dimmutable ? _value.queryParams : queryParams as QP?,
-        pathParams:
-            pathParams == dimmutable ? _value.pathParams : pathParams as PP?,
+        queryParams: queryParams == dimmutable
+            ? _value.queryParams
+            : queryParams as QP?,
+        pathParams: pathParams == dimmutable
+            ? _value.pathParams
+            : pathParams as PP?,
         sendTimeout: sendTimeout == dimmutable
             ? _value.sendTimeout
             : sendTimeout as int?,
@@ -787,62 +850,70 @@ class _$HttpPayloadCopyWithImpl<PP, QP, I, R, E, T, O>
         listenReceiveProgress: listenReceiveProgress == dimmutable
             ? _value.listenReceiveProgress
             : listenReceiveProgress as bool,
-        abortable:
-            abortable == dimmutable ? _value.abortable : abortable as bool));
+        abortable: abortable == dimmutable
+            ? _value.abortable
+            : abortable as bool,
+      ),
+    );
   }
 }
 
 abstract class _$HttpPayloadCopyWith<PP, QP, I, R, E, T, O>
     implements $HttpPayloadCopyWith<PP, QP, I, R, E, T, O> {
-  factory _$HttpPayloadCopyWith(HttpPayload<PP, QP, I, R, E, T> value,
-          O Function(HttpPayload<PP, QP, I, R, E, T>) then) =
-      __$HttpPayloadCopyWithImpl<PP, QP, I, R, E, T, O>;
-  O call(
-      {String url,
-      I? data,
-      String method,
-      HttpResponseType responseType,
-      R? optimisticResponse,
-      int? optimisticHttpStatus,
-      bool offline,
-      Map<String, String>? headers,
-      QP? queryParams,
-      PP? pathParams,
-      int? sendTimeout,
-      int? receiveTieout,
-      bool listenSendProgress,
-      bool listenReceiveProgress,
-      bool abortable});
+  factory _$HttpPayloadCopyWith(
+    HttpPayload<PP, QP, I, R, E, T> value,
+    O Function(HttpPayload<PP, QP, I, R, E, T>) then,
+  ) = __$HttpPayloadCopyWithImpl<PP, QP, I, R, E, T, O>;
+  O call({
+    String url,
+    I? data,
+    String method,
+    HttpResponseType responseType,
+    R? optimisticResponse,
+    int? optimisticHttpStatus,
+    bool offline,
+    Map<String, String>? headers,
+    QP? queryParams,
+    PP? pathParams,
+    int? sendTimeout,
+    int? receiveTieout,
+    bool listenSendProgress,
+    bool listenReceiveProgress,
+    bool abortable,
+  });
 }
 
 class __$HttpPayloadCopyWithImpl<PP, QP, I, R, E, T, O>
     extends _$HttpPayloadCopyWithImpl<PP, QP, I, R, E, T, O>
     implements _$HttpPayloadCopyWith<PP, QP, I, R, E, T, O> {
-  __$HttpPayloadCopyWithImpl(HttpPayload<PP, QP, I, R, E, T> _value,
-      O Function(HttpPayload<PP, QP, I, R, E, T>) _then)
-      : super(_value, (v) => _then(v));
+  __$HttpPayloadCopyWithImpl(
+    HttpPayload<PP, QP, I, R, E, T> _value,
+    O Function(HttpPayload<PP, QP, I, R, E, T>) _then,
+  ) : super(_value, (v) => _then(v));
 
   @override
   HttpPayload<PP, QP, I, R, E, T> get _value => super._value;
 
   @override
-  O call(
-      {Object? url = dimmutable,
-      Object? data = dimmutable,
-      Object? method = dimmutable,
-      Object? responseType = dimmutable,
-      Object? optimisticResponse = dimmutable,
-      Object? optimisticHttpStatus = dimmutable,
-      Object? offline = dimmutable,
-      Object? headers = dimmutable,
-      Object? queryParams = dimmutable,
-      Object? pathParams = dimmutable,
-      Object? sendTimeout = dimmutable,
-      Object? receiveTieout = dimmutable,
-      Object? listenSendProgress = dimmutable,
-      Object? listenReceiveProgress = dimmutable,
-      Object? abortable = dimmutable}) {
-    return _then(HttpPayload(
+  O call({
+    Object? url = dimmutable,
+    Object? data = dimmutable,
+    Object? method = dimmutable,
+    Object? responseType = dimmutable,
+    Object? optimisticResponse = dimmutable,
+    Object? optimisticHttpStatus = dimmutable,
+    Object? offline = dimmutable,
+    Object? headers = dimmutable,
+    Object? queryParams = dimmutable,
+    Object? pathParams = dimmutable,
+    Object? sendTimeout = dimmutable,
+    Object? receiveTieout = dimmutable,
+    Object? listenSendProgress = dimmutable,
+    Object? listenReceiveProgress = dimmutable,
+    Object? abortable = dimmutable,
+  }) {
+    return _then(
+      HttpPayload(
         url: url == dimmutable ? _value.url : url as String,
         data: data == dimmutable ? _value.data : data as I?,
         method: method == dimmutable ? _value.method : method as String,
@@ -859,10 +930,12 @@ class __$HttpPayloadCopyWithImpl<PP, QP, I, R, E, T, O>
         headers: headers == dimmutable
             ? _value.headers
             : headers as Map<String, String>?,
-        queryParams:
-            queryParams == dimmutable ? _value.queryParams : queryParams as QP?,
-        pathParams:
-            pathParams == dimmutable ? _value.pathParams : pathParams as PP?,
+        queryParams: queryParams == dimmutable
+            ? _value.queryParams
+            : queryParams as QP?,
+        pathParams: pathParams == dimmutable
+            ? _value.pathParams
+            : pathParams as PP?,
         sendTimeout: sendTimeout == dimmutable
             ? _value.sendTimeout
             : sendTimeout as int?,
@@ -875,7 +948,10 @@ class __$HttpPayloadCopyWithImpl<PP, QP, I, R, E, T, O>
         listenReceiveProgress: listenReceiveProgress == dimmutable
             ? _value.listenReceiveProgress
             : listenReceiveProgress as bool,
-        abortable:
-            abortable == dimmutable ? _value.abortable : abortable as bool));
+        abortable: abortable == dimmutable
+            ? _value.abortable
+            : abortable as bool,
+      ),
+    );
   }
 }
