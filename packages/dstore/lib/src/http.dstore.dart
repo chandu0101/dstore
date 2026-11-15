@@ -660,8 +660,12 @@ class HttpPayload<PP, QP, I, R, E, T> {
       headers: headers,
       queryParams: queryParams,
       pathParams: pathParams,
-      sendTimeout: sendTimeout,
-      receiveTieout: receiveTieout,
+      sendTimeout: sendTimeout != null
+          ? Duration(milliseconds: sendTimeout)
+          : null,
+      receiveTieout: receiveTieout != null
+          ? Duration(milliseconds: receiveTieout)
+          : null,
       abortable: abortable,
     );
   }
